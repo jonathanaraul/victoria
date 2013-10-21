@@ -15,7 +15,7 @@ class DefaultController extends Controller {
 	public function inicioAction() {
 		$array = UtilitiesAPI::getDefaultContent('inicio', $this);
 
-		return $this -> render('ProyectoFrontBundle:Default:inicio.html.twig', $array);
+		return $this -> render('ProyectoFrontBundle:Default2:inicio.html.twig', $array);
 	}
 
 	public function organizacionAction() {
