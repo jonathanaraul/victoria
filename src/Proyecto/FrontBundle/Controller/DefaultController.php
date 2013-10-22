@@ -17,7 +17,27 @@ class DefaultController extends Controller {
 
 		return $this -> render('ProyectoFrontBundle:Default2:inicio.html.twig', $array);
 	}
+	public function biografiaAction() {
+		$array = UtilitiesAPI::getDefaultContent('biografia', $this);
 
+		return $this -> render('ProyectoFrontBundle:Default2:biografia.html.twig', $array);
+	}
+	public function noticiasAction() {
+		$array = UtilitiesAPI::getDefaultContent('noticias', $this);
+
+		return $this -> render('ProyectoFrontBundle:Default2:noticias.html.twig', $array);
+	}
+	public function carteleraOctubreAction() {
+		$array = UtilitiesAPI::getDefaultContent('carteleraoctubre', $this);
+
+		return $this -> render('ProyectoFrontBundle:Default2:carterleraoctubre.html.twig', $array);
+	}
+	public function cursoRegularAction() {
+		$array = UtilitiesAPI::getDefaultContent('carteleraoctubre', $this);
+
+		return $this -> render('ProyectoFrontBundle:Default2:cursoregular.html.twig', $array);
+	}
+/*
 	public function organizacionAction() {
 		$array = UtilitiesAPI::getDefaultContent('organizacion', $this);
 		$array['titulo'] = 'La Organizaci&oacute;n';
@@ -113,5 +133,5 @@ class DefaultController extends Controller {
 
 		return $this -> render('ProyectoFrontBundle:Default:contacto.html.twig', $array);
 	}
-
+*/
 }

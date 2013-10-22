@@ -1,6 +1,18 @@
 proyecto_front_homepage:
     pattern:  /
     defaults: { _controller: ProyectoFrontBundle:Default:inicio }
+proyecto_front_biografia:
+    pattern:  /biografia
+    defaults: { _controller: ProyectoFrontBundle:Default:biografia }
+proyecto_front_noticias:
+    pattern:  /noticias
+    defaults: { _controller: ProyectoFrontBundle:Default:noticias }
+proyecto_front_carteleraoctubre:
+    pattern:  /cartelera-octubre
+    defaults: { _controller: ProyectoFrontBundle:Default:carteleraOctubre }
+proyecto_front_cursoregular:
+    pattern:  /curso-regular
+    defaults: { _controller: ProyectoFrontBundle:Default:cursoRegular }
 proyecto_front_organizacion:
     pattern:  /organizacion
     defaults: { _controller: ProyectoFrontBundle:Default:organizacion }
