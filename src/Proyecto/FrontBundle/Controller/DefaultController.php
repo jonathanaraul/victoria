@@ -33,9 +33,39 @@ class DefaultController extends Controller {
 		return $this -> render('ProyectoFrontBundle:Default2:carterleraoctubre.html.twig', $array);
 	}
 	public function cursoRegularAction() {
-		$array = UtilitiesAPI::getDefaultContent('carteleraoctubre', $this);
+		$array = UtilitiesAPI::getDefaultContent('cursoregular', $this);
 
 		return $this -> render('ProyectoFrontBundle:Default2:cursoregular.html.twig', $array);
+	}
+	public function tallerTeatroAction() {
+		$array = UtilitiesAPI::getDefaultContent('tallerteatro', $this);
+
+		return $this -> render('ProyectoFrontBundle:Default2:tallerteatro.html.twig', $array);
+	}
+	public function losMartesAction() {
+		$array = UtilitiesAPI::getDefaultContent('losmartes', $this);
+
+		return $this -> render('ProyectoFrontBundle:Default2:losmartes.html.twig', $array);
+	}
+	public function gastrobarAction() {
+		$array = UtilitiesAPI::getDefaultContent('gastrobarla', $this);
+
+		return $this -> render('ProyectoFrontBundle:Default2:gastrobarla.html.twig', $array);
+	}
+	public function presentanosAction() {
+		$array = UtilitiesAPI::getDefaultContent('presentanostu', $this);
+
+		return $this -> render('ProyectoFrontBundle:Default2:presentanos.html.twig', $array);
+	}
+	public function informacionReservasAction() {
+		$array = UtilitiesAPI::getDefaultContent('informaciony', $this);
+
+		return $this -> render('ProyectoFrontBundle:Default2:informacionreservas.html.twig', $array);
+	}
+	public function reservasContactoAction() {
+		$array = UtilitiesAPI::getDefaultContent('reservasy', $this);
+
+		return $this -> render('ProyectoFrontBundle:Default2:reservascontacto.html.twig', $array);
 	}
 /*
 	public function organizacionAction() {

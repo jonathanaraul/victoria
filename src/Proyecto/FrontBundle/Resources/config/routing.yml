@@ -13,6 +13,24 @@ proyecto_front_carteleraoctubre:
 proyecto_front_cursoregular:
     pattern:  /curso-regular
     defaults: { _controller: ProyectoFrontBundle:Default:cursoRegular }
+proyecto_front_tallerteatro:
+    pattern:  /taller-teatro
+    defaults: { _controller: ProyectoFrontBundle:Default:tallerTeatro }
+proyecto_front_losmartes:
+    pattern:  /los-martes
+    defaults: { _controller: ProyectoFrontBundle:Default:losMartes }
+proyecto_front_gastrobar:
+    pattern:  /gastrobar
+    defaults: { _controller: ProyectoFrontBundle:Default:gastrobar }
+proyecto_front_presentanos:
+    pattern:  /tu-proyecto
+    defaults: { _controller: ProyectoFrontBundle:Default:presentanos }
+proyecto_front_informacion_reservas:
+    pattern:  /informacion-reservas
+    defaults: { _controller: ProyectoFrontBundle:Default:informacionReservas }
+proyecto_front_reservas_contacto:
+    pattern:  /reservas-contacto
+    defaults: { _controller: ProyectoFrontBundle:Default:reservasContacto }
 proyecto_front_organizacion:
     pattern:  /organizacion
     defaults: { _controller: ProyectoFrontBundle:Default:organizacion }
