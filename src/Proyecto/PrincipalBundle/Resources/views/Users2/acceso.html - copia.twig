@@ -1,0 +1,194 @@
+{% extends "ProyectoPrincipalBundle:Helpers:base.html.twig" %}
+{%block inside_login%}
+{%endblock%}
+
+{%block inside_menu%}{%endblock%}
+
+{%block contents%} 
+<td id="contents" style="height: 495px;"><!-- whole contents -->
+	<form method="post" action="{{ path('login_check') }}">
+	<table cellpadding="0" cellspacing="0" class="mytable">
+		<tbody>
+			<tr>
+				<th colspan="2">Iniciar Sesión</th>
+			</tr>
+			{% if error %}
+			<tr>
+				<td>
+				<p>
+					No puede acceder al sistema, intente m&aacute;s tarde, o comun&iacute;quese con el administrador del sistema.
+				</p></td>
+			</tr>
+			{%endif%}
+			<tr>
+				<td class="td_label"><label for="login" class="labelLogin">Inicia Sesión:</label></td>
+				<td><!--<div style="display:none;" class="form_error" id="error_for_login">
+				↓&nbsp; &nbsp;↓
+				</div>-->
+				<input type="text" name="_username"  value="{{ ultimo_nombreusuario}}" id="login" value="">
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" class="form_line"><div class="linebg"></div></td>
+			</tr>
+			<tr>
+				<td class="td_label"><label for="password" class="labelLogin">Clave:</label></td>
+				<td><!--<div style="display:none;" class="form_error" id="error_for_password">
+				↓&nbsp; &nbsp;↓
+				</div>-->
+				<input type="password" name="_password" id="password" value="">
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<ul class="cms_action_ul">
+		<li class="cms_action_li">
+			<span class="cms_action_span">
+				<input type="submit" name="commit" value="Iniciar Sesión" class="cms_action_submit">
+			</span>
+		</li>
+	</ul>
+</form><!-- end whole contents --></td>
+{%endblock%}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <!-- saved from url=(0047)http://www.lavictoriacultural.com/admin.php/es/ -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="title" content="Talento CMS panel administracyjny">
+		<meta name="robots" content="NOINDEX, NOFOLLOW">
+		<meta name="description" content="panel administracyjny">
+		<meta name="keywords" content="panel administracyjny">
+		<meta name="language" content="pl">
+		<title>Talento CMS panel administracyjny</title>
+		<link rel="shortcut icon" href="http://www.lavictoriacultural.com/favicon.ico">
+		<script type="text/javascript" src="{{ asset('js/jquery-1.7.2.min.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('js/jquery-ui-1.8.20.custom.min.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('js/lightbox.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('js/cms_function.js') }}"></script>
+		<link rel="stylesheet" type="text/css" media="screen" href="{{ asset('css/lightbox.css') }}">
+		<link rel="stylesheet" type="text/css" media="screen" href="{{ asset('css/admin_new.css') }}">
+	</head>
+	<body >
+		<div id="purpleTop"></div>
+		<table id="wholepage" cellspacing="0" cellpadding="0">
+			<tbody>
+				<tr class="purplebg">
+					<td id="left_login">&nbsp;</td>
+					<!-- login menu -->
+					<td id="inside_login"></td>
+					<!-- end login menu -->
+					<td id="right_login">&nbsp;</td>
+				</tr>
+				<tr>
+					<td id="space_between_menus" colspan="3"></td>
+				</tr>
+				<!-- menu -->
+				<tr>
+					<td id="left_menu">&nbsp;</td>
+					<td id="inside_menu"></td>
+					<td id="right_menu">&nbsp;</td>
+				</tr>
+				<!-- end menu -->
+				<tr>
+					<td colspan="3" id="menu_space">&nbsp;</td>
+				</tr>
+				<tr>
+					<td id="left_bg">&nbsp;</td>
+					<td id="inside_bg">
+					<table id="middle" cellspacing="0" cellpadding="0">
+						<tbody>
+							<tr>
+								<td id="logo" style="width: 92px;text-align: center;"><a target="_blank" href="http://www.realego.es/">Realego ES<!--<img src="./Talento CMS panel administracyjny_files/cms_yeslogo_logo.jpg" alt="Cms_yeslogo_logo">--></a></td>
+								<td id="contents" style="height: 495px;"><!-- whole contents -->
+								<form method="post" action="{{ path('login_check') }}">
+									<table cellpadding="0" cellspacing="0" class="mytable">
+										<tbody>
+											<tr>
+												<th colspan="2">Iniciar Sesión</th>
+											</tr>
+											{% if error %}
+											<tr>
+												<td>
+												<p>
+													No puede acceder al sistema, intente m&aacute;s tarde, o comun&iacute;quese con el administrador del sistema.
+												</p></td>
+											</tr>
+											{%endif%}
+											<tr>
+												<td class="td_label"><label for="login" class="labelLogin">Inicia Sesión:</label></td>
+												<td><!--<div style="display:none;" class="form_error" id="error_for_login">
+												↓&nbsp; &nbsp;↓
+												</div>-->
+												<input type="text" name="_username"  value="{{ ultimo_nombreusuario}}" id="login" value="">
+												</td>
+											</tr>
+											<tr>
+												<td colspan="2" class="form_line"><div class="linebg"></div></td>
+											</tr>
+											<tr>
+												<td class="td_label"><label for="password" class="labelLogin">Clave:</label></td>
+												<td><!--<div style="display:none;" class="form_error" id="error_for_password">
+												↓&nbsp; &nbsp;↓
+												</div>-->
+												<input type="password" name="_password" id="password" value="">
+												</td>
+											</tr>
+										</tbody>
+									</table>
+									<ul class="cms_action_ul">
+										<li class="cms_action_li">
+											<span class="cms_action_span">
+												<input type="submit" name="commit" value="Iniciar Sesión" class="cms_action_submit">
+											</span>
+										</li>
+									</ul>
+								</form><!-- end whole contents --></td>
+							</tr>
+						</tbody>
+					</table></td>
+					<td id="right_bg">&nbsp;</td>
+				</tr>
+			</tbody>
+		</table>
+		<script type="text/javascript">
+			<!--
+
+			var r = (screen.width / screen.height);
+			var v = document.body.clientHeight;
+			var c = screen.height;
+			var d = window.innerHeight;
+			var f = document.documentElement.clientHeight;
+
+			//alert('screan width/height:'+r);
+			//alert(' document.body.clientHeight:'+v);
+			//alert('screen.height:'+c);
+			//alert('window.innerHeight:'+d);
+			//alert('document.documentElement.clientHeight:'+f);
+
+			//var contents = document.getElementById("contents").offsetHeight;
+
+			var roznica = f - v - 24 - 48 - 85 - 15;
+			var cala = roznica + v;
+			var calapx = cala + 'px';
+
+			if(v < f) {
+
+				document.getElementById("contents").style.height = calapx;
+			}
+
+			var $jQ = jQuery.noConflict();
+
+			$jQ(document).ready(function() {
+				$jQ('#big_font').click(function() {
+					$jQ('body').addClass('big');
+				});
+
+				$jQ('#small_font').click(function() {
+					$jQ('body').removeClass('big');
+				});
+			});
+			//-->
+		</script>
+	</body>
+</html>

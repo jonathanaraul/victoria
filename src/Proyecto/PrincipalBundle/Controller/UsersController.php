@@ -74,11 +74,12 @@ class UsersController extends Controller {
 		else
 			$error = $sesion -> get(SecurityContext::AUTHENTICATION_ERROR);
 
-		$firstArray = UtilitiesAPI::getDefaultContent('Usuarios', 'Acceso', 'Acceso', 'Ingrese su nombre de usuario y su contraseña', $this);
+		$firstArray = array();//UtilitiesAPI::getDefaultContent('Usuarios', 'Acceso', 'Acceso', 'Ingrese su nombre de usuario y su contraseña', $this);
 		$secondArray = array('ultimo_nombreusuario' => $sesion -> get(SecurityContext::LAST_USERNAME), 'error' => $error);
 
 		$array = array_merge($firstArray, $secondArray);
-		return $this -> render('ProyectoPrincipalBundle:Users:acceso.html.twig', $array);
+		//return $this -> render('ProyectoPrincipalBundle:Principal2:index.html.twig', $array);
+		return $this -> render('ProyectoPrincipalBundle:Users2:acceso.html.twig', $array);
 	}
 
 	public function cuentaGuardarAction() {
