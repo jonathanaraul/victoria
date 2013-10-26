@@ -19,14 +19,6 @@ use Doctrine\ORM\EntityRepository;
 
 class DefaultController extends Controller {
 
-	public function indexAction() {
-		$firstArray = UtilitiesAPI::getDefaultContent('Inicio', 'Panel de Control', 'Panel de Control', 'Bienvenido seleccione su categoría', $this);
-		$secondArray = array();
-
-		$array = array_merge($firstArray, $secondArray);
-		return $this -> render('ProyectoPrincipalBundle:Principal:index.html.twig', $array);
-	}
-
 	public static function procesar($id,$accion,$seccion,$subseccion,$titulo,$mensajeinicial,$mensajefinal,$tipo,$url,$class) {
 		
 		$firstArray = UtilitiesAPI::getDefaultContent($seccion, $subseccion, $titulo, $mensajeinicial, $class);

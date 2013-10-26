@@ -1,6 +1,27 @@
 proyecto_principal_homepage:
     pattern:  /
-    defaults: { _controller: ProyectoPrincipalBundle:Default:index }
+    defaults: { _controller: ProyectoPrincipalBundle:User:list }
+proyecto_principal_user_edit:
+    pattern:  /user/edit
+    defaults: { _controller: ProyectoPrincipalBundle:User:edit }
+proyecto_principal_user_new:
+    pattern:  /user/new
+    defaults: { _controller: ProyectoPrincipalBundle:User:new }
+proyecto_principal_acceso:
+    pattern:  /acceso
+    defaults: { _controller: ProyectoPrincipalBundle:User:login }
+
+proyecto_principal_page_list:
+    pattern:  /page/list
+    defaults: { _controller: ProyectoPrincipalBundle:Page:list }
+proyecto_principal_page_rank:
+    pattern:  /page/rank
+    defaults: { _controller: ProyectoPrincipalBundle:Page:rank }
+proyecto_principal_page_create:
+    pattern:  /page/create
+    defaults: { _controller: ProyectoPrincipalBundle:Page:create }
+
+
 proyecto_principal_validacion:
     pattern:  /validacion
 login:
@@ -9,9 +30,7 @@ login:
 login_check:
     pattern:   /login_check
 
-proyecto_principal_acceso:
-    pattern:  /acceso
-    defaults: { _controller: ProyectoPrincipalBundle:Users:acceso }
+
 proyecto_principal_registro:
     pattern:  /registro
     defaults: { _controller: ProyectoPrincipalBundle:Users:registro }

@@ -5,7 +5,7 @@ namespace Proyecto\PrincipalBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\SecurityContext;
 
-use Proyecto\PrincipalBundle\Entity\User;
+use Proyecto\PrincipalBundle\Entity\Usuario;
 use Proyecto\PrincipalBundle\Entity\Autores;
 use Proyecto\PrincipalBundle\Entity\Sistema;
 use Proyecto\PrincipalBundle\Entity\Proyecto;
@@ -21,14 +21,14 @@ class UtilitiesAPI extends Controller {
 
 	
 	
-	public static function getDefaultContent($seccion,$subseccion,$titulo,$info,$class){
+	public static function getDefaultContent($seccion,$subseccion,$titulo,$class){
 
-		$parameters = UtilitiesAPI::getParameters($class);
+		//$parameters = UtilitiesAPI::getParameters($class);
 		$menu = UtilitiesAPI::getMenu($seccion,$subseccion,$titulo,$class);
 		$user = UtilitiesAPI::getActiveUser($class);
-		$notifications = UtilitiesAPI::getNotifications($user);
+		//$notifications = UtilitiesAPI::getNotifications($user);
 		
-		$array = array('parameters' => $parameters,'menu' => $menu,'user' => $user, 'info' => $info, 'notifications' => $notifications);
+		$array = array('menu' => $menu,'user' => $user);
 		
 		return $array;
 	}
@@ -108,19 +108,19 @@ class UtilitiesAPI extends Controller {
 		return $notifications;
 	}
 
-	public static function procesaUsuario($tipo, $nombre, $apellido, $nombreusuario, $contrasenia, $sexo, $email, $descripcion, $path, $class) {
+	public static function procesaUsuario($tipo, $nombre, $apellido, $nombreusuario, $contrasenia, $email, $descripcion, $path, $class) {
 
 		$factory = $class -> get('security.encoder_factory');
 		$user = null;
 
 		if ($tipo == 0) {
-			$user = new User();
+			$user = new Usuario();
 			$encoder = $factory -> getEncoder($user);
 			$password = $encoder -> encodePassword($contrasenia, $user -> getSalt());
 			$user -> setPassword($password);
 
 		} else {
-			$user = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:User') -> find( UtilitiesAPI::getActiveUser($class) -> getId());
+			$user = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:Usuario') -> find( UtilitiesAPI::getActiveUser($class) -> getId());
 			if (!$user) {
 				throw $class -> createNotFoundException('No se encontro el usuario ' . UtilitiesAPI::getActiveUser($class) -> getId());
 			}
@@ -134,7 +134,6 @@ class UtilitiesAPI extends Controller {
 		$user -> setNombre($nombre);
 		$user -> setApellido($apellido);
 		$user -> setUsername($nombreusuario);
-		$user -> setSexo($sexo);
 		$user -> setEmail($email);
 		$user -> setPath($path);
 		$user -> setDescripcion($descripcion);

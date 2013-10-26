@@ -1,0 +1,172 @@
+{% extends "ProyectoPrincipalBundle:Helpers2:baseInterna.html.twig" %}
+
+{%block contents%} <td id="contents"><!-- whole contents -->
+<div id="sf_admin_container">
+	<h1>Listado de páginas</h1>
+	<div id="sf_admin_header"></div>
+	<div id="sf_admin_bar">
+		<div class="sf_admin_filters">
+			<form method="get" action="/admin.php/es/page/list">
+				<fieldset>
+					<h2>Filtros</h2>
+					<div class="form-row">
+						<label for="parent_page_id">paginas relacionadas:</label>
+						<div class="content">
+							<select name="filters[parent_page_id]" id="filters_parent_page_id">
+								<option value="" selected="selected"></option>
+								<option value="3">Biografía</option>
+								<option value="34">CARTELERA NOVIEMBRE</option>
+								<option value="31">CARTELERA OCTUBRE</option>
+								<option value="30">Curso regular para actores 2013/2014 </option>
+								<option value="9">GASTROBAR LA VICTORIA</option>
+								<option value="29">Información y reservas</option>
+								<option value="33">LOS MARTES: SUPER QUIZ! </option>
+								<option value="1">Noticias</option>
+								<option value="10">PRESÉNTANOS TU PROYECTO</option>
+								<option value="2">Programación</option>
+								<option value="14">Reservas y Contacto</option>
+								<option value="32">Taller de Teatro para Aficionados</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-row">
+						<label for="theme_id">Tema:</label>
+						<div class="content">
+							<select name="filters[theme_id]" id="filters_theme_id" class="theme_toggle">
+								<option value="" selected="selected"></option>
+								<option value="1">Biblioteca</option>
+								<option value="2">Cafeteria</option>
+								<option value="8">Contacto</option>
+								<option value="11">Eventos</option>
+								<option value="3">Filmoteca</option>
+								<option value="4">La Victoria</option>
+								<option value="9">Links</option>
+								<option value="5">Musica</option>
+								<option value="10">Noticias</option>
+								<option value="6">Programation</option>
+								<option value="12">Talleres</option>
+								<option value="7">Teatro</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-row">
+						<label for="name">Nombre:</label>
+						<div class="content">
+							<input type="text" name="filters[name]" id="filters_name" value="" size="15">
+						</div>
+					</div>
+					<div class="form-row">
+						<label for="published">Publicado:</label>
+						<div class="content">
+							<select name="filters[published]" id="filters_published">
+								<option value=""></option>
+								<option value="1">Si</option>
+								<option value="0">No</option>
+							</select>
+						</div>
+					</div>
+				</fieldset>
+				<ul class="sf_admin_actions">
+					<li>
+						<input class="sf_admin_action_reset_filter" value="Mostrar todo" type="button" onclick="document.location.href='/admin.php/es/page/list/filter/filter';">
+					</li>
+					<li>
+						<input type="submit" name="filter" value="Filtro" class="sf_admin_action_filter">
+					</li>
+				</ul>
+			</form>
+		</div>
+	</div>
+	<div id="sf_admin_content">
+		<table cellspacing="0" class="sf_admin_list">
+			<thead>
+				<tr>
+					<th id="sf_admin_list_th_page_id"><a href="/admin.php/es/page/list/sort/page_id/type/asc">ID</a> (↓) </th>
+					<th id="sf_admin_list_th_parent_page_id"><a href="/admin.php/es/page/list/sort/parent_page_id/type/asc">paginas relacionadas</a></th>
+					<th id="sf_admin_list_th_name"><a href="/admin.php/es/page/list/sort/name/type/asc">Nombre</a></th>
+					<th id="sf_admin_list_th_background_id"><a href="/admin.php/es/page/list/sort/background_id/type/asc">FONDO</a></th>
+					<th id="sf_admin_list_th_media_id"><a href="/admin.php/es/page/list/sort/media_id/type/asc">Imagen</a></th>
+					<th id="sf_admin_list_th_theme_id"><a href="/admin.php/es/page/list/sort/theme_id/type/asc">Tema</a></th>
+					<th id="sf_admin_list_th_published"><a href="/admin.php/es/page/list/sort/published/type/asc">Publicado</a></th>
+					<th id="sf_admin_list_th_sf_actions">Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="sf_admin_row_0">
+					<td><a href="/admin.php/es/page/edit/page_id/34">34</a></td>
+					<td class="center">-</td>
+					<td>CARTELERA NOVIEMBRE</td>
+					<td class="image_list"><a alt="Telon" rel="lightbox" href="http://lavictoriacultural.com/uploads/background/c3cc38c3ccd07116b5e055d29ae183f3.jpg">mostrar</a></td>
+					<td class="image_list center"><img alt="ss2" src="http://lavictoriacultural.com/uploads/media/mini/e6753f332230a6bfe1afdb63874ef305.jpg"></td>
+					<td style="background-color:#780e12"></td>
+					<td><img src="{{asset('sf/sf_admin/images/tick.png')}}" alt="Tick"><span id="contact-formid_34" class="change_published page"><img alt="Zmiana" src="{{asset('images/refresh.png')}}"></span></td>
+					<td>
+					<ul class="sf_admin_td_actions">
+						<li>
+							<a href="/admin.php/es/page/edit/page_id/34">Editar</a>
+						</li>
+						<li>
+							|
+						</li>
+						<li>
+							<a onclick="if (confirm('?Estas seguro?')) { f = document.createElement('form'); document.body.appendChild(f); f.method = 'POST'; f.action = this.href; f.submit(); };return false;" href="/admin.php/es/page/delete/page_id/34">Eliminar</a>
+						</li>
+						<li>
+							|
+						</li>
+						<li>
+							<a href="/admin.php/es/page_translate/list/page_id/34">Traducción</a>
+						</li>
+					</ul></td>
+				</tr>
+				<tr class="sf_admin_row_1">
+					<td><a href="/admin.php/es/page/edit/page_id/25">25</a></td>
+					<td class="center">EXPOSICIONES</td>
+					<td>Curso de Introducción a la técnica Meisner</td>
+					<td class="image_list"><a alt="TALLER" rel="lightbox" href="http://lavictoriacultural.com/uploads/background/7d293f30c3c0c394a31b1a53ebe459f7.jpg">mostrar</a></td>
+					<td class="image_list center"><img alt="meisner" src="http://lavictoriacultural.com/uploads/media/mini/63f38e19df6afc85e2651b1c07abf44e.jpg"></td>
+					<td style="background-color:#ec0052"></td>
+					<td><img src="{{asset('sf/sf_admin/images/close.png')}}" alt="Close"><span id="contact-formid_25" class="change_published page"><img alt="Zmiana" src="{{asset('images/refresh.png')}}"></span></td>
+					<td>
+					<ul class="sf_admin_td_actions">
+						<li>
+							<a href="/admin.php/es/page/edit/page_id/25">Editar</a>
+						</li>
+						<li>
+							|
+						</li>
+						<li>
+							<a onclick="if (confirm('?Estas seguro?')) { f = document.createElement('form'); document.body.appendChild(f); f.method = 'POST'; f.action = this.href; f.submit(); };return false;" href="/admin.php/es/page/delete/page_id/25">Eliminar</a>
+						</li>
+						<li>
+							|
+						</li>
+						<li>
+							<a href="/admin.php/es/page_translate/list/page_id/25">Traducción</a>
+						</li>
+					</ul></td>
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr>
+					<th colspan="8">
+					<div class="float-right">
+						<a href="/admin.php/es/page/list/page/1"><img align="absmiddle" alt="First" title="First" src="{{asset('sf/sf_admin/images/first.png')}}"></a><a href="/admin.php/es/page/list/page/1"><img align="absmiddle" alt="Previous" title="Previous" src="{{asset('sf/sf_admin/images/previous.png')}}"></a>
+						<span>1</span><a href="/admin.php/es/page/list/page/2">2</a>
+						<a href="/admin.php/es/page/list/page/2"><img align="absmiddle" alt="Next" title="Next" src="{{asset('sf/sf_admin/images/next.png')}}"></a><a href="/admin.php/es/page/list/page/2"><img align="absmiddle" alt="Last" title="Last" src="{{asset('sf/sf_admin/images/last.png')}}"></a>
+					</div> 29 resultados</th>
+				</tr>
+			</tfoot>
+		</table>
+		<ul class="sf_admin_actions">
+			<li>
+				<input class="sf_admin_action_create" value="Anadir" type="button" onclick="document.location.href='/admin.php/es/page/create';">
+			</li>
+			<li>
+				<input class="sf_admin_action_rank" value="Determinar orden" type="button" onclick="document.location.href='/admin.php/es/page/rank';">
+			</li>
+		</ul>
+	</div>
+	<div id="sf_admin_footer"></div>
+</div><!-- end whole contents --></td>
+{%endblock%}

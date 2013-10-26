@@ -12,7 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Util\StringUtils;
-use Proyecto\PrincipalBundle\Entity\User;
+use Proyecto\PrincipalBundle\Entity\Usuario;
 
 class UsersController extends Controller {
 	
@@ -61,26 +61,7 @@ class UsersController extends Controller {
 		return $this -> render('ProyectoPrincipalBundle:Users:listado.html.twig', $array);
 	}
 	
-	public function accesoAction() {
 
-		$error = NULL;
-		$ultimo_nombreusuario = null;
-
-		$peticion = $this -> getRequest();
-		$sesion = $peticion -> getSession();
-		// obtiene el error de inicio de sesión si lo hay
-		if ($peticion -> attributes -> has(SecurityContext::AUTHENTICATION_ERROR))
-			$error = $peticion -> attributes -> get(SecurityContext::AUTHENTICATION_ERROR);
-		else
-			$error = $sesion -> get(SecurityContext::AUTHENTICATION_ERROR);
-
-		$firstArray = array();//UtilitiesAPI::getDefaultContent('Usuarios', 'Acceso', 'Acceso', 'Ingrese su nombre de usuario y su contraseña', $this);
-		$secondArray = array('ultimo_nombreusuario' => $sesion -> get(SecurityContext::LAST_USERNAME), 'error' => $error);
-
-		$array = array_merge($firstArray, $secondArray);
-		//return $this -> render('ProyectoPrincipalBundle:Principal2:index.html.twig', $array);
-		return $this -> render('ProyectoPrincipalBundle:Users2:acceso.html.twig', $array);
-	}
 
 	public function cuentaGuardarAction() {
 		$peticion = $this -> getRequest();

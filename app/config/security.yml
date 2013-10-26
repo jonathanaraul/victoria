@@ -24,10 +24,10 @@ security:
             form_login:
                 login_path:  /admin/acceso
                 check_path:  /admin/login_check
-                default_target_path: /validacion
+                default_target_path: /admin
             logout:
               path: /logout
-              target: /
+              target: /admin
     access_control:
         - { path: /_wdt/.*, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: /_profiler/.*, role: IS_AUTHENTICATED_ANONYMOUSLY }

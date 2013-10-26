@@ -1,0 +1,430 @@
+{% extends "ProyectoPrincipalBundle:Helpers2:baseInterna.html.twig" %}
+
+{%block js%} 
+{%endblock%}
+{%block contents%} 
+<td id="contents"><!-- whole contents -->
+<div id="sf_admin_container">
+	<h1>Edición de páginas</h1>
+	<div id="sf_admin_header"></div>
+	<div id="sf_admin_content">
+		<form id="sf_admin_edit_form" name="sf_admin_edit_form" method="post" enctype="multipart/form-data" action="/admin.php/es/page/save">
+			<input type="hidden" name="page_id" id="page_id" value="">
+			<fieldset id="sf_fieldset_none" class="">
+				<div class="form-row">
+					<label for="page_parent_page_id" class="required">paginas relacionadas:</label>
+					<div class="content">
+						<select name="page[parent_page_id]" id="page_parent_page_id">
+							<option value="" selected="selected"></option>
+							<option value="3">Biografía</option>
+							<option value="34">CARTELERA NOVIEMBRE</option>
+							<option value="31">CARTELERA OCTUBRE</option>
+							<option value="30">Curso regular para actores 2013/2014 </option>
+							<option value="9">GASTROBAR LA VICTORIA</option>
+							<option value="29">Información y reservas</option>
+							<option value="33">LOS MARTES: SUPER QUIZ! </option>
+							<option value="1">Noticias</option>
+							<option value="10">PRESÉNTANOS TU PROYECTO</option>
+							<option value="2">Programación</option>
+							<option value="14">Reservas y Contacto</option>
+							<option value="32">Taller de Teatro para Aficionados</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-row">
+					<label for="page_title" class="required">Titulo:</label>
+					<div class="content">
+						<input type="text" name="page[title]" id="page_title" value="" size="80">
+					</div>
+				</div>
+				<div class="form-row">
+					<label for="page_keywords" class="required">Palabras Clave [metatag]:</label>
+					<div class="content">
+						<input type="text" name="page[keywords]" id="page_keywords" value="" size="80">
+					</div>
+				</div>
+				<div class="form-row">
+					<label for="page_description_meta" class="required">Descripción [metatag]:</label>
+					<div class="content">
+						<input type="text" name="page[description_meta]" id="page_description_meta" value="" size="80">
+					</div>
+				</div>
+				<div class="form-row">
+					<label for="page_name" class="required">Nombre:</label>
+					<div class="content">
+						<input type="text" name="page[name]" id="page_name" value="" size="80">
+					</div>
+				</div>
+				<div class="form-row">
+					<label for="page_content" class="required">Contenido:</label>
+					<div class="content">
+						<input type="hidden" id="page[content]" name="page[content]" value="" style="display:none">
+						<input type="hidden" id="page[content]___Config" value="" style="display:none">
+						<iframe id="page[content]___Frame" src="{{asset('js/fckeditor/editor/fckeditor.html?InstanceName=page[content]&amp;Toolbar=Default')}}" width="100%" height="500" frameborder="0" scrolling="no" style="margin: 0px; padding: 0px; border: 0px; background-color: transparent; background-image: none; width: 100%; height: 500px;"></iframe>
+					</div>
+				</div>
+				<div class="form-row">
+					<label for="page_upper_text" class="required">Texto Superior:</label>
+					<div class="content">
+						<input type="text" name="page[upper_text]" id="page_upper_text" value="" size="80">
+					</div>
+				</div>
+				<div class="form-row">
+					<label for="page_lower_text" class="required">Texto Superior:</label>
+					<div class="content">
+						<input type="text" name="page[lower_text]" id="page_lower_text" value="" size="80">
+					</div>
+				</div>
+				<div class="form-row">
+					<label for="page_pdf" class="required">pdf:</label>
+					<div class="content">
+						<input type="file" name="page[pdf]" id="page_pdf" value="" size="64">
+						<br>
+					</div>
+				</div>
+				<div class="form-row">
+					<label for="page_background_id" class="required">FONDO:</label>
+					<div class="content">
+						<select name="page[background_id]" id="page_background_id">
+							<option value="94">arlequin</option>
+							<option value="25">Barra</option>
+							<option value="5">Biblioteca</option>
+							<option value="73">Blanche1</option>
+							<option value="6">Cafeteria</option>
+							<option value="15">Cafeteria botellas</option>
+							<option value="24">Cafeteriadentro</option>
+							<option value="98">cOMIJULIO</option>
+							<option value="92">consojunio</option>
+							<option value="60">desvarietesfondo</option>
+							<option value="7">Eventos</option>
+							<option value="23">eventos</option>
+							<option value="18">fachada</option>
+							<option value="8">Filmoteca</option>
+							<option value="119">fridayup</option>
+							<option value="46">garamendymain</option>
+							<option value="58">garamendymain2</option>
+							<option value="51">garamendynuevo</option>
+							<option value="109">garoasept</option>
+							<option value="116">garooct</option>
+							<option value="103">gastro</option>
+							<option value="121">greca</option>
+							<option value="16">Guitarra</option>
+							<option value="59">hombremain</option>
+							<option value="55">inquisidormain</option>
+							<option value="61">jam</option>
+							<option value="65">jamok</option>
+							<option value="99">jULIAjULIO</option>
+							<option value="50">leccionesmain3</option>
+							<option value="20">Libros</option>
+							<option value="71">Lindefondook</option>
+							<option value="21">links</option>
+							<option value="22">links</option>
+							<option value="48">lorefilmain2</option>
+							<option value="102">lvejulio</option>
+							<option value="120">lveoct</option>
+							<option value="105">lvesept</option>
+							<option value="113">Magdaoct</option>
+							<option value="115">magiaoct</option>
+							<option value="31">mingorancebuenadeverdad</option>
+							<option value="111">Monologos</option>
+							<option value="107">muertasept</option>
+							<option value="53">muerte</option>
+							<option value="54">Muerte2</option>
+							<option value="52">mujermain</option>
+							<option value="10">Musica</option>
+							<option value="106">mxvsept</option>
+							<option value="11">Noticias</option>
+							<option value="112">pianooct</option>
+							<option value="12">Programacion</option>
+							<option value="42">quimeramain</option>
+							<option value="118">retrup</option>
+							<option value="100">RISAS</option>
+							<option value="101">salaroja</option>
+							<option value="45">santimain</option>
+							<option value="56">secuelasmain</option>
+							<option value="63">sensofondo</option>
+							<option value="64">sensofondook</option>
+							<option value="104">sENSOSEPT</option>
+							<option value="19">TALLER</option>
+							<option value="96">taller</option>
+							<option value="13">Talleres</option>
+							<option value="14">Teatro</option>
+							<option value="17">Telon</option>
+							<option value="43">triomain</option>
+							<option value="114">vidaoct</option>
+							<option value="57">violencemain</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-row">
+					<label for="page_media_id" class="required">Imagen:</label>
+					<div class="content">
+						<select name="page[media_id]" id="page_media_id" class="photo_toggle">
+							<option value="" selected="selected"></option>
+							<option value="66">arlequin</option>
+							<option value="67">blanche1</option>
+							<option value="33">CHORO</option>
+							<option value="29">cubano</option>
+							<option value="71">curso herramientas</option>
+							<option value="27">d</option>
+							<option value="68">expresionismo1</option>
+							<option value="8">Extran Hero</option>
+							<option value="1">First photo</option>
+							<option value="57">frikis</option>
+							<option value="30">Gramendy</option>
+							<option value="41">Grita</option>
+							<option value="45">infonoticias</option>
+							<option value="31">InmigranDes</option>
+							<option value="56">Inquisidor</option>
+							<option value="74">laborda2</option>
+							<option value="32">Lecciones</option>
+							<option value="64">lecciones1</option>
+							<option value="63">linder1</option>
+							<option value="39">Lorefil1</option>
+							<option value="59">Lorefil2</option>
+							<option value="61">meisner</option>
+							<option value="40">Modulok1</option>
+							<option value="43">muerte</option>
+							<option value="54">Muerte2</option>
+							<option value="42">mujer</option>
+							<option value="60">Palabra</option>
+							<option value="49">para musica</option>
+							<option value="47">parabiblio</option>
+							<option value="51">paracafeteria</option>
+							<option value="50">paraeventos</option>
+							<option value="52">parateatro</option>
+							<option value="46">prresentaproyecto</option>
+							<option value="58">Que teme la madrugada</option>
+							<option value="34">Quimera</option>
+							<option value="62">rosana</option>
+							<option value="69">sabrina</option>
+							<option value="38">salasamotracia</option>
+							<option value="44">samotraci1</option>
+							<option value="53">Secuelas</option>
+							<option value="37">senso2</option>
+							<option value="48">ss2</option>
+							<option value="65">TeatroExpres</option>
+							<option value="25">Test</option>
+							<option value="3">Test sundown</option>
+							<option value="4">test2</option>
+							<option value="26">test6</option>
+							<option value="35">Trío Choro compuesto por Gabriel Schwartz, Rodrigo da Matta y Juan Tomás Álvarez</option>
+							<option value="36">Trío Choro compuesto por Gabriel Schwartz, Rodrigo da Matta y Juan Tomás Álvarez2</option>
+							<option value="28">Trabajan sin descanso por mantener el taller funcionando (46 x38 cm  óleo/lienzo)</option>
+							<option value="75">V</option>
+							<option value="55">Violence</option>
+						</select>
+						<div class="media_container">
+							<div class="media_66" style="display: none;">
+								<img alt="arlequin" src="/uploads/media/mini/5624df8e3bb65dcd7eb5e9555ac8e23f.jpg">
+							</div>
+							<div class="media_67" style="display: none;">
+								<img alt="blanche1" src="/uploads/media/mini/b8aa24387b9e3ab55eb9ca0101fee99c.jpg">
+							</div>
+							<div class="media_33" style="display: none;">
+								<img alt="CHORO" src="/uploads/media/mini/3e3c6ff71dc0bc00d5c33c12ada2dcd0.jpg">
+							</div>
+							<div class="media_29" style="display: none;">
+								<img alt="cubano" src="/uploads/media/mini/3672e9f650803eb5ad9d4825d30304bb.jpg">
+							</div>
+							<div class="media_71" style="display: none;">
+								<img alt="curso herramientas" src="/uploads/media/mini/3e0554304e4517bac4e814492c4f9a0c.jpg">
+							</div>
+							<div class="media_27" style="display: none;">
+								<img alt="d" src="/uploads/media/mini/08f249e08a59eb0a96b556863d2e5aeb.jpg">
+							</div>
+							<div class="media_68" style="display: none;">
+								<img alt="expresionismo1" src="/uploads/media/mini/220ea4cc20e035f39d76a1179e4fe643.jpg">
+							</div>
+							<div class="media_8" style="display: none;">
+								<img alt="Extran Hero" src="/uploads/media/mini/36296dbb55b47712781f6f893fd60c56.jpg">
+							</div>
+							<div class="media_1" style="display: none;">
+								<img alt="First photo" src="/uploads/media/mini/1a8aadd2c7351a55ab453db93d6c1b71.jpg">
+							</div>
+							<div class="media_57" style="display: none;">
+								<img alt="frikis" src="/uploads/media/mini/e0a4a6bf0ab3633e5335999e962fba48.jpg">
+							</div>
+							<div class="media_30" style="display: none;">
+								<img alt="Gramendy" src="/uploads/media/mini/52d37e69b93c58e5dafa95dea6ee9754.jpg">
+							</div>
+							<div class="media_41" style="display: none;">
+								<img alt="Grita" src="/uploads/media/mini/3f8ef5743db4f03c914b4c1fc020fe52.jpg">
+							</div>
+							<div class="media_45" style="display: none;">
+								<img alt="infonoticias" src="/uploads/media/mini/3734d2ab1e412a5584c1ea433f7c51c0.jpg">
+							</div>
+							<div class="media_31" style="display: none;">
+								<img alt="InmigranDes" src="/uploads/media/mini/7dd964c3d68fd61f6022ab372d0ac1f4.jpg">
+							</div>
+							<div class="media_56" style="display: none;">
+								<img alt="Inquisidor" src="/uploads/media/mini/c9ff54870cd71667cb1cb387e02df6b7.jpg">
+							</div>
+							<div class="media_74" style="display: none;">
+								<img alt="laborda2" src="/uploads/media/mini/1dc8ca5505cd2bf6cef212822952915d.jpg">
+							</div>
+							<div class="media_32" style="display: none;">
+								<img alt="Lecciones" src="/uploads/media/mini/e23ec19d1709ebce2b54816830399d2d.jpg">
+							</div>
+							<div class="media_64" style="display: none;">
+								<img alt="lecciones1" src="/uploads/media/mini/2e0b7643e5add5f64c9ad89eb39bc847.jpg">
+							</div>
+							<div class="media_63" style="display: none;">
+								<img alt="linder1" src="/uploads/media/mini/6a0173eaf90a8e808ca90e8c32b5e1e4.jpg">
+							</div>
+							<div class="media_39" style="display: none;">
+								<img alt="Lorefil1" src="/uploads/media/mini/6b08f7a71e38310bfcf650d21a4327ac.jpg">
+							</div>
+							<div class="media_59" style="display: none;">
+								<img alt="Lorefil2" src="/uploads/media/mini/.png">
+							</div>
+							<div class="media_61" style="display: none;">
+								<img alt="meisner" src="/uploads/media/mini/63f38e19df6afc85e2651b1c07abf44e.jpg">
+							</div>
+							<div class="media_40" style="display: none;">
+								<img alt="Modulok1" src="/uploads/media/mini/5ca841766e0960082a9053ac04d0b427.jpg">
+							</div>
+							<div class="media_43" style="display: none;">
+								<img alt="muerte" src="/uploads/media/mini/7da6fc2b41829ab30a602cb59dd81c1d.jpg">
+							</div>
+							<div class="media_54" style="display: none;">
+								<img alt="Muerte2" src="/uploads/media/mini/8ed2459c849b5f141057be67da2e1adf.jpg">
+							</div>
+							<div class="media_42" style="display: none;">
+								<img alt="mujer" src="/uploads/media/mini/0a2a5ce3924ee772e593efafca8bce97.jpg">
+							</div>
+							<div class="media_60" style="display: none;">
+								<img alt="Palabra" src="/uploads/media/mini/.png">
+							</div>
+							<div class="media_49" style="display: none;">
+								<img alt="para musica" src="/uploads/media/mini/4b6336f7525c5e4abb16a52ba9b3cef5.jpg">
+							</div>
+							<div class="media_47" style="display: none;">
+								<img alt="parabiblio" src="/uploads/media/mini/c1ed7f1d32d53a347ecbc348478d41a8.jpg">
+							</div>
+							<div class="media_51" style="display: none;">
+								<img alt="paracafeteria" src="/uploads/media/mini/77b34bf527be49706eb4b7fceb4ba7a9.jpg">
+							</div>
+							<div class="media_50" style="display: none;">
+								<img alt="paraeventos" src="/uploads/media/mini/aec2a214cbeac7d8d988b8df6c06e552.jpg">
+							</div>
+							<div class="media_52" style="display: none;">
+								<img alt="parateatro" src="/uploads/media/mini/a187587a5b13d7568683ff67f4eb378f.jpg">
+							</div>
+							<div class="media_46" style="display: none;">
+								<img alt="prresentaproyecto" src="/uploads/media/mini/8289f9d1eed32f7b9f100173675deaf6.jpg">
+							</div>
+							<div class="media_58" style="display: none;">
+								<img alt="Que teme la madrugada" src="/uploads/media/mini/447f4cda8926fb58ce575d232552bd89.jpg">
+							</div>
+							<div class="media_34" style="display: none;">
+								<img alt="Quimera" src="/uploads/media/mini/412eb5fcca4a1894d9b4804d10edb278.jpg">
+							</div>
+							<div class="media_62" style="display: none;">
+								<img alt="rosana" src="/uploads/media/mini/e660eb62118dc1ed359750682821c5ab.jpg">
+							</div>
+							<div class="media_69" style="display: none;">
+								<img alt="sabrina" src="/uploads/media/mini/c5afd060923517c80d33c58fabd1b752.jpg">
+							</div>
+							<div class="media_38" style="display: none;">
+								<img alt="salasamotracia" src="/uploads/media/mini/.png">
+							</div>
+							<div class="media_44" style="display: none;">
+								<img alt="samotraci1" src="/uploads/media/mini/83e6319ec6191423869c02706beeff2d.jpg">
+							</div>
+							<div class="media_53" style="display: none;">
+								<img alt="Secuelas" src="/uploads/media/mini/fd8715995c76c11e156f64bbe1962ba7.jpg">
+							</div>
+							<div class="media_37" style="display: none;">
+								<img alt="senso2" src="/uploads/media/mini/.png">
+							</div>
+							<div class="media_48" style="display: none;">
+								<img alt="ss2" src="/uploads/media/mini/e6753f332230a6bfe1afdb63874ef305.jpg">
+							</div>
+							<div class="media_65" style="display: none;">
+								<img alt="TeatroExpres" src="/uploads/media/mini/04758543818bbe58073ccf186a6dff54.jpg">
+							</div>
+							<div class="media_25" style="display: none;">
+								<img alt="Test" src="/uploads/media/mini/e844bbb6f436691e9665cf5f283c5f75.jpg">
+							</div>
+							<div class="media_3" style="display: none;">
+								<img alt="Test sundown" src="/uploads/media/mini/c0a11cc4924f473e53aadccf5fc871a0.jpg">
+							</div>
+							<div class="media_4" style="display: none;">
+								<img alt="test2" src="/uploads/media/mini/73780690391aa00d530ded9139d20e47.jpg">
+							</div>
+							<div class="media_26" style="display: none;">
+								<img alt="test6" src="/uploads/media/mini/.png">
+							</div>
+							<div class="media_35" style="display: none;">
+								<img alt="Trío Choro compuesto por Gabriel Schwartz, Rodrigo da Matta y Juan Tomás Álvarez" src="/uploads/media/mini/5507d17bb11618de41d27e1a743cb657.jpg">
+							</div>
+							<div class="media_36" style="display: none;">
+								<img alt="Trío Choro compuesto por Gabriel Schwartz, Rodrigo da Matta y Juan Tomás Álvarez2" src="/uploads/media/mini/6c9f343c43852c4c92e0b1c3ea309a2a.jpg">
+							</div>
+							<div class="media_28" style="display: none;">
+								<img alt="Trabajan sin descanso por mantener el taller funcionando (46 x38 cm  óleo/lienzo)" src="/uploads/media/mini/c098d3d265827cab5ce85d2a68b8abda.jpg">
+							</div>
+							<div class="media_75" style="display: none;">
+								<img alt="V" src="/uploads/media/mini/511e63aa531f4c7557e35fd070f161fd.jpg">
+							</div>
+							<div class="media_55" style="display: none;">
+								<img alt="Violence" src="/uploads/media/mini/8f0266ae04755ddf22bcf29fd2eb8a3c.jpg">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="form-row">
+					<label for="page_theme_id" class="required">Tema:</label>
+					<div class="content">
+						<select name="page[theme_id]" id="page_theme_id" class="theme_toggle">
+							<option value="1">Biblioteca</option>
+							<option value="2">Cafeteria</option>
+							<option value="8">Contacto</option>
+							<option value="11">Eventos</option>
+							<option value="3">Filmoteca</option>
+							<option value="4">La Victoria</option>
+							<option value="9">Links</option>
+							<option value="5">Musica</option>
+							<option value="10">Noticias</option>
+							<option value="6">Programation</option>
+							<option value="12">Talleres</option>
+							<option value="7">Teatro</option>
+						</select>
+						<div class="theme_container">
+							<div class="theme_1" style="background-color: rgb(152, 191, 14); display: block;"></div>
+							<div class="theme_2" style="background-color: rgb(186, 200, 209); display: none;"></div>
+							<div class="theme_8" style="background-color: rgb(137, 137, 137); display: none;"></div>
+							<div class="theme_11" style="background-color: rgb(227, 0, 27); display: none;"></div>
+							<div class="theme_3" style="background-color: rgb(97, 85, 157); display: none;"></div>
+							<div class="theme_4" style="background-color: rgb(255, 255, 255); display: none;"></div>
+							<div class="theme_9" style="background-color: rgb(1, 51, 110); display: none;"></div>
+							<div class="theme_5" style="background-color: rgb(0, 157, 224); display: none;"></div>
+							<div class="theme_10" style="background-color: rgb(255, 221, 0); display: none;"></div>
+							<div class="theme_6" style="background-color: rgb(244, 148, 1); display: none;"></div>
+							<div class="theme_12" style="background-color: rgb(236, 0, 82); display: none;"></div>
+							<div class="theme_7" style="background-color: rgb(120, 14, 18); display: none;"></div>
+						</div>
+					</div>
+				</div>
+				<div class="form-row">
+					<label for="page_published">Publicado:</label>
+					<div class="content">
+						<input type="checkbox" name="page[published]" id="page_published" value="1" checked="checked">
+					</div>
+				</div>
+			</fieldset>
+			<ul class="sf_admin_actions">
+				<li>
+					<input class="sf_admin_action_list" value="Listado" type="button" onclick="document.location.href='/admin.php/es/page/list/page_id';">
+				</li>
+				<li>
+					<input type="submit" name="save" value="Guardar" class="sf_admin_action_save">
+				</li>
+			</ul>
+		</form>
+		<ul class="sf_admin_actions"></ul>
+	</div>
+	<div id="sf_admin_footer"></div>
+</div><!-- end whole contents --></td>
+{%endblock%}
