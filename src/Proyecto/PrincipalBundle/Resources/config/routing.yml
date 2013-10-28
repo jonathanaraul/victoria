@@ -17,6 +17,9 @@ proyecto_principal_page_list:
 proyecto_principal_page_rank:
     pattern:  /page/rank
     defaults: { _controller: ProyectoPrincipalBundle:Page:rank }
+proyecto_principal_page_rank_post:
+    pattern:  /page/rank/post
+    defaults: { _controller: ProyectoPrincipalBundle:Page:rankPost }
 proyecto_principal_page_create:
     pattern:  /page/create
     defaults: { _controller: ProyectoPrincipalBundle:Page:create }

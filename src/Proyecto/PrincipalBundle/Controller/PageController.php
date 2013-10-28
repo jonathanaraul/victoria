@@ -28,7 +28,7 @@ class PageController extends Controller {
 		$themes = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsTheme') -> findAll();
 		$filtros['theme'] = array();
 		$filtros['parentPage'] = array();
-		$filtros['published'] = array(1 =>'Si', 0 => 'No');
+		$filtros['published'] = array(1 => 'Si', 0 => 'No');
 
 		for ($i = 0; $i < count($themes); $i++) {
 			$filtros['theme'][$themes[$i] -> getThemeId()] = $themes[$i] -> getName();
@@ -79,7 +79,7 @@ class PageController extends Controller {
 					} else {
 						$dql .= 'AND ';
 					}
-					
+
 					$dql .= " n.name like :name ";
 
 				}
@@ -95,18 +95,18 @@ class PageController extends Controller {
 				}
 
 				$query = $em -> createQuery($dql);
-				
+
 				if (!(trim($data -> getParentPageId()) == false)) {
-					$query->setParameter('parentPageId', $data -> getParentPageId());
+					$query -> setParameter('parentPageId', $data -> getParentPageId());
 				}
 				if (!(trim($data -> getThemeId()) == false)) {
-					$query->setParameter('themeId', $data -> getThemeId());
+					$query -> setParameter('themeId', $data -> getThemeId());
 				}
 				if (!(trim($data -> getName()) == false)) {
-					$query->setParameter('name', '%' .$data -> getName().'%');
+					$query -> setParameter('name', '%' . $data -> getName() . '%');
 				}
 				if (!(trim($data -> getPublished()) == false)) {
-					$query->setParameter('published', $data -> getPublished());
+					$query -> setParameter('published', $data -> getPublished());
 				}
 
 			}
@@ -143,11 +143,40 @@ class PageController extends Controller {
 
 	public function rankAction() {
 		$firstArray = UtilitiesAPI::getDefaultContent('PAGINAS', 'Mostrar Información', 'Información', $this);
-		$secondArray = array();
 
+		$em = $this -> getDoctrine() -> getManager();
+		$query = $em -> createQuery('SELECT p FROM ProyectoPrincipalBundle:CmsPage p ORDER BY p.rank ASC');
+		$objects = $query -> getResult();
+
+		$secondArray = array('objects' => $objects);
 		$array = array_merge($firstArray, $secondArray);
 
 		return $this -> render('ProyectoPrincipalBundle:Page:Rank.html.twig', $array);
+	}
+	public function rankPostAction() {
+
+		$peticion = $this -> getRequest();
+		$doctrine = $this -> getDoctrine();
+		$post = $peticion -> request;
+		//INICIALIZAR VARIABLES
+		$order = $post -> get("order");
+		$em = $this->getDoctrine()->getManager();
+		for ($i=0; $i < count($order); $i++) {
+
+			$id = intval($order[$i]);
+    		$object = $em->getRepository('ProyectoPrincipalBundle:CmsPage') -> find($id);
+			$object->setRank($i);
+    		$em->flush();
+
+			 
+		}
+
+
+
+		$estado = true;
+		$respuesta = new response(json_encode(array('estado' => $estado)));
+		$respuesta -> headers -> set('content_type', 'aplication/json');
+		return $respuesta;
 	}
 
 	public function createAction() {

@@ -4,6 +4,7 @@
 <script type="text/javascript" src="{{asset('sf/prototype/js/builder.js')}}"></script>
 <script type="text/javascript" src="{{asset('sf/prototype/js/effects.js')}}"></script>
 <script type="text/javascript" src="{{asset('sf/prototype/js/dragdrop.js')}}"></script>
+<script type="text/javascript">var rankPost = '{{path('proyecto_principal_page_rank_post')}}';</script>
 {%endblock%}
 
 {%block contents%} <td id="contents"><!-- whole contents -->
@@ -13,104 +14,29 @@
 	}
 </style><h1>Determinar orden</h1>
 <ul id="order">
-	<li id="page_33" class="sortable" style="position: relative;">
-		ID: 33, <b>LOS MARTES: SUPER QUIZ! </b>
-	</li>
-	<li id="page_1" class="sortable" style="position: relative;">
-		ID: 1, <b>Noticias</b>
-	</li>
-	<li id="page_31" class="sortable" style="position: relative;">
-		ID: 31, <b>CARTELERA OCTUBRE</b>
-	</li>
-	<li id="page_5" class="sortable" style="position: relative;">
-		ID: 5, <b>EXPOSICIONES</b>
-	</li>
-	<li id="page_2" class="sortable" style="position: relative;">
-		ID: 2, <b>Programación</b>
-	</li>
-	<li id="page_32" class="sortable" style="position: relative;">
-		ID: 32, <b>Taller de Teatro para Aficionados</b>
-	</li>
-	<li id="page_34" class="sortable" style="position: relative;">
-		ID: 34, <b>CARTELERA NOVIEMBRE</b>
-	</li>
-	<li id="page_15" class="sortable" style="position: relative;">
+	{%for object in objects%}
+	<li id="page_{{object.pageId}}" class="sortable" style="position: relative;">
+		
+	
+	{%if object.spacer == 0%}
+	 ID: {{object.pageId}}, <b>{{object.title|title}} </b>
+	{%else%}
 		<p class="spacer">
 			spacer
 		</p>
+	{%endif%}
 	</li>
-	<li id="page_3" class="sortable" style="position: relative;">
-		ID: 3, <b>Biografía</b>
-	</li>
-	<li id="page_30" class="sortable" style="position: relative;">
-		ID: 30, <b>Curso regular para actores 2013/2014 </b>
-	</li>
-	<li id="page_6" class="sortable" style="position: relative;">
-		ID: 6, <b>SALA SAMOTRACIA</b>
-	</li>
-	<li id="page_26" class="sortable" style="position: relative;">
-		ID: 26, <b>Próximas actuaciones</b>
-	</li>
-	<li id="page_4" class="sortable" style="position: relative;">
-		ID: 4, <b>Eventos</b>
-	</li>
-	<li id="page_7" class="sortable" style="position: relative;">
-		ID: 7, <b>Monólogos</b>
-	</li>
-	<li id="page_8" class="sortable" style="position: relative;">
-		ID: 8, <b>Próximas Funciones</b>
-	</li>
-	<li id="page_9" class="sortable" style="position: relative;">
-		ID: 9, <b>GASTROBAR LA VICTORIA</b>
-	</li>
-	<li id="page_11" class="sortable" style="position: relative;">
-		ID: 11, <b>Música</b>
-	</li>
-	<li id="page_12" class="sortable" style="position: relative;">
-		ID: 12, <b>Biblioteca</b>
-	</li>
-	<li id="page_10" class="sortable" style="position: relative;">
-		ID: 10, <b>PRESÉNTANOS TU PROYECTO</b>
-	</li>
-	<li id="page_29" class="sortable" style="position: relative;">
-		ID: 29, <b>Información y reservas</b>
-	</li>
-	<li id="page_13" class="sortable" style="position: relative;">
-		ID: 13, <b>Lo que dicen de nosotros</b>
-	</li>
-	<li id="page_14" class="sortable" style="position: relative;">
-		ID: 14, <b>Reservas y Contacto</b>
-	</li>
-	<li id="page_16" class="sortable" style="position: relative;">
-		ID: 16, <b>Cantacuentos y cantajuegos</b>
-	</li>
-	<li id="page_19" class="sortable" style="position: relative;">
-		ID: 19, <b>musica test 2</b>
-	</li>
-	<li id="page_18" class="sortable" style="position: relative;">
-		ID: 18, <b>Musica 1 test</b>
-	</li>
-	<li id="page_23" class="sortable" style="position: relative;">
-		ID: 23, <b>Taller de Fotografía</b>
-	</li>
-	<li id="page_27" class="sortable" style="position: relative;">
-		ID: 27, <b>Próximas actuaciones</b>
-	</li>
-	<li id="page_28" class="sortable" style="position: relative;">
-		ID: 28, <b>Concierto de Música Brasileira</b>
-	</li>
-	<li id="page_25" class="sortable" style="position: relative;">
-		ID: 25, <b>Curso de Introducción a la técnica Meisner</b>
-	</li>
-	<li id="page_20" class="sortable" style="position: relative;">
-		ID: 20, <b>CARTELERA SEPTIEMBRE</b>
-	</li>
+	{%endfor%}
+	
 </ul><div id="feedback"></div>
 <script type="text/javascript">
 	//<![CDATA[
 	Sortable.create('order', {
 		onUpdate : function() {
-			new Ajax.Updater('feedback', '/admin.php/es/page/sort', {
+			console.log(Sortable.serialize('order'))
+			
+			
+			new Ajax.Updater('feedback', rankPost, {
 				asynchronous : true,
 				evalScripts : false,
 				parameters : Sortable.serialize('order')
@@ -121,7 +47,7 @@
 </script>
 <ul class="sf_admin_actions">
 	<li>
-		<input class="cms_action_submit" value="Listado" type="button" onclick="document.location.href='/admin.php/es/page/list';">
+		<input class="cms_action_submit" value="Listado" type="button" onclick="document.location.href='{{path('proyecto_principal_page_list')}}';">
 	</li>
 </ul>
 <hr>
