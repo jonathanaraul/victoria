@@ -1,0 +1,29 @@
+<tr class="sf_admin_row_{%if loop.index %2 ==0%}0{%else%}1{%endif%}">
+	<td><a href="/admin.php/es/page/edit/page_id/{{object.pageId}}">{{object.pageId}}</a></td>
+	<td class="center">{{object.parentPageId|title}}</td>
+	<td>{{object.name|title}}</td>
+	<td class="image_list"><a alt="Telon" rel="lightbox" href="{{asset('uploads/background/'~ object.backgroundId ~'')}}">mostrar</a></td>
+	<td class="image_list center"> {%if object.mediaId =='0'%}
+	-
+	{%else%} <img alt="ss2" src="{{asset('uploads/media/mini/'~ object.mediaId ~'')}}"> {%endif%} </td>
+	<td style="background-color:{{object.themeId}};height: 73px"></td>
+	<td> {%if object.published== 1%} <img src="{{asset('sf/sf_admin/images/tick.png')}}" alt="Tick"> {%else%} <img src="{{asset('sf/sf_admin/images/close.png')}}" alt="Close"> {%endif%} <span id="contact-formid_34" class="change_published page"><img alt="Zmiana" src="{{asset('images/refresh.png')}}"></span></td>
+	<td>
+	<ul class="sf_admin_td_actions">
+		<li>
+			<a href="/admin.php/es/page/edit/page_id/34">Editar</a>
+		</li>
+		<li>
+			|
+		</li>
+		<li>
+			<a onclick="if (confirm('?Estas seguro?')) { f = document.createElement('form'); document.body.appendChild(f); f.method = 'POST'; f.action = this.href; f.submit(); };return false;" href="/admin.php/es/page/delete/page_id/34">Eliminar</a>
+		</li>
+		<li>
+			|
+		</li>
+		<li>
+			<a href="/admin.php/es/page_translate/list/page_id/34">Traducción</a>
+		</li>
+	</ul></td>
+</tr>
