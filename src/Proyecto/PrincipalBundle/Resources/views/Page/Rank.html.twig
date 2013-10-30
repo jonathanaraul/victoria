@@ -33,9 +33,6 @@
 	//<![CDATA[
 	Sortable.create('order', {
 		onUpdate : function() {
-			console.log(Sortable.serialize('order'))
-			
-			
 			new Ajax.Updater('feedback', rankPost, {
 				asynchronous : true,
 				evalScripts : false,

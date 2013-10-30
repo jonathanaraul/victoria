@@ -24,6 +24,7 @@ class PageController extends Controller {
 	public function listAction(Request $request) {
 		$url = $this -> generateUrl('proyecto_principal_page_list');
 		$firstArray = UtilitiesAPI::getDefaultContent('PAGINAS', 'Mostrar Información', 'Información', $this);
+		
 		$objects = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> findAll();
 		$themes = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsTheme') -> findAll();
 		$filtros['theme'] = array();
@@ -179,14 +180,45 @@ class PageController extends Controller {
 		return $respuesta;
 	}
 
-	public function createAction() {
-		$firstArray = UtilitiesAPI::getDefaultContent('PAGINAS', 'Mostrar Información', 'Información', $this);
-		$secondArray = array();
+	public function deleteAction() {
 
-		$array = array_merge($firstArray, $secondArray);
+		$peticion = $this -> getRequest();
+		$doctrine = $this -> getDoctrine();
+		$post = $peticion -> request;
+		//INICIALIZAR VARIABLES
+		
+		$id = $post -> get("id");
+		$em = $this->getDoctrine()->getManager();
+		$object = $em->getRepository('ProyectoPrincipalBundle:CmsPage') -> find($id);
+		$em->remove($object);
+		$em->flush();
 
-		return $this -> render('ProyectoPrincipalBundle:Page:Create.html.twig', $array);
+		$estado = true;
+		$respuesta = new response(json_encode(array('estado' => $estado)));
+		$respuesta -> headers -> set('content_type', 'aplication/json');
+		return $respuesta;
 	}
+	public function statusAction() {
+
+		$peticion = $this -> getRequest();
+		$doctrine = $this -> getDoctrine();
+		$post = $peticion -> request;
+		//INICIALIZAR VARIABLES
+		
+		$id = $post -> get("id");
+		$tarea = intval($post -> get("tarea"));
+		
+		$em = $this->getDoctrine()->getManager();
+		$object = $em->getRepository('ProyectoPrincipalBundle:CmsPage') -> find($id);
+		$object->setPublished($tarea);
+		$em->flush();
+
+		$estado = true;
+		$respuesta = new response(json_encode(array('estado' => $estado)));
+		$respuesta -> headers -> set('content_type', 'aplication/json');
+		return $respuesta;
+	}
+	
 
 	public function editAction() {
 		$firstArray = UtilitiesAPI::getDefaultContent('TU INFORMACIÓN', 'Mostrar Información', 'Editar', $this);
@@ -199,15 +231,88 @@ class PageController extends Controller {
 		//return $this -> render('ProyectoPrincipalBundle:User:Edit.html.twig', $array);
 	}
 
-	public function newAction() {
-		$firstArray = UtilitiesAPI::getDefaultContent('TU INFORMACIÓN', 'Nuevo Información', 'Nuevo', $this);
-		$secondArray = array('accion' => 'registro');
-		$secondArray['url'] = $this -> generateUrl('proyecto_principal_user_new');
+	public function createAction(Request $request) {
 
+		$firstArray = UtilitiesAPI::getDefaultContent('PAGINAS', 'Nueva Pagina', 'Nuevo', $this);
+		$secondArray = array('accion' => 'nuevo');
+		$secondArray['url'] = $this -> generateUrl('proyecto_principal_page_create');
+		
+		$objects = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> findAll();
+		$themes = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsTheme') -> findAll();
+		$media = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsMedia') -> findAll();
+		$background = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsBackground') -> findAll();
+		
+		$filtros['theme'] = array();
+		$filtros['parentPage'] = array();
+		$filtros['published'] = array(1 => 'Si', 0 => 'No');
+
+		for ($i = 0; $i < count($themes); $i++) {
+			$filtros['theme'][$themes[$i] -> getThemeId()] = $themes[$i] -> getName();
+		}
+		for ($i = 0; $i < count($objects); $i++) {
+			$filtros['parentPage'][$objects[$i] -> getPageId()] = $objects[$i] -> getName();
+		}
+		for ($i = 0; $i < count($media); $i++) {
+			$filtros['media'][$media[$i] -> getMediaId()] = $media[$i] -> getName();
+		}
+		for ($i = 0; $i < count($background); $i++) {
+			$filtros['background'][$background[$i] -> getBackgroundId()] = $background[$i] -> getName();
+		}
+		
+		$data = new CmsPage();
+		$form = $this -> createFormBuilder($data) 
+		-> add('name',            'text', array('required' => true)) 
+		-> add('title',           'text', array('required' => true)) 
+		-> add('descriptionMeta', 'text', array('required' => true)) 
+		-> add('keywords',        'text', array('required' => true)) 
+		-> add('content',         'hidden',array('data' => '',)) 
+		-> add('upperText', 	  'text', array('required' => true)) 
+		-> add('lowerText',       'text', array('required' => true)) 
+		-> add('file',            'file', array('required' => false))
+		-> add('parentPageId', 'choice', array('choices' => $filtros['parentPage'], 'required' => false, )) 
+		-> add('themeId',      'choice', array('choices' => $filtros['theme'],      'required' => true, )) 
+		-> add('mediaId',      'choice', array('choices' => $filtros['media'],      'required' => true, )) 
+		-> add('backgroundId', 'choice', array('choices' => $filtros['background'],      'required' => true, )) 
+		-> add('published',  'checkbox', array('label'     => 'Publicado','required'  => false,))
+		-> getForm();
+
+		$em = $this -> getDoctrine() -> getEntityManager();
+
+		if ($this -> getRequest() -> isMethod('POST')) {
+		
+			$contenido = $request->request->all();
+			$contenido = $contenido['page']['content'];
+		
+			$form -> bind($this -> getRequest());
+			
+			$em = $this -> getDoctrine() -> getManager();
+			$data -> setRank(100);
+			$data -> setSuspended(0);
+			$data -> setSpacer(0);
+			$data -> setTemplate(0);
+			$data -> setDescription('');
+			$data -> setContent($contenido);
+			$data -> setIp($this->container->get('request')->getClientIp() );
+			$data -> setDateCreated(new \DateTime());
+			$data -> setUserId($firstArray['user']->getId());
+			$data -> setFriendlyName( $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> find($data->getParentPageId())->getName());
+			$em -> persist($data);
+			$em -> flush();
+			
+			$data -> setRank($data->getPageId());
+			$em -> flush();
+			
+			return $this -> redirect($this -> generateUrl('proyecto_principal_page_list'));
+			
+			//if ($form -> isValid()) {}
+		}
+		$secondArray['form'] = $form -> createView();
+		$secondArray['themes'] = $themes;
+		$secondArray['media'] = $media;		
+		
 		$array = array_merge($firstArray, $secondArray);
-		return UserController::procesar($array, $this);
-
-		//return $this -> render('ProyectoPrincipalBundle:User:Edit.html.twig', $array);
+		//return UserController::procesar($array, $this);
+		return $this -> render('ProyectoPrincipalBundle:Page:Create.html.twig', $array);
 	}
 
 	public static function procesar($array, $class) {

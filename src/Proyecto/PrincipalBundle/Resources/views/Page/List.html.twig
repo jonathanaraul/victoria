@@ -1,4 +1,11 @@
 {% extends "ProyectoPrincipalBundle:Helpers2:baseInterna.html.twig" %}
+{%block js%}
+<script type="text/javascript">
+var eliminarPagina = '{{path('proyecto_principal_page_delete')}}';
+var cambiarStatusPagina = '{{path('proyecto_principal_page_status')}}';
+
+</script>
+{%endblock%}
 
 {%block contents%} <td id="contents"><!-- whole contents -->
 <div id="sf_admin_container">
@@ -98,9 +105,10 @@
 				</tr>
 			</tfoot>
 		</table>
+		
 		<ul class="sf_admin_actions">
 			<li>
-				<input class="sf_admin_action_create" value="Anadir" type="button" onclick="document.location.href='/admin.php/es/page/create';">
+				<input class="sf_admin_action_create" value="Anadir" type="button" onclick="document.location.href='{{path('proyecto_principal_page_create')}}';">
 			</li>
 			<li>
 				<input class="sf_admin_action_rank" value="Determinar orden" type="button" onclick="document.location.href='{{path('proyecto_principal_page_rank')}}';">
@@ -108,5 +116,53 @@
 		</ul>
 	</div>
 	<div id="sf_admin_footer"></div>
-</div><!-- end whole contents --></td>
+</div><!-- end whole contents -->
+</td>
+<script type="text/javascript">
+jQuery('.eliminar').click(function() {  
+ 	var actual = jQuery(this);
+ 	var id = actual.parent().attr('clave'); 	
+ 	var data = 'id='+id;
+	actual.parent().parent().parent().remove();
+	
+	jQuery.ajax({
+		type : "POST",
+		url : eliminarPagina,
+		data : data,
+		dataType : "json",
+		success : function(data) {
+								 }
+	      });
+
+    return false;
+  });
+ jQuery('.change_published').click(function() {  
+ 	var actual = jQuery(this);
+ 	var id = actual.attr('clave'); 	
+ 	var data = 'id='+id;
+ 	
+ 	var estado = actual.prev().css('display');
+ 	
+ 	if(estado == 'none'){
+ 		data +='&tarea=0';
+ 		actual.prev().prev().css('display','none');
+ 		actual.prev().css('display','block');
+ 	}
+ 	else{
+ 		data +='&tarea=1';
+ 		actual.prev().prev().css('display','block');
+ 		actual.prev().css('display','none');
+ 	}
+	jQuery.ajax({
+		type : "POST",
+		url : cambiarStatusPagina,
+		data : data,
+		dataType : "json",
+		success : function(data) {
+								 }
+	      });
+
+    return false;
+  });
+</script>
 {%endblock%}

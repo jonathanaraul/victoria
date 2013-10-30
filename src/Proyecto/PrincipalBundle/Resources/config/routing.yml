@@ -23,7 +23,22 @@ proyecto_principal_page_rank_post:
 proyecto_principal_page_create:
     pattern:  /page/create
     defaults: { _controller: ProyectoPrincipalBundle:Page:create }
-
+proyecto_principal_page_edit:
+    pattern:  /page/edit/{id}
+    defaults: { _controller: ProyectoPrincipalBundle:Page:edit, id: '1' }
+proyecto_principal_page_translate:
+    pattern:  /page/translate/{id}
+    defaults: { _controller: ProyectoPrincipalBundle:Page:translate, id: '1' }
+proyecto_principal_page_delete:
+    pattern:  /page/delete
+    defaults: { _controller: ProyectoPrincipalBundle:Page:delete }
+    requirements:
+      _method: POST
+proyecto_principal_page_status:
+    pattern:  /page/status
+    defaults: { _controller: ProyectoPrincipalBundle:Page:status }
+    requirements:
+      _method: POST
 
 proyecto_principal_validacion:
     pattern:  /validacion
