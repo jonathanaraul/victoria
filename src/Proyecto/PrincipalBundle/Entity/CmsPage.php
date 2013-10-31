@@ -60,9 +60,9 @@ class CmsPage
     private $rank;
 
     /**
-     * @var integer
+     * @var boolean
      *
-     * @ORM\Column(name="published", type="integer", nullable=true)
+     * @ORM\Column(name="published", type="boolean", nullable=true)
      */
     private $published;
 
