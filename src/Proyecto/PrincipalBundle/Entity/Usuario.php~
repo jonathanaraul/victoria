@@ -24,20 +24,6 @@ class Usuario
     /**
      * @var string
      *
-     * @ORM\Column(name="nombre", type="string", length=60, nullable=false)
-     */
-    private $nombre;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="apellido", type="string", length=60, nullable=false)
-     */
-    private $apellido;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="username", type="string", length=25, nullable=false)
      */
     private $username;
@@ -62,34 +48,6 @@ class Usuario
      * @ORM\Column(name="email", type="string", length=60, nullable=false)
      */
     private $email;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="jerarquia", type="boolean", nullable=false)
-     */
-    private $jerarquia;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="is_active", type="boolean", nullable=false)
-     */
-    private $isActive;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="path", type="string", length=255, nullable=true)
-     */
-    private $path;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="descripcion", type="text", nullable=false)
-     */
-    private $descripcion;
 
 
 }

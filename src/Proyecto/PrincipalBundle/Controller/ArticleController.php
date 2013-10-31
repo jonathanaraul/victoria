@@ -14,6 +14,7 @@ use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Util\StringUtils;
 use Proyecto\PrincipalBundle\Entity\Usuario;
+use Proyecto\PrincipalBundle\Entity\CmsArticle;
 use Proyecto\PrincipalBundle\Entity\CmsPage;
 use Proyecto\PrincipalBundle\Entity\CmsPageTranslate;
 use Proyecto\PrincipalBundle\Entity\CmsBackground;
@@ -219,14 +220,16 @@ class ArticleController extends Controller {
 		return $respuesta;
 	}
 
-	public function createAction(Request $request) {
+	public function newCreateAction(Request $request) {
 
-		$firstArray = UtilitiesAPI::getDefaultContent('PAGINAS', 'Nueva Pagina', 'Nuevo', $this);
+		$firstArray = UtilitiesAPI::getDefaultContent('ARTICULOS', 'Nueva Pagina', 'Nuevo', $this);
 		$secondArray = array('accion' => 'nuevo');
-		$secondArray['url'] = $this -> generateUrl('proyecto_principal_page_create');
-
+		$secondArray['url'] = $this -> generateUrl('proyecto_principal_article_new_create');
+		$secondArray['type'] = 0;
+		$secondArray['titulo'] = 'Nueva Noticia';
+		
 		$array = array_merge($firstArray, $secondArray);
-		return PageController::procesarNormal($array, $request, $this);
+		return ArticleController::procesarNormal($array, $request, $this);
 	}
 
 	public function editAction($id, Request $request) {
@@ -243,7 +246,7 @@ class ArticleController extends Controller {
 	public static function procesarNormal($array, Request $request, $class) {
 
 		if ($array['accion'] == 'nuevo')
-			$data = new CmsPage();
+			$data = new CmsArticle();
 		else
 			$data = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> find($array['id']);
 
@@ -251,15 +254,28 @@ class ArticleController extends Controller {
 		$themes = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsTheme') -> findAll();
 		$media = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsMedia') -> findAll();
 		$background = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsBackground') -> findAll();
+		$category = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsCategory') -> findByType($array['type']);
 
 		$filtros = array();
 		$filtros['published'] = array(1 => 'Si', 0 => 'No');
-		$filtros['theme'] = PageController::getFilterTheme($themes);
-		$filtros['parentPage'] = PageController::getFilterParentPage($objects);
-		$filtros['media'] = PageController::getFilterMedia($media);
-		$filtros['background'] = PageController::getFilterBackground($background);
-
-		$form = $class -> createFormBuilder($data) -> add('name', 'text', array('required' => true)) -> add('title', 'text', array('required' => true)) -> add('descriptionMeta', 'text', array('required' => true)) -> add('keywords', 'text', array('required' => true)) -> add('content', 'hidden', array('data' => '', )) -> add('upperText', 'text', array('required' => true)) -> add('lowerText', 'text', array('required' => true)) -> add('file', 'file', array('required' => false)) -> add('parentPageId', 'choice', array('choices' => $filtros['parentPage'], 'required' => false, )) -> add('themeId', 'choice', array('choices' => $filtros['theme'], 'required' => true, )) -> add('mediaId', 'choice', array('choices' => $filtros['media'], 'required' => true, )) -> add('backgroundId', 'choice', array('choices' => $filtros['background'], 'required' => true, )) -> add('published', 'checkbox', array('label' => 'Publicado', 'required' => false, )) -> getForm();
+		$filtros['theme'] = UtilitiesAPI::getFilterTheme($themes);
+		$filtros['parentPage'] = UtilitiesAPI::getFilterParentPage($objects);
+		$filtros['media'] = UtilitiesAPI::getFilterMedia($media);
+		$filtros['background'] = UtilitiesAPI::getFilterBackground($background);
+		$filtros['category'] = UtilitiesAPI::getFilterCategory($category);
+		
+		$form = $class -> createFormBuilder($data) 
+		-> add('name', 'text', array('required' => true)) 
+		-> add('category', 'choice', array('choices' => $filtros['category'], 'required' => true, )) 
+		-> add('description', 'text', array('required' => true)) 
+		-> add('keywords', 'text', array('required' => true)) 
+		//-> add('content', 'hidden', array('data' => '', )) 
+		-> add('file', 'file', array('required' => false)) 
+		-> add('theme', 'choice', array('choices' => $filtros['theme'], 'required' => true, )) 
+		-> add('media', 'choice', array('choices' => $filtros['media'], 'required' => true, )) 
+		-> add('background', 'choice', array('choices' => $filtros['background'], 'required' => true, )) 
+		-> add('published', 'checkbox', array('label' => 'Publicado', 'required' => false, )) 
+		-> getForm();
 
 		if ($class -> getRequest() -> isMethod('POST')) {
 
@@ -270,33 +286,28 @@ class ArticleController extends Controller {
 			$em = $class -> getDoctrine() -> getManager();
 
 			if ($array['accion'] == 'nuevo') {
-				$data -> setRank(100);
+				
 				$data -> setSuspended(0);
-				$data -> setSpacer(0);
-				$data -> setTemplate(0);
-				$data -> setDescription('');
 				$data -> setDateCreated(new \DateTime());
+				$data -> setType($array['type']);
+				
 			} else {
 				$data -> setDateUpdated(new \DateTime());
 			}
 			$data -> setContent($contenido);
 			$data -> setIp($class -> container -> get('request') -> getClientIp());
-			$data -> setUserId($array['user'] -> getId());
-			$data -> setFriendlyName($class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> find($data -> getParentPageId()) -> getName());
+			$data -> setUser($array['user'] -> getId());
+			$data -> setFriendlyName($data -> getName());
 
 			if ($array['accion'] == 'nuevo')
 				$em -> persist($data);
 
 			$em -> flush();
 
-			if ($array['accion'] == 'nuevo') {
-				$data -> setRank($data -> getPageId());
-				$em -> flush();
-			}
-
 			return $class -> redirect($class -> generateUrl('proyecto_principal_page_list'));
 			//if ($form -> isValid()) {}
 		}
+
 		$array['form'] = $form -> createView();
 		$array['themes'] = $themes;
 		$array['media'] = $media;
@@ -304,7 +315,7 @@ class ArticleController extends Controller {
 		$array['contenido'] = $array['form'] -> getVars();
 		$array['contenido'] = $array['contenido']['value'] -> getContent();
 
-		return $class -> render('ProyectoPrincipalBundle:Page:New-Edit.html.twig', $array);
+		return $class -> render('ProyectoPrincipalBundle:Article:New-Edit.html.twig', $array);
 	}
 
 	public function translateAction($id, Request $request) {
@@ -404,36 +415,6 @@ class ArticleController extends Controller {
 		return $class -> render('ProyectoPrincipalBundle:Page:Translate.html.twig', $array);
 	}
 
-	public static function getFilterTheme($data) {
-		$array = array();
-		for ($i = 0; $i < count($data); $i++) {
-			$array[$data[$i] -> getThemeId()] = $data[$i] -> getName();
-		}
-		return $array;
-	}
 
-	public static function getFilterParentPage($data) {
-		$array = array();
-		for ($i = 0; $i < count($data); $i++) {
-			$array[$data[$i] -> getPageId()] = $data[$i] -> getName();
-		}
-		return $array;
-	}
-
-	public static function getFilterMedia($data) {
-		$array = array();
-		for ($i = 0; $i < count($data); $i++) {
-			$array[$data[$i] -> getMediaId()] = $data[$i] -> getName();
-		}
-		return $array;
-	}
-
-	public static function getFilterBackground($data) {
-		$array = array();
-		for ($i = 0; $i < count($data); $i++) {
-			$array[$data[$i] -> getBackgroundId()] = $data[$i] -> getName();
-		}
-		return $array;
-	}
 
 }

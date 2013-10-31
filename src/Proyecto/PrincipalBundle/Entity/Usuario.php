@@ -155,7 +155,7 @@ class Usuario implements UserInterface, \Serializable
      */
     public function getRoles()
     {
-    	 return array('ROLE_ADMIN');
+             return array('ROLE_ADMIN');
     }
 
     /**

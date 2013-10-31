@@ -40,6 +40,14 @@ proyecto_principal_page_status:
     requirements:
       _method: POST
 
+
+proyecto_principal_article_new_create:
+    pattern:  /article/new/create
+    defaults: { _controller: ProyectoPrincipalBundle:Article:newCreate }
+proyecto_principal_article_new_list:
+    pattern:  /article/new/list
+    defaults: { _controller: ProyectoPrincipalBundle:Article:ListNew }
+
 proyecto_principal_validacion:
     pattern:  /validacion
 login:

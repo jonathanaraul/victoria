@@ -11,6 +11,45 @@ use Proyecto\PrincipalBundle\Entity\Sistema;
 use Proyecto\PrincipalBundle\Entity\Proyecto;
 
 class UtilitiesAPI extends Controller {
+	
+	public static function getFilterTheme($data) {
+		$array = array();
+		for ($i = 0; $i < count($data); $i++) {
+			$array[$data[$i] -> getThemeId()] = $data[$i] -> getName();
+		}
+		return $array;
+	}
+
+	public static function getFilterParentPage($data) {
+		$array = array();
+		for ($i = 0; $i < count($data); $i++) {
+			$array[$data[$i] -> getPageId()] = $data[$i] -> getName();
+		}
+		return $array;
+	}
+
+	public static function getFilterMedia($data) {
+		$array = array();
+		for ($i = 0; $i < count($data); $i++) {
+			$array[$data[$i] -> getMediaId()] = $data[$i] -> getName();
+		}
+		return $array;
+	}
+
+	public static function getFilterBackground($data) {
+		$array = array();
+		for ($i = 0; $i < count($data); $i++) {
+			$array[$data[$i] -> getBackgroundId()] = $data[$i] -> getName();
+		}
+		return $array;
+	}
+	public static function getFilterCategory($data) {
+		$array = array();
+		for ($i = 0; $i < count($data); $i++) {
+			$array[$data[$i] -> getId()] = $data[$i] -> getName();
+		}
+		return $array;
+	}
 		public static function removeData($id,$class){
 			
 		$object = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:Data') -> find($id);
