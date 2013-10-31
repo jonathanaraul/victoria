@@ -27,14 +27,12 @@
 	<table cellspacing="0" cellpadding="0">
 		<tbody>
 			<tr>
-				<td class="menu_button{%if menu.seccion =='TU INFORMACIÓN'%}_click{%endif%}"><a class="menu" href="{%if menu.seccion =='TU INFORMACIÓN'%}#{%else%}{{path('proyecto_principal_homepage')}}{%endif%}">TU INFORMACIÓN</a></td>
+				<td class="menu_button{%if menu.seccion =='TU INFORMACIÓN'%}_click{%endif%}"><a class="menu" href="{%if menu.seccion =='TU INFORMACIÓN'%}#{%else%}{{path('proyecto_principal_homepage')}}{%endif%}">USUARIOS</a></td>
 				<td><img src="{{asset('images/cms_yeslogo_big_dots.jpg')}}" alt="Cms_yeslogo_big_dots"></td>
 				<td class="menu_button{%if menu.seccion =='PAGINAS'%}_click{%endif%}"><a class="menu" href="{%if menu.seccion =='PAGINAS'%}#{%else%}{{path('proyecto_principal_page_list')}}{%endif%}">PÁGINAS</a></td>
 				<td><img src="{{asset('images/cms_yeslogo_big_dots.jpg')}}" alt="Cms_yeslogo_big_dots"></td>
-				<td class="menu_button"><a class="menu" href="http://www.lavictoriacultural.com/admin.php/es/media/list">IMAGENES</a></td><td><img src="{{asset('images/cms_yeslogo_big_dots.jpg')}}" alt="Cms_yeslogo_big_dots"></td>
-				<td class="menu_button"><a class="menu" href="http://www.lavictoriacultural.com/admin.php/es/background/list">FONDOS</a></td><td><img src="{{asset('images/cms_yeslogo_big_dots.jpg')}}" alt="Cms_yeslogo_big_dots"></td>
-				<td class="menu_button"><a class="menu" href="http://www.lavictoriacultural.com/admin.php/es/news/list">NOTICIAS</a></td><td><img src="{{asset('images/cms_yeslogo_big_dots.jpg')}}" alt="Cms_yeslogo_big_dots"></td>
-				<td class="menu_button"><a class="menu" href="http://www.lavictoriacultural.com/admin.php/es/program/list">PROGRAMS</a></td><td><img src="{{asset('images/cms_yeslogo_big_dots.jpg')}}" alt="Cms_yeslogo_big_dots"></td>
+				<td class="menu_button"><a class="menu" href="#">NOTICIAS EVENTOS TALLERES</a></td><td><img src="{{asset('images/cms_yeslogo_big_dots.jpg')}}" alt="Cms_yeslogo_big_dots"></td>
+				<td class="menu_button"><a class="menu" href="http://www.lavictoriacultural.com/admin.php/es/media/list">MEDIA</a></td><td><img src="{{asset('images/cms_yeslogo_big_dots.jpg')}}" alt="Cms_yeslogo_big_dots"></td>
 				<td class="menu_button"><a class="menu" href="http://www.lavictoriacultural.com/admin.php/es/link/list">LINKS</a></td><td><img src="{{asset('images/cms_yeslogo_big_dots.jpg')}}" alt="Cms_yeslogo_big_dots"></td>
 				<td class="menu_button"><a class="menu" href="http://www.lavictoriacultural.com/admin.php/es/setting/list">OPCIONES</a></td>
 			</tr>
@@ -46,8 +44,9 @@
 		<tbody>
 			<tr>
 				{%if menu.seccion =='TU INFORMACIÓN'%}
-				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_homepage')}}">Mostrar Información</a></td>
-				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_user_edit')}}">Editar Información</a></td>
+				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_homepage')}}">Su Cuenta</a></td>
+				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_user_edit')}}">Editar Perfil</a></td>
+				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_user_new')}}">Crear Usuario</a></td>
 				{%elseif menu.seccion == 'PAGINAS'%}
 				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_page_list')}}">Mostrar páginas</a></td>
 				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_page_rank')}}">Determinar el Orden</a></td>
