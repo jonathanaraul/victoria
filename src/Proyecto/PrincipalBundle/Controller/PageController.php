@@ -24,7 +24,7 @@ class PageController extends Controller {
 
 	public function listAction(Request $request) {
 		$url = $this -> generateUrl('proyecto_principal_page_list');
-		$firstArray = UtilitiesAPI::getDefaultContent('PAGINAS', 'Mostrar Información', 'Información', $this);
+		$firstArray = UtilitiesAPI::getDefaultContent('PAGINAS', 'Mostrar Información', $this);
 
 		$objects = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> findAll();
 		$themes = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsTheme') -> findAll();
@@ -144,7 +144,7 @@ class PageController extends Controller {
 	}
 
 	public function rankAction() {
-		$firstArray = UtilitiesAPI::getDefaultContent('PAGINAS', 'Mostrar Información', 'Información', $this);
+		$firstArray = UtilitiesAPI::getDefaultContent('PAGINAS', 'Mostrar Información', $this);
 
 		$em = $this -> getDoctrine() -> getManager();
 		$query = $em -> createQuery('SELECT p FROM ProyectoPrincipalBundle:CmsPage p ORDER BY p.rank ASC');
@@ -221,7 +221,7 @@ class PageController extends Controller {
 
 	public function createAction(Request $request) {
 
-		$firstArray = UtilitiesAPI::getDefaultContent('PAGINAS', 'Nueva Pagina', 'Nuevo', $this);
+		$firstArray = UtilitiesAPI::getDefaultContent('PAGINAS', 'Nueva Pagina', $this);
 		$secondArray = array('accion' => 'nuevo');
 		$secondArray['url'] = $this -> generateUrl('proyecto_principal_page_create');
 
@@ -231,7 +231,7 @@ class PageController extends Controller {
 
 	public function editAction($id, Request $request) {
 
-		$firstArray = UtilitiesAPI::getDefaultContent('PAGINAS', 'Editar Información', 'Editar', $this);
+		$firstArray = UtilitiesAPI::getDefaultContent('PAGINAS', 'Editar Información', $this);
 		$secondArray = array('accion' => 'edicion');
 		$secondArray['url'] = $this -> generateUrl('proyecto_principal_page_edit', array('id' => $id));
 		$secondArray['id'] = $id;
@@ -254,10 +254,10 @@ class PageController extends Controller {
 
 		$filtros = array();
 		$filtros['published'] = array(1 => 'Si', 0 => 'No');
-		$filtros['theme'] = PageController::getFilterTheme($themes);
-		$filtros['parentPage'] = PageController::getFilterParentPage($objects);
-		$filtros['media'] = PageController::getFilterMedia($media);
-		$filtros['background'] = PageController::getFilterBackground($background);
+		$filtros['theme'] = UtilitiesAPI::getFilterTheme($themes);
+		$filtros['parentPage'] = UtilitiesAPI::getFilterParentPage($objects);
+		$filtros['media'] = UtilitiesAPI::getFilterMedia($media);
+		$filtros['background'] = UtilitiesAPI::getFilterBackground($background);
 
 		$form = $class -> createFormBuilder($data) -> add('name', 'text', array('required' => true)) -> add('title', 'text', array('required' => true)) -> add('descriptionMeta', 'text', array('required' => true)) -> add('keywords', 'text', array('required' => true)) -> add('content', 'hidden', array('data' => '', )) -> add('upperText', 'text', array('required' => true)) -> add('lowerText', 'text', array('required' => true)) -> add('file', 'file', array('required' => false)) -> add('parentPageId', 'choice', array('choices' => $filtros['parentPage'], 'required' => false, )) -> add('themeId', 'choice', array('choices' => $filtros['theme'], 'required' => true, )) -> add('mediaId', 'choice', array('choices' => $filtros['media'], 'required' => true, )) -> add('backgroundId', 'choice', array('choices' => $filtros['background'], 'required' => true, )) -> add('published', 'checkbox', array('label' => 'Publicado', 'required' => false, )) -> getForm();
 
@@ -309,7 +309,7 @@ class PageController extends Controller {
 
 	public function translateAction($id, Request $request) {
 
-		$firstArray = UtilitiesAPI::getDefaultContent('PAGINAS', 'Editar Información', 'Editar', $this);
+		$firstArray = UtilitiesAPI::getDefaultContent('PAGINAS', 'Editar Información', $this);
 
 		$data = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPageTranslate') -> findOneByPageId($id);
 		$page = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> find($id);
@@ -402,38 +402,6 @@ class PageController extends Controller {
 		$array['contenido'] = $array['contenido']['value'] -> getContent();
 
 		return $class -> render('ProyectoPrincipalBundle:Page:Translate.html.twig', $array);
-	}
-
-	public static function getFilterTheme($data) {
-		$array = array();
-		for ($i = 0; $i < count($data); $i++) {
-			$array[$data[$i] -> getThemeId()] = $data[$i] -> getName();
-		}
-		return $array;
-	}
-
-	public static function getFilterParentPage($data) {
-		$array = array();
-		for ($i = 0; $i < count($data); $i++) {
-			$array[$data[$i] -> getPageId()] = $data[$i] -> getName();
-		}
-		return $array;
-	}
-
-	public static function getFilterMedia($data) {
-		$array = array();
-		for ($i = 0; $i < count($data); $i++) {
-			$array[$data[$i] -> getMediaId()] = $data[$i] -> getName();
-		}
-		return $array;
-	}
-
-	public static function getFilterBackground($data) {
-		$array = array();
-		for ($i = 0; $i < count($data); $i++) {
-			$array[$data[$i] -> getBackgroundId()] = $data[$i] -> getName();
-		}
-		return $array;
 	}
 
 }

@@ -44,9 +44,37 @@ proyecto_principal_page_status:
 proyecto_principal_article_new_create:
     pattern:  /article/new/create
     defaults: { _controller: ProyectoPrincipalBundle:Article:newCreate }
+proyecto_principal_article_new_edit:
+    pattern:  /article/new/edit/{id}
+    defaults: { _controller: ProyectoPrincipalBundle:Article:newEdit, id: '1' }
 proyecto_principal_article_new_list:
     pattern:  /article/new/list
-    defaults: { _controller: ProyectoPrincipalBundle:Article:ListNew }
+    defaults: { _controller: ProyectoPrincipalBundle:Article:newList }
+proyecto_principal_article_new_translate:
+    pattern:  /article/new/translate/{id}
+    defaults: { _controller: ProyectoPrincipalBundle:Article:newTranslate, id: '1' }
+proyecto_principal_article_delete:
+    pattern:  /article/delete
+    defaults: { _controller: ProyectoPrincipalBundle:Article:delete }
+    requirements:
+      _method: POST
+proyecto_principal_article_status:
+    pattern:  /article/status
+    defaults: { _controller: ProyectoPrincipalBundle:Article:status }
+    requirements:
+      _method: POST
+proyecto_principal_article_list:
+    pattern:  /article/{type}/list
+    defaults: { _controller: ProyectoPrincipalBundle:Article:list }
+proyecto_principal_article_create:
+    pattern:  /article/{type}/create
+    defaults: { _controller: ProyectoPrincipalBundle:Article:create }
+proyecto_principal_article_edit:
+    pattern:  /article/{type}/edit/{id}
+    defaults: { _controller: ProyectoPrincipalBundle:Article:edit, id: '1' }
+proyecto_principal_article_translate:
+    pattern:  /article/{type}/translate/{id}
+    defaults: { _controller: ProyectoPrincipalBundle:Article:translate, id: '1' }
 
 proyecto_principal_validacion:
     pattern:  /validacion

@@ -18,7 +18,7 @@ use Proyecto\PrincipalBundle\Entity\Usuario;
 class UserController extends Controller {
 	
 	public function listAction() {
-		$firstArray = UtilitiesAPI::getDefaultContent('TU INFORMACIÓN', 'Mostrar Información', 'Información', $this);
+		$firstArray = UtilitiesAPI::getDefaultContent('TU INFORMACIÓN', 'Mostrar Información', $this);
 		$secondArray = array();
 		                      
 		$array = array_merge($firstArray, $secondArray);
@@ -27,7 +27,7 @@ class UserController extends Controller {
 	}
 	
 	public function editAction() {
-		$firstArray = UtilitiesAPI::getDefaultContent('TU INFORMACIÓN', 'Mostrar Información', 'Editar', $this);
+		$firstArray = UtilitiesAPI::getDefaultContent('TU INFORMACIÓN', 'Mostrar Información', $this);
 		$secondArray = array('accion'=>'edicion');
 		$secondArray['url'] = $this -> generateUrl('proyecto_principal_user_edit');
 		                      
@@ -36,7 +36,7 @@ class UserController extends Controller {
 	}
 	
 	public function newAction() {
-		$firstArray = UtilitiesAPI::getDefaultContent('TU INFORMACIÓN', 'Nuevo Información', 'Nuevo', $this);
+		$firstArray = UtilitiesAPI::getDefaultContent('TU INFORMACIÓN', 'Nuevo Información', $this);
 		$secondArray = array('accion'=>'registro');
 		$secondArray['url'] = $this -> generateUrl('proyecto_principal_user_new');
 		                      

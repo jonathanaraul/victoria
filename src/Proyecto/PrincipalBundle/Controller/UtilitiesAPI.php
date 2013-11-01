@@ -11,7 +11,38 @@ use Proyecto\PrincipalBundle\Entity\Sistema;
 use Proyecto\PrincipalBundle\Entity\Proyecto;
 
 class UtilitiesAPI extends Controller {
-	
+		
+	public static function getConfig($type,$class){
+
+		$array =  array( );
+		
+		if($type == 'news'){
+			$array['idtype'] = 0;
+			$array['list'] = 'Mostrar Noticias';
+			$array['create'] = 'Añadir Noticia';
+			$array['edit'] = 'Editar Noticia';
+			$array['translate'] = 'Traducir Noticia';
+			$array['type'] = 'news';
+		}
+		else if($type == 'events'){
+			$array['idtype'] = 1;
+			$array['list'] = 'Mostrar Eventos';
+			$array['create'] = 'Añadir Evento';
+			$array['edit'] = 'Editar Evento';
+			$array['translate'] = 'Traducir Evento';
+			$array['type'] = 'events';
+		}
+		else if($type == 'programs'){
+			$array['idtype'] = 2;
+			$array['list'] = 'Mostrar Talleres';
+			$array['create'] = 'Añadir Taller';
+			$array['edit'] = 'Editar Taller';
+			$array['translate'] = 'Traducir Taller';
+			$array['type'] = 'programs';
+		}
+		
+		return $array;
+	}
 	public static function getFilterTheme($data) {
 		$array = array();
 		for ($i = 0; $i < count($data); $i++) {
@@ -60,10 +91,10 @@ class UtilitiesAPI extends Controller {
 
 	
 	
-	public static function getDefaultContent($seccion,$subseccion,$titulo,$class){
+	public static function getDefaultContent($seccion,$subseccion,$class){
 
 		//$parameters = UtilitiesAPI::getParameters($class);
-		$menu = UtilitiesAPI::getMenu($seccion,$subseccion,$titulo,$class);
+		$menu = UtilitiesAPI::getMenu($seccion,$subseccion,$class);
 		$user = UtilitiesAPI::getActiveUser($class);
 		//$notifications = UtilitiesAPI::getNotifications($user);
 		
@@ -107,8 +138,8 @@ class UtilitiesAPI extends Controller {
 		return $parameters;
 	}
 
-	public static function getMenu($seccion,$subseccion,$titulo, $this) {
-		$menu = array('seccion' => $seccion,'subseccion' => $subseccion, 'titulo' => $titulo );
+	public static function getMenu($seccion,$subseccion, $this) {
+		$menu = array('seccion' => $seccion,'subseccion' => $subseccion );
 		// = $this->getDoctrine()->getRepository('ProyectoPrincipalBundle:Sistema')->find(1);
 
 		/*

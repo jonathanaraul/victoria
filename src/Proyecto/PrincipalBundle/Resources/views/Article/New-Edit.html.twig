@@ -5,7 +5,7 @@
 {%block contents%} 
 <td id="contents"><!-- whole contents -->
 <div id="sf_admin_container">
-	<h1>{{titulo}}</h1>
+	<h1>{{menu.subseccion}}</h1>
 	<div id="sf_admin_header"></div>
 	<div id="sf_admin_content">
 		<form action="{{ url }}" method="post" {{ form_enctype(form) }}>
@@ -90,7 +90,7 @@
 			</fieldset>
 			<ul class="sf_admin_actions">
 				<li>
-					<input class="sf_admin_action_list" value="Listado" type="button" onclick="document.location.href='{{path('proyecto_principal_page_list')}}';">
+					<input class="sf_admin_action_list" value="Listado" type="button" onclick="document.location.href='{{path('proyecto_principal_article_list',   {'type': 'news'})}}';">
 				</li>
 				<li>
 					<input type="submit" name="save" value="{%if accion == 'nuevo'%}Guardar{%else%}Actualizar{%endif%}">

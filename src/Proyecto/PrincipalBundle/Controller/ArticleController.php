@@ -15,6 +15,8 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Util\StringUtils;
 use Proyecto\PrincipalBundle\Entity\Usuario;
 use Proyecto\PrincipalBundle\Entity\CmsArticle;
+use Proyecto\PrincipalBundle\Entity\CmsArticleTranslate;
+use Proyecto\PrincipalBundle\Entity\CmsCategory;
 use Proyecto\PrincipalBundle\Entity\CmsPage;
 use Proyecto\PrincipalBundle\Entity\CmsPageTranslate;
 use Proyecto\PrincipalBundle\Entity\CmsBackground;
@@ -23,26 +25,26 @@ use Proyecto\PrincipalBundle\Entity\CmsMedia;
 
 class ArticleController extends Controller {
 
-	public function listAction(Request $request) {
-		$url = $this -> generateUrl('proyecto_principal_page_list');
-		$firstArray = UtilitiesAPI::getDefaultContent('PAGINAS', 'Mostrar Información', 'Información', $this);
+	public function listAction($type,Request $request) {
+		
 
-		$objects = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> findAll();
-		$themes = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsTheme') -> findAll();
-		$filtros['theme'] = array();
-		$filtros['parentPage'] = array();
+		$config = UtilitiesAPI::getConfig($type,$this);
+		$url = $this -> generateUrl('proyecto_principal_article_list',array('type' => $type));
+		$firstArray = UtilitiesAPI::getDefaultContent('ARTICULOS', $config['list'], $this);
+		$firstArray['type'] = $config['type'];
+		
+		$category = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsCategory') -> findByType($config['idtype']);
+
 		$filtros['published'] = array(1 => 'Si', 0 => 'No');
-
-		for ($i = 0; $i < count($themes); $i++) {
-			$filtros['theme'][$themes[$i] -> getThemeId()] = $themes[$i] -> getName();
-		}
-		for ($i = 0; $i < count($objects); $i++) {
-			$filtros['parentPage'][$objects[$i] -> getPageId()] = $objects[$i] -> getName();
-		}
+		$filtros['category'] = UtilitiesAPI::getFilterCategory($category);
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////
-		$data = new CmsPage();
-		$form = $this -> createFormBuilder($data) -> add('name', 'text', array('required' => false)) -> add('parentPageId', 'choice', array('choices' => $filtros['parentPage'], 'required' => false, )) -> add('themeId', 'choice', array('choices' => $filtros['theme'], 'required' => false, )) -> add('published', 'choice', array('choices' => $filtros['published'], 'required' => false, )) -> getForm();
+		$data = new CmsArticle();
+		$form = $this -> createFormBuilder($data) 
+		-> add('name', 'text', array('required' => false))
+		-> add('published', 'choice', array('choices' => $filtros['published'], 'required' => false, )) 
+		-> add('category', 'choice', array('choices' => $filtros['category'], 'required' => false, )) 
+		-> getForm();
 
 		$em = $this -> getDoctrine() -> getEntityManager();
 
@@ -51,27 +53,16 @@ class ArticleController extends Controller {
 
 			if ($form -> isValid()) {
 
-				$dql = "SELECT n FROM ProyectoPrincipalBundle:CmsPage n ";
+				$dql = "SELECT n FROM ProyectoPrincipalBundle:CmsArticle n ";
 				$where = false;
 
-				if (!(trim($data -> getParentPageId()) == false)) {
+				if (!(trim($data -> getCategory()) == false)) {
 
 					if ($where == false) {
 						$dql .= 'WHERE ';
 						$where = true;
 					}
-					$dql .= ' n.parentPageId = :parentPageId ';
-
-				}
-				if (!(trim($data -> getThemeId()) == false)) {
-
-					if ($where == false) {
-						$dql .= 'WHERE ';
-						$where = true;
-					} else {
-						$dql .= 'AND ';
-					}
-					$dql .= ' n.themeId = :themeId ';
+					$dql .= ' n.category = :category ';
 
 				}
 				if (!(trim($data -> getName()) == false)) {
@@ -97,13 +88,19 @@ class ArticleController extends Controller {
 					$dql .= ' n.published = :published ';
 				}
 
+				if ($where == false) {
+						$dql .= 'WHERE ';
+						$where = true;
+				} else {
+						$dql .= 'AND ';
+				}
+				$dql .= ' n.type = :type ';
+
+
 				$query = $em -> createQuery($dql);
 
-				if (!(trim($data -> getParentPageId()) == false)) {
-					$query -> setParameter('parentPageId', $data -> getParentPageId());
-				}
-				if (!(trim($data -> getThemeId()) == false)) {
-					$query -> setParameter('themeId', $data -> getThemeId());
+				if (!(trim($data -> getCategory()) == false)) {
+					$query -> setParameter('category', $data -> getCategory());
 				}
 				if (!(trim($data -> getName()) == false)) {
 					$query -> setParameter('name', '%' . $data -> getName() . '%');
@@ -111,13 +108,15 @@ class ArticleController extends Controller {
 				if (!(trim($data -> getPublished()) == false)) {
 					$query -> setParameter('published', $data -> getPublished());
 				}
+				$query -> setParameter('type', $config['idtype']);
 
 			}
 		}
 		//////////////////////////////////////////////////////////////////////////////////////////////////
 		else {
-			$dql = "SELECT n FROM ProyectoPrincipalBundle:CmsPage n";
+			$dql = "SELECT n FROM ProyectoPrincipalBundle:CmsArticle n WHERE n.type = :type";
 			$query = $em -> createQuery($dql);
+			$query -> setParameter('type', $config['idtype']);
 		}
 
 		$paginator = $this -> get('knp_paginator');
@@ -127,13 +126,12 @@ class ArticleController extends Controller {
 		$auxiliar = array();
 
 		for ($i = 0; $i < count($objects); $i++) {
-			$auxiliar[$i]['pageId'] = $objects[$i] -> getPageId();
-			$auxiliar[$i]['parentPageId'] = ($objects[$i] -> getParentPageId() == 0) ? '-' : '' . $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> find($objects[$i] -> getParentPageId()) -> getName();
+			$auxiliar[$i]['id'] = $objects[$i] -> getId();
+			$auxiliar[$i]['category'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsCategory') -> find($objects[$i] -> getCategory()) -> getName();
 			$auxiliar[$i]['name'] = $objects[$i] -> getName();
 			$auxiliar[$i]['published'] = $objects[$i] -> getPublished();
-			$auxiliar[$i]['backgroundId'] = ($objects[$i] -> getBackgroundId() == 0) ? '-' : '' . $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsBackground') -> find($objects[$i] -> getBackgroundId()) -> getFileName();
-			$auxiliar[$i]['themeId'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsTheme') -> find($objects[$i] -> getThemeId()) -> getColor();
-			$auxiliar[$i]['mediaId'] = ($objects[$i] -> getMediaId() == 0) ? '0' : '' . $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsMedia') -> find($objects[$i] -> getMediaId()) -> getFileNameMini();
+			$auxiliar[$i]['dateCreated'] = $objects[$i] -> getDateCreated()->format('d/m/Y');
+			$auxiliar[$i]['media'] = ($objects[$i] -> getMedia() == 0) ? '0' : '' . $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsMedia') -> find($objects[$i] -> getMedia()) -> getFileNameMini();
 
 		}
 		$objects = $auxiliar;
@@ -141,120 +139,49 @@ class ArticleController extends Controller {
 		$secondArray = array('pagination' => $pagination, 'filtros' => $filtros, 'objects' => $objects, 'form' => $form -> createView(), 'url' => $url);
 
 		$array = array_merge($firstArray, $secondArray);
-		return $this -> render('ProyectoPrincipalBundle:Page:List.html.twig', $array);
+		return $this -> render('ProyectoPrincipalBundle:Article:List.html.twig', $array);
 	}
+	
+	public function editAction($type,$id, Request $request) {
 
-	public function rankAction() {
-		$firstArray = UtilitiesAPI::getDefaultContent('PAGINAS', 'Mostrar Información', 'Información', $this);
+		$config = UtilitiesAPI::getConfig($type,$this);
+		$firstArray = array();
+		$firstArray = UtilitiesAPI::getDefaultContent('ARTICULOS',$config['edit'], $this);
 
-		$em = $this -> getDoctrine() -> getManager();
-		$query = $em -> createQuery('SELECT p FROM ProyectoPrincipalBundle:CmsPage p ORDER BY p.rank ASC');
-		$objects = $query -> getResult();
-
-		$secondArray = array('objects' => $objects);
-		$array = array_merge($firstArray, $secondArray);
-
-		return $this -> render('ProyectoPrincipalBundle:Page:Rank.html.twig', $array);
-	}
-
-	public function rankPostAction() {
-
-		$peticion = $this -> getRequest();
-		$doctrine = $this -> getDoctrine();
-		$post = $peticion -> request;
-		//INICIALIZAR VARIABLES
-		$order = $post -> get("order");
-		$em = $this -> getDoctrine() -> getManager();
-		for ($i = 0; $i < count($order); $i++) {
-
-			$id = intval($order[$i]);
-			$object = $em -> getRepository('ProyectoPrincipalBundle:CmsPage') -> find($id);
-			$object -> setRank($i);
-			$em -> flush();
-
-		}
-
-		$estado = true;
-		$respuesta = new response(json_encode(array('estado' => $estado)));
-		$respuesta -> headers -> set('content_type', 'aplication/json');
-		return $respuesta;
-	}
-
-	public function deleteAction() {
-
-		$peticion = $this -> getRequest();
-		$doctrine = $this -> getDoctrine();
-		$post = $peticion -> request;
-		//INICIALIZAR VARIABLES
-
-		$id = $post -> get("id");
-		$em = $this -> getDoctrine() -> getManager();
-		$object = $em -> getRepository('ProyectoPrincipalBundle:CmsPage') -> find($id);
-		$em -> remove($object);
-		$em -> flush();
-
-		$estado = true;
-		$respuesta = new response(json_encode(array('estado' => $estado)));
-		$respuesta -> headers -> set('content_type', 'aplication/json');
-		return $respuesta;
-	}
-
-	public function statusAction() {
-
-		$peticion = $this -> getRequest();
-		$doctrine = $this -> getDoctrine();
-		$post = $peticion -> request;
-		//INICIALIZAR VARIABLES
-
-		$id = $post -> get("id");
-		$tarea = intval($post -> get("tarea"));
-
-		$em = $this -> getDoctrine() -> getManager();
-		$object = $em -> getRepository('ProyectoPrincipalBundle:CmsPage') -> find($id);
-		$object -> setPublished($tarea);
-		$em -> flush();
-
-		$estado = true;
-		$respuesta = new response(json_encode(array('estado' => $estado)));
-		$respuesta -> headers -> set('content_type', 'aplication/json');
-		return $respuesta;
-	}
-
-	public function newCreateAction(Request $request) {
-
-		$firstArray = UtilitiesAPI::getDefaultContent('ARTICULOS', 'Nueva Pagina', 'Nuevo', $this);
-		$secondArray = array('accion' => 'nuevo');
-		$secondArray['url'] = $this -> generateUrl('proyecto_principal_article_new_create');
-		$secondArray['type'] = 0;
-		$secondArray['titulo'] = 'Nueva Noticia';
-		
-		$array = array_merge($firstArray, $secondArray);
-		return ArticleController::procesarNormal($array, $request, $this);
-	}
-
-	public function editAction($id, Request $request) {
-
-		$firstArray = UtilitiesAPI::getDefaultContent('PAGINAS', 'Editar Información', 'Editar', $this);
-		$secondArray = array('accion' => 'edicion');
-		$secondArray['url'] = $this -> generateUrl('proyecto_principal_page_edit', array('id' => $id));
+		$secondArray = array('accion' => 'editar');
+		$secondArray['url'] = $this -> generateUrl('proyecto_principal_article_edit', array('type'=>$type,'id' => $id));
 		$secondArray['id'] = $id;
-
 		$array = array_merge($firstArray, $secondArray);
-		return PageController::procesarNormal($array, $request, $this);
-	}
+		$array = array_merge($array, $config);
 
-	public static function procesarNormal($array, Request $request, $class) {
+		return ArticleController::normal($array, $request, $this);
+	}
+	public function createAction($type,Request $request) {
+		
+		$config = UtilitiesAPI::getConfig($type,$this);
+		$firstArray = array();
+		$firstArray = UtilitiesAPI::getDefaultContent('ARTICULOS',$config['create'], $this);
+
+		$secondArray = array('accion' => 'nuevo');	
+		$secondArray['url'] = $this -> generateUrl('proyecto_principal_article_create',array('type' => $type));
+		$array = array_merge($firstArray, $secondArray);
+		$array = array_merge($array, $config);
+
+		return ArticleController::normal($array, $request, $this);
+	}
+	public static function normal($array, Request $request, $class) {
+
 
 		if ($array['accion'] == 'nuevo')
 			$data = new CmsArticle();
 		else
-			$data = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> find($array['id']);
+			$data = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsArticle') -> find($array['id']);
 
 		$objects = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> findAll();
 		$themes = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsTheme') -> findAll();
 		$media = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsMedia') -> findAll();
 		$background = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsBackground') -> findAll();
-		$category = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsCategory') -> findByType($array['type']);
+		$category = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsCategory') -> findByType($array['idtype']);
 
 		$filtros = array();
 		$filtros['published'] = array(1 => 'Si', 0 => 'No');
@@ -269,7 +196,7 @@ class ArticleController extends Controller {
 		-> add('category', 'choice', array('choices' => $filtros['category'], 'required' => true, )) 
 		-> add('description', 'text', array('required' => true)) 
 		-> add('keywords', 'text', array('required' => true)) 
-		//-> add('content', 'hidden', array('data' => '', )) 
+		-> add('content', 'hidden', array('data' => '', )) 
 		-> add('file', 'file', array('required' => false)) 
 		-> add('theme', 'choice', array('choices' => $filtros['theme'], 'required' => true, )) 
 		-> add('media', 'choice', array('choices' => $filtros['media'], 'required' => true, )) 
@@ -289,7 +216,7 @@ class ArticleController extends Controller {
 				
 				$data -> setSuspended(0);
 				$data -> setDateCreated(new \DateTime());
-				$data -> setType($array['type']);
+				$data -> setType($array['idtype']);
 				
 			} else {
 				$data -> setDateUpdated(new \DateTime());
@@ -304,7 +231,7 @@ class ArticleController extends Controller {
 
 			$em -> flush();
 
-			return $class -> redirect($class -> generateUrl('proyecto_principal_page_list'));
+			return $class -> redirect($class -> generateUrl('proyecto_principal_article_list',array('type' => $array['type'])));
 			//if ($form -> isValid()) {}
 		}
 
@@ -318,36 +245,46 @@ class ArticleController extends Controller {
 		return $class -> render('ProyectoPrincipalBundle:Article:New-Edit.html.twig', $array);
 	}
 
-	public function translateAction($id, Request $request) {
 
-		$firstArray = UtilitiesAPI::getDefaultContent('PAGINAS', 'Editar Información', 'Editar', $this);
+	public function translateAction($type, $id, Request $request) {
+		
+		$config = UtilitiesAPI::getConfig($type,$this);
+		$firstArray = array();
+		$firstArray = UtilitiesAPI::getDefaultContent('ARTICULOS',$config['translate'], $this);
 
-		$data = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPageTranslate') -> findOneByPageId($id);
-		$page = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> find($id);
+		$secondArray = array('accion' => 'editar');
+		$secondArray['url'] = $this -> generateUrl('proyecto_principal_article_translate', array('type'=>$type,'id' => $id));
+		$secondArray['id'] = $id;
 
-		if (!$page) {
-			throw $this -> createNotFoundException('La pagina que intenta traducir no existe ');
+
+		$data = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsArticleTranslate') -> findOneByArticle($id);
+		$object = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsArticle') -> find($id);
+
+		if (!$object) {
+			throw $this -> createNotFoundException('El articulo que intenta traducir no existe ');
 		}
-		$secondArray = array();
-		$secondArray['page'] = $page;
+		//$secondArray = array();
+		$secondArray['object'] = $object;
 
 
 		if (!$data) {
 			$secondArray['accion'] = 'nuevo';
-			$secondArray['data'] = new CmsPageTranslate();
+			$secondArray['data'] = new CmsArticleTranslate();
 		} else {
-			$secondArray['accion'] = 'edicion';
+			$secondArray['accion'] = 'editar';
 			$secondArray['data'] = $data;
 		}
 
-		$secondArray['url'] = $this -> generateUrl('proyecto_principal_page_translate', array('id' => $id));
 		//$secondArray['id'] = $id;
 
 		$array = array_merge($firstArray, $secondArray);
-		return PageController::procesarTraduccion($array, $request, $this);
+		$array = array_merge($array, $config);
+		
+		return ArticleController::traduccion($array, $request, $this);
 	}
 
-	public static function procesarTraduccion($array, Request $request, $class) {
+	public static function traduccion($array, Request $request, $class) {
+		
 
 		$data = $array['data'];
 
@@ -357,19 +294,17 @@ class ArticleController extends Controller {
 		$background = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsBackground') -> findAll();
 
 		$filtros = array();
-		$filtros['langId'] = array(1 => 'english');
-
+		$filtros['lang'] = array(1 => 'english');
+		$filtros['published'] = array(1 => 'Si', 0 => 'No');
 
 		$form = $class -> createFormBuilder($data) 
 		-> add('name', 'text', array('required' => true)) 
-		-> add('title', 'text', array('required' => true)) 
-		-> add('descriptionMeta', 'text', array('required' => true)) 
+		-> add('description', 'text', array('required' => true)) 
 		-> add('keywords', 'text', array('required' => true)) 
 		-> add('content', 'hidden', array('data' => '', )) 
-		-> add('upperText', 'text', array('required' => true)) 
-		-> add('lowerText', 'text', array('required' => true)) 
 		-> add('file', 'file', array('required' => false)) 
-		-> add('langId', 'choice', array('choices' => $filtros['langId'], 'required' => true, )) 
+		-> add('lang', 'choice', array('choices' => $filtros['lang'], 'required' => true, )) 
+		-> add('published', 'checkbox', array('label' => 'Publicado', 'required' => false, )) 
 		-> getForm();
 
 		if ($class -> getRequest() -> isMethod('POST')) {
@@ -381,40 +316,85 @@ class ArticleController extends Controller {
 			$em = $class -> getDoctrine() -> getManager();
 
 			if ($array['accion'] == 'nuevo') {
-				$data -> setPageId($array['page']->getPageId());
-				$data -> setMediaId($array['page']->getMediaId());
-				$data -> setBackgroundId($array['page']->getBackgroundId());
-				$data -> setThemeId($array['page']->getThemeId());
-				$data -> setPublished($array['page']->getPublished());
-				$data -> setSuspended($array['page']->getSuspended());
-				$data -> setRank($array['page']->getRank());
-				$data -> setSuspended(0);
-				$data -> setSpacer(0);
-				$data -> setDescription('');
+				$data -> setArticle($array['object']->getId());
 				$data -> setDateCreated(new \DateTime());
 			} else {
 				$data -> setDateUpdated(new \DateTime());
 			}
 			$data -> setContent($contenido);
 			$data -> setIp($class -> container -> get('request') -> getClientIp());
-			$data -> setUserId($array['user'] -> getId());
-			$data -> setFriendlyName($data -> getTitle());//Modificar
+			$data -> setUser($array['user'] -> getId());
+			$data -> setFriendlyName($data -> getName());//Modificar
 
 			if ($array['accion'] == 'nuevo')
 				$em -> persist($data);
 
 			$em -> flush();
-			return $class -> redirect($class -> generateUrl('proyecto_principal_page_list'));
+			return $class -> redirect($class -> generateUrl('proyecto_principal_article_list',array('type' => $array['type'])));
 			//if ($form -> isValid()) {}
 		}
+
 		$array['form'] = $form -> createView();
 
 		$array['contenido'] = $array['form'] -> getVars();
 		$array['contenido'] = $array['contenido']['value'] -> getContent();
 
-		return $class -> render('ProyectoPrincipalBundle:Page:Translate.html.twig', $array);
+		return $class -> render('ProyectoPrincipalBundle:Article:Translate.html.twig', $array);
+	}
+	public function deleteAction() {
+
+		$peticion = $this -> getRequest();
+		$doctrine = $this -> getDoctrine();
+		$post = $peticion -> request;
+		//INICIALIZAR VARIABLES
+
+		$id = $post -> get("id");
+		$em = $this -> getDoctrine() -> getManager();
+		
+		//Remover traduccion
+		$object = $em -> getRepository('ProyectoPrincipalBundle:CmsArticleTranslate') -> findOneByArticle($id);
+		if ($object) {
+		$em -> remove($object);
+		$em -> flush();
+		}
+		//Remover original
+		$object = $em -> getRepository('ProyectoPrincipalBundle:CmsArticle') -> find($id);
+		$em -> remove($object);
+		$em -> flush();
+		
+
+		$estado = true;
+		$respuesta = new response(json_encode(array('estado' => $estado)));
+		$respuesta -> headers -> set('content_type', 'aplication/json');
+		return $respuesta;
 	}
 
+	public function statusAction() {
 
+		$peticion = $this -> getRequest();
+		$doctrine = $this -> getDoctrine();
+		$post = $peticion -> request;
+		//INICIALIZAR VARIABLES
+
+		$id = $post -> get("id");
+		$tarea = intval($post -> get("tarea"));
+
+		$em = $this -> getDoctrine() -> getManager();
+		$object = $em -> getRepository('ProyectoPrincipalBundle:CmsArticle') -> find($id);
+		$object -> setPublished($tarea);
+		$em -> flush();
+		
+		//Codigo a borrar a futuro e incluir el elemento pusblished en las traducciones
+		$object = $em -> getRepository('ProyectoPrincipalBundle:CmsArticleTranslate') -> findOneByArticle($id);
+		if ($object) {
+		$object -> setPublished($tarea);
+		$em -> flush();
+		}
+
+		$estado = true;
+		$respuesta = new response(json_encode(array('estado' => $estado)));
+		$respuesta -> headers -> set('content_type', 'aplication/json');
+		return $respuesta;
+	}
 
 }

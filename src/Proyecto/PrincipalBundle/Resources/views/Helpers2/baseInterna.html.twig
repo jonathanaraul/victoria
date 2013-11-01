@@ -29,9 +29,9 @@
 			<tr>
 				<td class="menu_button{%if menu.seccion =='TU INFORMACIÓN'%}_click{%endif%}"><a class="menu" href="{%if menu.seccion =='TU INFORMACIÓN'%}#{%else%}{{path('proyecto_principal_homepage')}}{%endif%}">USUARIOS</a></td>
 				<td><img src="{{asset('images/cms_yeslogo_big_dots.jpg')}}" alt="Cms_yeslogo_big_dots"></td>
-				<td class="menu_button{%if menu.seccion =='PAGINAS'%}_click{%endif%}"><a class="menu" href="{%if menu.seccion =='PAGINAS'%}#{%else%}{{path('proyecto_principal_page_list')}}{%endif%}">PÁGINAS</a></td>
+				<td class="menu_button{%if menu.seccion =='PAGINAS'%}_click{%endif%}"><a class="menu" href="{%if menu.seccion =='PAGINAS'%}#{%else%}{{path('proyecto_principal_page_list')}}{%endif%}">P&Aacute;GINAS</a></td>
 				<td><img src="{{asset('images/cms_yeslogo_big_dots.jpg')}}" alt="Cms_yeslogo_big_dots"></td>
-				<td class="menu_button{%if menu.seccion =='ARTICULOS'%}_click{%endif%}"><a class="menu" href="{%if menu.seccion =='ARTICULOS'%}#{%else%}{{path('proyecto_principal_article_new_create')}}{%endif%}">NOTICIAS EVENTOS TALLERES</a></td>
+				<td class="menu_button{%if menu.seccion =='ARTICULOS'%}_click{%endif%}"><a class="menu" href="{%if menu.seccion =='ARTICULOS'%}#{%else%}{{path('proyecto_principal_article_list', {'type': 'news'})}}{%endif%}">ART&iacute;CULOS</a></td>
 				<td><img src="{{asset('images/cms_yeslogo_big_dots.jpg')}}" alt="Cms_yeslogo_big_dots"></td>
 	
 				<td class="menu_button"><a class="menu" href="http://www.lavictoriacultural.com/admin.php/es/media/list">MEDIA</a></td><td><img src="{{asset('images/cms_yeslogo_big_dots.jpg')}}" alt="Cms_yeslogo_big_dots"></td>
@@ -54,12 +54,12 @@
 				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_page_rank')}}">Determinar el Orden</a></td>
 				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_page_create')}}">Ańadir página</a></td>
 				{%elseif menu.seccion == 'ARTICULOS'%}
-				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_article_new_create')}}">Mostrar Noticias</a></td>
-				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_article_new_create')}}">Añadir Noticia</a></td>
-				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_article_new_create')}}">Mostrar Eventos</a></td>
-				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_page_rank')}}">Añadir Evento</a></td>
-				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_article_new_create')}}">Mostrar Talleres</a></td>
-				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_page_create')}}">Añadir Taller</a></td>
+				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_article_list',   {'type': 'news'})}}">Mostrar Noticias</a></td>
+				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_article_create', {'type': 'news'})}}">Añadir Noticia</a></td>
+				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_article_list',   {'type': 'events'})}}">Mostrar Eventos</a></td>
+				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_article_create', {'type': 'events'})}}">Añadir Evento</a></td>
+				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_article_list',   {'type': 'programs'})}}">Mostrar Talleres</a></td>
+				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_article_create', {'type': 'programs'})}}">Añadir Taller</a></td>
 				{%endif%}
 				<td id="rest">&nbsp;</td>
 			</tr>
