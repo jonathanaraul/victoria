@@ -6,3 +6,6 @@ proyecto_principal:
     resource: "@ProyectoPrincipalBundle/Resources/config/routing.yml"
     prefix:   /admin
 
+_imagine:
+    resource: .
+    type:     imagine

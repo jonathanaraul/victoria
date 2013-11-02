@@ -22,9 +22,9 @@ class CmsLink
     private $linkId;
 
     /**
-     * @var integer
+     * @var boolean
      *
-     * @ORM\Column(name="published", type="integer", nullable=true)
+     * @ORM\Column(name="published", type="boolean", nullable=true)
      */
     private $published;
 
@@ -43,9 +43,9 @@ class CmsLink
     private $rank;
 
     /**
-     * @var integer
+     * @var boolean
      *
-     * @ORM\Column(name="new_window", type="integer", nullable=true)
+     * @ORM\Column(name="new_window", type="boolean", nullable=true)
      */
     private $newWindow;
 
@@ -106,7 +106,7 @@ class CmsLink
     /**
      * Set published
      *
-     * @param integer $published
+     * @param boolean $published
      * @return CmsLink
      */
     public function setPublished($published)
@@ -119,7 +119,7 @@ class CmsLink
     /**
      * Get published
      *
-     * @return integer 
+     * @return boolean 
      */
     public function getPublished()
     {
@@ -175,7 +175,7 @@ class CmsLink
     /**
      * Set newWindow
      *
-     * @param integer $newWindow
+     * @param boolean $newWindow
      * @return CmsLink
      */
     public function setNewWindow($newWindow)
@@ -188,7 +188,7 @@ class CmsLink
     /**
      * Get newWindow
      *
-     * @return integer 
+     * @return boolean 
      */
     public function getNewWindow()
     {

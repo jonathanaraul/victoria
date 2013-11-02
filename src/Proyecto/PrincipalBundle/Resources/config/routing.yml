@@ -40,29 +40,6 @@ proyecto_principal_page_status:
     requirements:
       _method: POST
 
-
-proyecto_principal_article_new_create:
-    pattern:  /article/new/create
-    defaults: { _controller: ProyectoPrincipalBundle:Article:newCreate }
-proyecto_principal_article_new_edit:
-    pattern:  /article/new/edit/{id}
-    defaults: { _controller: ProyectoPrincipalBundle:Article:newEdit, id: '1' }
-proyecto_principal_article_new_list:
-    pattern:  /article/new/list
-    defaults: { _controller: ProyectoPrincipalBundle:Article:newList }
-proyecto_principal_article_new_translate:
-    pattern:  /article/new/translate/{id}
-    defaults: { _controller: ProyectoPrincipalBundle:Article:newTranslate, id: '1' }
-proyecto_principal_article_delete:
-    pattern:  /article/delete
-    defaults: { _controller: ProyectoPrincipalBundle:Article:delete }
-    requirements:
-      _method: POST
-proyecto_principal_article_status:
-    pattern:  /article/status
-    defaults: { _controller: ProyectoPrincipalBundle:Article:status }
-    requirements:
-      _method: POST
 proyecto_principal_article_list:
     pattern:  /article/{type}/list
     defaults: { _controller: ProyectoPrincipalBundle:Article:list }
@@ -75,6 +52,78 @@ proyecto_principal_article_edit:
 proyecto_principal_article_translate:
     pattern:  /article/{type}/translate/{id}
     defaults: { _controller: ProyectoPrincipalBundle:Article:translate, id: '1' }
+proyecto_principal_article_delete:
+    pattern:  /article/delete
+    defaults: { _controller: ProyectoPrincipalBundle:Article:delete }
+    requirements:
+      _method: POST
+proyecto_principal_article_status:
+    pattern:  /article/status
+    defaults: { _controller: ProyectoPrincipalBundle:Article:status }
+    requirements:
+      _method: POST
+
+proyecto_principal_resource_create:
+    pattern:  /resource/{type}/create
+    defaults: { _controller: ProyectoPrincipalBundle:Resource:create }
+proyecto_principal_resource_edit:
+    pattern:  /resource/{type}/edit/{id}
+    defaults: { _controller: ProyectoPrincipalBundle:Resource:edit, id: '1' }
+proyecto_principal_resource_translate:
+    pattern:  /resource/{type}/translate/{id}
+    defaults: { _controller: ProyectoPrincipalBundle:Resource:translate, id: '1' }
+proyecto_principal_resource_list:
+    pattern:  /resource/{type}/list
+    defaults: { _controller: ProyectoPrincipalBundle:Resource:list }
+proyecto_principal_resource_delete:
+    pattern:  /resource/delete
+    defaults: { _controller: ProyectoPrincipalBundle:Resource:delete }
+    requirements:
+      _method: POST
+proyecto_principal_resource_status:
+    pattern:  /resource/status
+    defaults: { _controller: ProyectoPrincipalBundle:Resource:status }
+    requirements:
+      _method: POST
+
+proyecto_principal_link_list:
+    pattern:  /link/list
+    defaults: { _controller: ProyectoPrincipalBundle:Link:list }
+proyecto_principal_link_create:
+    pattern:  /link/create
+    defaults: { _controller: ProyectoPrincipalBundle:Link:create }
+proyecto_principal_link_edit:
+    pattern:  /link/edit/{id}
+    defaults: { _controller: ProyectoPrincipalBundle:Link:edit, id: '1' }
+proyecto_principal_link_translate:
+    pattern:  /link/translate/{id}
+    defaults: { _controller: ProyectoPrincipalBundle:Link:translate, id: '1' }
+proyecto_principal_link_delete:
+    pattern:  /link/delete
+    defaults: { _controller: ProyectoPrincipalBundle:Link:delete }
+    requirements:
+      _method: POST
+proyecto_principal_link_status:
+    pattern:  /link/status
+    defaults: { _controller: ProyectoPrincipalBundle:Link:status }
+    requirements:
+      _method: POST
+proyecto_principal_link_target:
+    pattern:  /link/target
+    defaults: { _controller: ProyectoPrincipalBundle:Link:target }
+    requirements:
+      _method: POST
+
+proyecto_principal_setting_list:
+    pattern:  /setting/list
+    defaults: { _controller: ProyectoPrincipalBundle:Setting:list }
+proyecto_principal_setting_edit:
+    pattern:  /setting/edit/{id}
+    defaults: { _controller: ProyectoPrincipalBundle:Setting:edit, id: '1' }
+proyecto_principal_setting_translate:
+    pattern:  /setting/translate/{id}
+    defaults: { _controller: ProyectoPrincipalBundle:Setting:translate, id: '1' }
+
 
 proyecto_principal_validacion:
     pattern:  /validacion

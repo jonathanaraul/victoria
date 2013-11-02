@@ -1,5 +1,0 @@
-Proyecto\PrincipalBundle\Entity\Data:
-    properties:
-        file:
-            - File:
-                maxSize: 6000000

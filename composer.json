@@ -25,7 +25,8 @@
 		"ob/highcharts-bundle": "1.*",
 		"knplabs/knp-paginator-bundle": "dev-master",
 		"knplabs/knp-menu": "dev-master",
-		"knplabs/knp-menu-bundle":"dev-master"
+		"knplabs/knp-menu-bundle":"dev-master",
+		"avalanche123/imagine-bundle": "v2.1"
     },
     "scripts": {
         "post-install-cmd": [

@@ -504,7 +504,7 @@ class CmsArticle
     }
 
     /**
-     * Set published
+     * Set type
      *
      * @param integer $type
      * @return CmsArticle

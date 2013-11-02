@@ -33,10 +33,12 @@
 				<td><img src="{{asset('images/cms_yeslogo_big_dots.jpg')}}" alt="Cms_yeslogo_big_dots"></td>
 				<td class="menu_button{%if menu.seccion =='ARTICULOS'%}_click{%endif%}"><a class="menu" href="{%if menu.seccion =='ARTICULOS'%}#{%else%}{{path('proyecto_principal_article_list', {'type': 'news'})}}{%endif%}">ART&iacute;CULOS</a></td>
 				<td><img src="{{asset('images/cms_yeslogo_big_dots.jpg')}}" alt="Cms_yeslogo_big_dots"></td>
-	
-				<td class="menu_button"><a class="menu" href="http://www.lavictoriacultural.com/admin.php/es/media/list">MEDIA</a></td><td><img src="{{asset('images/cms_yeslogo_big_dots.jpg')}}" alt="Cms_yeslogo_big_dots"></td>
-				<td class="menu_button"><a class="menu" href="http://www.lavictoriacultural.com/admin.php/es/link/list">LINKS</a></td><td><img src="{{asset('images/cms_yeslogo_big_dots.jpg')}}" alt="Cms_yeslogo_big_dots"></td>
-				<td class="menu_button"><a class="menu" href="http://www.lavictoriacultural.com/admin.php/es/setting/list">OPCIONES</a></td>
+				<td class="menu_button{%if menu.seccion =='RECURSOS'%}_click{%endif%}"><a class="menu" href="{%if menu.seccion =='RECURSOS'%}#{%else%}{{path('proyecto_principal_resource_list', {'type': 'images'})}}{%endif%}">RECURSOS</a></td>
+				<td><img src="{{asset('images/cms_yeslogo_big_dots.jpg')}}" alt="Cms_yeslogo_big_dots"></td>
+				<td class="menu_button{%if menu.seccion =='LINKS'%}_click{%endif%}"><a class="menu" href="{%if menu.seccion =='LINKS'%}#{%else%}{{path('proyecto_principal_link_list')}}{%endif%}">LINKS</a></td>
+				<td><img src="{{asset('images/cms_yeslogo_big_dots.jpg')}}" alt="Cms_yeslogo_big_dots"></td>
+				<td class="menu_button{%if menu.seccion =='SETTING'%}_click{%endif%}"><a class="menu" href="{%if menu.seccion =='SETTING'%}#{%else%}{{path('proyecto_principal_setting_list')}}{%endif%}">OPCIONES</a></td>
+				<td><img src="{{asset('images/cms_yeslogo_big_dots.jpg')}}" alt="Cms_yeslogo_big_dots"></td>
 			</tr>
 		</tbody>
 	</table>
@@ -60,6 +62,14 @@
 				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_article_create', {'type': 'events'})}}">Añadir Evento</a></td>
 				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_article_list',   {'type': 'programs'})}}">Mostrar Talleres</a></td>
 				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_article_create', {'type': 'programs'})}}">Añadir Taller</a></td>
+				{%elseif menu.seccion == 'RECURSOS'%}
+				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_resource_list',   {'type': 'images'})}}">Mostrar Im&aacute;genes</a></td>
+				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_resource_create', {'type': 'images'})}}">Añadir Imagen</a></td>
+				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_resource_list',   {'type': 'backgrounds'})}}">Mostrar Fondos</a></td>
+				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_resource_create', {'type': 'backgrounds'})}}">Añadir Fondo</a></td>
+				{%elseif menu.seccion == 'LINKS'%}
+				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_link_list')}}">Mostrar Links</a></td>
+				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_link_create')}}">Añadir Link</a></td>
 				{%endif%}
 				<td id="rest">&nbsp;</td>
 			</tr>

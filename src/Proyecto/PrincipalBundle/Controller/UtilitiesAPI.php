@@ -22,7 +22,7 @@ class UtilitiesAPI extends Controller {
 			$array['create'] = 'Añadir Noticia';
 			$array['edit'] = 'Editar Noticia';
 			$array['translate'] = 'Traducir Noticia';
-			$array['type'] = 'news';
+			$array['type'] = $type;
 		}
 		else if($type == 'events'){
 			$array['idtype'] = 1;
@@ -30,7 +30,7 @@ class UtilitiesAPI extends Controller {
 			$array['create'] = 'Añadir Evento';
 			$array['edit'] = 'Editar Evento';
 			$array['translate'] = 'Traducir Evento';
-			$array['type'] = 'events';
+			$array['type'] = $type;
 		}
 		else if($type == 'programs'){
 			$array['idtype'] = 2;
@@ -38,9 +38,38 @@ class UtilitiesAPI extends Controller {
 			$array['create'] = 'Añadir Taller';
 			$array['edit'] = 'Editar Taller';
 			$array['translate'] = 'Traducir Taller';
-			$array['type'] = 'programs';
+			$array['type'] = $type;
 		}
-		
+		else if($type == 'images'){
+			$array['idtype'] = 3;
+			$array['list'] = 'Mostrar Imágenes';
+			$array['create'] = 'Añadir Imagen';
+			$array['edit'] = 'Editar Imagen';
+			$array['translate'] = 'Traducir Imagen';
+			$array['type'] = $type;
+		}
+		else if($type == 'backgrounds'){
+			$array['idtype'] = 4;
+			$array['list'] = 'Mostrar Fondos';
+			$array['create'] = 'Añadir Fondo';
+			$array['edit'] = 'Editar Fondo';
+			$array['translate'] = 'Traducir Fondo';
+			$array['type'] = $type;
+		}
+		else if($type == 'links'){
+			$array['list'] = 'Mostrar Links';
+			$array['create'] = 'Añadir Link';
+			$array['edit'] = 'Editar Link';
+			$array['translate'] = 'Traducir Link';
+			$array['type'] = $type;
+		}
+		else if($type == 'setting'){
+			$array['list'] = 'Mostrar Opciones';
+			$array['create'] = 'Añadir Opcion';
+			$array['edit'] = 'Editar Opcion';
+			$array['translate'] = 'Traducir Opcion';
+			$array['type'] = $type;
+		}
 		return $array;
 	}
 	public static function getFilterTheme($data) {
