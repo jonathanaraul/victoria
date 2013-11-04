@@ -120,7 +120,7 @@ class ArticleController extends Controller {
 		}
 
 		$paginator = $this -> get('knp_paginator');
-		$pagination = $paginator -> paginate($query, $this -> getRequest() -> query -> get('page', 1), 15);
+		$pagination = $paginator -> paginate($query, $this -> getRequest() -> query -> get('page', 1), 10);
 
 		$objects = $pagination -> getItems();
 		$auxiliar = array();
@@ -131,7 +131,7 @@ class ArticleController extends Controller {
 			$auxiliar[$i]['name'] = $objects[$i] -> getName();
 			$auxiliar[$i]['published'] = $objects[$i] -> getPublished();
 			$auxiliar[$i]['dateCreated'] = $objects[$i] -> getDateCreated()->format('d/m/Y');
-			$auxiliar[$i]['media'] = ($objects[$i] -> getMedia() == 0) ? '0' : '' . $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsMedia') -> find($objects[$i] -> getMedia()) -> getFileNameMini();
+			$auxiliar[$i]['media'] = ($objects[$i] -> getMedia() == 0) ? '0' : '' . $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($objects[$i] -> getMedia()) -> getWebPath();
 
 		}
 		$objects = $auxiliar;
@@ -151,6 +151,7 @@ class ArticleController extends Controller {
 		$secondArray = array('accion' => 'editar');
 		$secondArray['url'] = $this -> generateUrl('proyecto_principal_article_edit', array('type'=>$type,'id' => $id));
 		$secondArray['id'] = $id;
+		$secondArray['lang'] = 0;
 		$array = array_merge($firstArray, $secondArray);
 		$array = array_merge($array, $config);
 
@@ -163,6 +164,7 @@ class ArticleController extends Controller {
 		$firstArray = UtilitiesAPI::getDefaultContent('ARTICULOS',$config['create'], $this);
 
 		$secondArray = array('accion' => 'nuevo');	
+		$secondArray['lang'] = 0;
 		$secondArray['url'] = $this -> generateUrl('proyecto_principal_article_create',array('type' => $type));
 		$array = array_merge($firstArray, $secondArray);
 		$array = array_merge($array, $config);
@@ -179,17 +181,17 @@ class ArticleController extends Controller {
 
 		$objects = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> findAll();
 		$themes = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsTheme') -> findAll();
-		$media = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsMedia') -> findAll();
-		$background = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsBackground') -> findAll();
 		$category = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsCategory') -> findByType($array['idtype']);
+		$media = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> findByType(3);
+		$background = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> findByType(4);
 
 		$filtros = array();
 		$filtros['published'] = array(1 => 'Si', 0 => 'No');
-		$filtros['theme'] = UtilitiesAPI::getFilterTheme($themes);
-		$filtros['parentPage'] = UtilitiesAPI::getFilterParentPage($objects);
-		$filtros['media'] = UtilitiesAPI::getFilterMedia($media);
-		$filtros['background'] = UtilitiesAPI::getFilterBackground($background);
-		$filtros['category'] = UtilitiesAPI::getFilterCategory($category);
+		$filtros['theme'] = UtilitiesAPI::getFilter($themes);
+		$filtros['parentPage'] = UtilitiesAPI::getFilter($objects);
+		$filtros['media'] = UtilitiesAPI::getFilter($media);
+		$filtros['background'] = UtilitiesAPI::getFilter($background);
+		$filtros['category'] = UtilitiesAPI::getFilter($category);
 		
 		$form = $class -> createFormBuilder($data) 
 		-> add('name', 'text', array('required' => true)) 
@@ -213,7 +215,8 @@ class ArticleController extends Controller {
 			$em = $class -> getDoctrine() -> getManager();
 
 			if ($array['accion'] == 'nuevo') {
-				
+				$data -> setLang($array['lang']);
+				$data -> setMirror(0);
 				$data -> setSuspended(0);
 				$data -> setDateCreated(new \DateTime());
 				$data -> setType($array['idtype']);

@@ -15,11 +15,11 @@ class CmsTheme
     /**
      * @var integer
      *
-     * @ORM\Column(name="theme_id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $themeId;
+    private $id;
 
     /**
      * @var integer
@@ -66,20 +66,20 @@ class CmsTheme
     /**
      * @var integer
      *
-     * @ORM\Column(name="user_id", type="integer", nullable=false)
+     * @ORM\Column(name="user", type="integer", nullable=false)
      */
-    private $userId;
+    private $user;
 
 
 
     /**
-     * Get themeId
+     * Get id
      *
      * @return integer 
      */
-    public function getThemeId()
+    public function getId()
     {
-        return $this->themeId;
+        return $this->id;
     }
 
     /**
@@ -221,25 +221,25 @@ class CmsTheme
     }
 
     /**
-     * Set userId
+     * Set user
      *
-     * @param integer $userId
+     * @param integer $user
      * @return CmsTheme
      */
-    public function setUserId($userId)
+    public function setUser($user)
     {
-        $this->userId = $userId;
+        $this->user = $user;
     
         return $this;
     }
 
     /**
-     * Get userId
+     * Get user
      *
      * @return integer 
      */
-    public function getUserId()
+    public function getUser()
     {
-        return $this->userId;
+        return $this->user;
     }
 }

@@ -72,6 +72,14 @@ class UtilitiesAPI extends Controller {
 		}
 		return $array;
 	}
+
+	public static function getFilter($data) {
+		$array = array();
+		for ($i = 0; $i < count($data); $i++) {
+			$array[$data[$i] -> getId()] = $data[$i] -> getName();
+		}
+		return $array;
+	}
 	public static function getFilterTheme($data) {
 		$array = array();
 		for ($i = 0; $i < count($data); $i++) {

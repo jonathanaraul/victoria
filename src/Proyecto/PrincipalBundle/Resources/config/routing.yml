@@ -85,6 +85,11 @@ proyecto_principal_resource_status:
     defaults: { _controller: ProyectoPrincipalBundle:Resource:status }
     requirements:
       _method: POST
+proyecto_principal_resource_home:
+    pattern:  /resource/home
+    defaults: { _controller: ProyectoPrincipalBundle:Resource:home }
+    requirements:
+      _method: POST
 
 proyecto_principal_link_list:
     pattern:  /link/list

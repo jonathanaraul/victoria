@@ -25,10 +25,10 @@
 						<br>
 					</div>
 				</div>
-				<div class="form-row">
+				<div class="form-row" {%if type=='images'%}style="display: none"{%endif%}>
 					<label for="page_published">En la página principal:</label>
 					<div class="content">
-						{{ form_widget(form.default, { 'attr': {'checked': 'checked'}}) }}
+						{{ form_widget(form.home) }}
 					</div>
 				</div>
 				<div class="form-row">

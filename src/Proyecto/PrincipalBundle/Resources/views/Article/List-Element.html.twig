@@ -4,7 +4,9 @@
 	<td>{{object.category|title}}</td>
 	<td class="image_list center"> {%if object.media =='0'%}
 	-
-	{%else%} <img alt="ss2" src="{{asset('uploads/media/mini/'~ object.media ~'')}}"> {%endif%} </td>
+	{%else%} <img alt="ss2" src="{{ object.media | apply_filter('my_thumb') }}"> {%endif%} </td>
+
+	
 	<td>{{object.dateCreated}}</td>
 
 	<td> {%if object.published== 1%} 

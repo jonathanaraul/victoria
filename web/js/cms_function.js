@@ -373,6 +373,8 @@ $jQ(document).ready(function(){
     showPhotoOnHover($jQ('.media_container div'), '.media_container div.media_', $jQ('.photo_toggle'));
     showPhotoBeforeHover($jQ('.theme_container div'), '.theme_container div.theme_', $jQ('.theme_toggle'));
     showPhotoOnHover($jQ('.theme_container div'), '.theme_container div.theme_', $jQ('.theme_toggle'));
+    showPhotoBeforeHover($jQ('.background_container div'), '.background_container div.background_', $jQ('.photo_toggle'));
+    showPhotoOnHover($jQ('.background_container div'), '.background_container div.background_', $jQ('.photo_toggle'));
 	slideToggle();
 	imgUploadButton();
 	checkDescriptionSign($jQ('#news_description'));

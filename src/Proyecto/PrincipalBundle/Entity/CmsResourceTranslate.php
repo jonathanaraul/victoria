@@ -1,17 +1,14 @@
 <?php
 
 namespace Proyecto\PrincipalBundle\Entity;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * CmsResourceTranslate
  *
  * @ORM\Table(name="cms_resource_translate")
  * @ORM\Entity
- * @ORM\HasLifecycleCallbacks
  */
 class CmsResourceTranslate
 {
@@ -30,7 +27,7 @@ class CmsResourceTranslate
      * @ORM\Column(name="resource", type="integer", nullable=false)
      */
     private $resource;
-	
+
     /**
      * @var string
      *
@@ -58,7 +55,7 @@ class CmsResourceTranslate
      * @ORM\Column(name="published", type="boolean", nullable=false)
      */
     private $published;
-	
+
     /**
      * @var boolean
      *
@@ -74,12 +71,12 @@ class CmsResourceTranslate
     private $suspended;
 
     /**
-     * @var boolean
+     * @var integer
      *
      * @ORM\Column(name="type", type="integer", nullable=false)
      */
     private $type;
-	
+
     /**
      * @var integer
      *
@@ -108,11 +105,7 @@ class CmsResourceTranslate
      */
     private $dateUpdated;
 
-	/**
-	 * @Assert\File(maxSize="6000000")
-	 */
-	private $file;
-	private $temp;
+
 
     /**
      * Get id
@@ -123,7 +116,7 @@ class CmsResourceTranslate
     {
         return $this->id;
     }
-	
+
     /**
      * Set resource
      *
@@ -170,7 +163,7 @@ class CmsResourceTranslate
         return $this->name;
     }
 
-     /**
+    /**
      * Set path
      *
      * @param string $path
@@ -184,7 +177,7 @@ class CmsResourceTranslate
     }
 
     /**
-     * Get name
+     * Get path
      *
      * @return string 
      */
@@ -216,7 +209,7 @@ class CmsResourceTranslate
         return $this->rank;
     }
 
-   /**
+    /**
      * Set published
      *
      * @param boolean $published
@@ -239,7 +232,7 @@ class CmsResourceTranslate
         return $this->published;
     }
 
-   /**
+    /**
      * Set default
      *
      * @param boolean $default
@@ -265,7 +258,7 @@ class CmsResourceTranslate
     /**
      * Set suspended
      *
-     * @param integer $suspended
+     * @param boolean $suspended
      * @return CmsResourceTranslate
      */
     public function setSuspended($suspended)
@@ -278,14 +271,14 @@ class CmsResourceTranslate
     /**
      * Get suspended
      *
-     * @return integer 
+     * @return boolean 
      */
     public function getSuspended()
     {
         return $this->suspended;
     }
-  
-   /**
+
+    /**
      * Set type
      *
      * @param integer $type
@@ -399,93 +392,4 @@ class CmsResourceTranslate
     {
         return $this->dateUpdated;
     }
-	
-		/**
-	 * Sets file.
-	 *
-	 * @param UploadedFile $file
-	 */
-	public function setFile(UploadedFile $file = null) {
-		$this -> file = $file;
-		// check if we have an old image path
-		if (isset($this -> path)) {
-			// store the old name to delete after the update
-			$this -> temp = $this -> path;
-			$this -> path = null;
-		} else {
-			$this -> path = 'inicial';
-		}
-	}
-
-	/**
-	 * @ORM\PrePersist()
-	 * @ORM\PreUpdate()
-	 */
-	public function preUpload() {
-		if (null !== $this -> getFile()) {
-			// do whatever you want to generate a unique name
-			$filename = sha1(uniqid(mt_rand(), true));
-			$this -> path = $filename . '.' . $this -> getFile() -> guessExtension();
-		}
-	}
-
-	/**
-	 * @ORM\PostPersist()
-	 * @ORM\PostUpdate()
-	 */
-	public function upload() {
-		if (null === $this -> getFile()) {
-			return;
-		}
-
-		// if there is an error when moving the file, an exception will
-		// be automatically thrown by move(). This will properly prevent
-		// the entity from being persisted to the database on error
-		$this -> getFile() -> move($this -> getUploadRootDir(), $this -> path);
-
-		// check if we have an old image
-		if (isset($this -> temp)) {
-			// delete the old image
-			unlink($this -> getUploadRootDir() . '/' . $this -> temp);
-			// clear the temp image path
-			$this -> temp = null;
-		}
-		$this -> file = null;
-	}
-
-	/**
-	 * @ORM\PostRemove()
-	 */
-	public function removeUpload() {
-		if ($file = $this -> getAbsolutePath()) {
-			unlink($file);
-		}
-	}
-		/**
-	 * Get file.
-	 *
-	 * @return UploadedFile
-	 */
-	public function getFile() {
-		return $this -> file;
-	}
-
-	public function getAbsolutePath() {
-		return null === $this -> path ? null : $this -> getUploadRootDir() . '/' . $this -> path;
-	}
-
-	public function getWebPath() {
-		return null === $this -> path ? null : $this -> getUploadDir() . '/' . $this -> path;
-	}
-
-	protected function getUploadRootDir() {
-		// the absolute directory path where uploaded
-		// documents should be saved
-		return __DIR__ . '/../../../../web/' . $this -> getUploadDir();
-	}
-
-	protected function getUploadDir() {
-		$directorio = 'resource';
-		return 'uploads/' . $directorio;
-	}
 }

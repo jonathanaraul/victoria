@@ -41,7 +41,7 @@ class SettingController extends Controller {
 		$auxiliar = array();
 
 		for ($i = 0; $i < count($objects); $i++) {
-			$auxiliar[$i]['settingId'] = $objects[$i] -> getSettingId();
+			$auxiliar[$i]['id'] = $objects[$i] -> getId();
 			$auxiliar[$i]['name'] = $objects[$i] -> getName();
 			$auxiliar[$i]['value'] = $objects[$i] -> getValue();
 			$auxiliar[$i]['dateCreated'] = $objects[$i] -> getDateCreated()->format('d/m/Y H:m');
@@ -66,6 +66,7 @@ class SettingController extends Controller {
 		$secondArray = array('accion' => 'editar');
 		$secondArray['url'] = $this -> generateUrl('proyecto_principal_setting_edit', array('id' => $id));
 		$secondArray['id'] = $id;
+		$secondArray['lang'] = 0;
 		$array = array_merge($firstArray, $secondArray);
 		$array = array_merge($array, $config);
 
@@ -95,10 +96,12 @@ class SettingController extends Controller {
 			$form -> bind($class -> getRequest());
 			$em = $class -> getDoctrine() -> getManager();
 			
+			
+			//CASO ESPECIAL MIRROR Y LANG
 			$data -> setValue($contenido);
 			$data -> setDateUpdated(new \DateTime());
 			$data -> setIp($class -> container -> get('request') -> getClientIp());
-			$data -> setUserId($array['user'] -> getId());
+			$data -> setUser($array['user'] -> getId());
 			
 			
 			$em -> persist($data);

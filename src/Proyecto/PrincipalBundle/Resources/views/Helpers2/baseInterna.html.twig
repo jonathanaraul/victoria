@@ -70,6 +70,10 @@
 				{%elseif menu.seccion == 'LINKS'%}
 				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_link_list')}}">Mostrar Links</a></td>
 				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_link_create')}}">Añadir Link</a></td>
+				
+				{%elseif menu.seccion == 'SETTING'%}
+				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_setting_list')}}">Mostrar Opciones</a></td>
+				
 				{%endif%}
 				<td id="rest">&nbsp;</td>
 			</tr>

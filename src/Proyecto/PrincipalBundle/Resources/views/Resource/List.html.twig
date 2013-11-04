@@ -3,6 +3,8 @@
 <script type="text/javascript">
 var eliminar = '{{path('proyecto_principal_resource_delete')}}';
 var cambiarStatus = '{{path('proyecto_principal_resource_status')}}';
+var cambiarHome = '{{path('proyecto_principal_resource_home')}}';
+
 
 </script>
 {%endblock%}
@@ -45,7 +47,7 @@ var cambiarStatus = '{{path('proyecto_principal_resource_status')}}';
 	</div>
 	<div id="sf_admin_content">
 		<table cellspacing="0" class="sf_admin_list">
-			<thead>
+			<thead class="cabeceratabla">
 				{%if objects|length >0%}
 				<tr>
 					<th id="sf_admin_list_th_page_id">
@@ -57,9 +59,11 @@ var cambiarStatus = '{{path('proyecto_principal_resource_status')}}';
 					<th id="sf_admin_list_th_media_id">
 						{{ knp_pagination_sortable(pagination, 'Miniatura', 'n.media') }}
 						</th>
+					{%if type=='backgrounds'%}
 					<th id="sf_admin_list_th_media_id">
-						{{ knp_pagination_sortable(pagination, 'Pagina Principal', 'n.media') }}
+						{{ knp_pagination_sortable(pagination, 'Pagina Principal', 'n.home') }}
 						</th>
+					{%endif%}
 					<th id="sf_admin_list_th_theme_id">
 						{{ knp_pagination_sortable(pagination, 'Fecha', 'n.dateCreated') }}
 						</th>
@@ -88,7 +92,9 @@ var cambiarStatus = '{{path('proyecto_principal_resource_status')}}';
 					 {{ knp_pagination_render(pagination) }}
 					</div> 
 					
-					{{ pagination.getTotalItemCount }} resultados</th>
+					<span class="cantidadresultados">{{ pagination.getTotalItemCount }} resultados</span>
+					
+					</th>
 				</tr>
 			</tfoot>
 		</table>
@@ -118,6 +124,13 @@ jQuery('.eliminar').click(function() {
 		data : data,
 		dataType : "json",
 		success : function(data) {
+			var cantidad = jQuery('.elemento_lista').length;
+			if(cantidad == 0){
+				jQuery('.cabeceratabla').remove();
+				jQuery('.cantidadresultados').html('0 resultados');
+				
+			}
+			
 								 }
 	      });
 
@@ -143,6 +156,34 @@ jQuery('.eliminar').click(function() {
 	jQuery.ajax({
 		type : "POST",
 		url : cambiarStatus,
+		data : data,
+		dataType : "json",
+		success : function(data) {
+								 }
+	      });
+
+    return false;
+  });
+  jQuery('.change_home').click(function() {  
+ 	var actual = jQuery(this);
+ 	var id = actual.attr('clave'); 	
+ 	var data = 'id='+id;
+ 	
+ 	var estado = actual.prev().css('display');
+ 	
+ 	if(estado == 'none'){
+ 		data +='&tarea=0';
+ 		actual.prev().prev().css('display','none');
+ 		actual.prev().css('display','block');
+ 	}
+ 	else{
+ 		data +='&tarea=1';
+ 		actual.prev().prev().css('display','block');
+ 		actual.prev().css('display','none');
+ 	}
+	jQuery.ajax({
+		type : "POST",
+		url : cambiarHome,
 		data : data,
 		dataType : "json",
 		success : function(data) {

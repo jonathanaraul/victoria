@@ -15,11 +15,11 @@ class CmsSetting
     /**
      * @var integer
      *
-     * @ORM\Column(name="setting_id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $settingId;
+    private $id;
 
     /**
      * @var integer
@@ -66,20 +66,32 @@ class CmsSetting
     /**
      * @var integer
      *
-     * @ORM\Column(name="user_id", type="integer", nullable=false)
+     * @ORM\Column(name="user", type="integer", nullable=false)
      */
-    private $userId;
-
-
+    private $user;
 
     /**
-     * Get settingId
+     * @var integer
+     *
+     * @ORM\Column(name="lang", type="integer", nullable=false)
+     */
+    private $lang;
+	
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="mirror", type="integer", nullable=false)
+     */
+    private $mirror;
+
+    /**
+     * Get id
      *
      * @return integer 
      */
-    public function getSettingId()
+    public function getId()
     {
-        return $this->settingId;
+        return $this->id;
     }
 
     /**
@@ -221,25 +233,71 @@ class CmsSetting
     }
 
     /**
-     * Set userId
+     * Set user
      *
-     * @param integer $userId
+     * @param integer $user
      * @return CmsSetting
      */
-    public function setUserId($userId)
+    public function setUser($user)
     {
-        $this->userId = $userId;
+        $this->user = $user;
     
         return $this;
     }
 
     /**
-     * Get userId
+     * Get user
      *
      * @return integer 
      */
-    public function getUserId()
+    public function getUser()
     {
-        return $this->userId;
+        return $this->user;
+    }
+
+    /**
+     * Set lang
+     *
+     * @param integer $lang
+     * @return CmsSetting
+     */
+    public function setLang($lang)
+    {
+        $this->lang = $lang;
+    
+        return $this;
+    }
+
+    /**
+     * Get lang
+     *
+     * @return integer 
+     */
+    public function getLang()
+    {
+        return $this->lang;
+    }
+
+    /**
+     * Set mirror
+     *
+     * @param integer $mirror
+     * @return CmsSetting
+     */
+    public function setMirror($mirror)
+    {
+        $this->mirror = $mirror;
+    
+        return $this;
+    }
+
+    /**
+     * Get lang
+     *
+     * @return integer 
+     */
+    public function getMirror()
+    {
+        return $this->mirror;
     }
 }

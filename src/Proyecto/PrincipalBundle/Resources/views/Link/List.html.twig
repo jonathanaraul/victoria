@@ -49,7 +49,7 @@ var cambiarTarget = '{{path('proyecto_principal_link_target')}}';
 				{%if objects|length >0%}
 				<tr>
 					<th id="sf_admin_list_th_page_id">
-						{{ knp_pagination_sortable(pagination, 'Id', 'n.linkId') }}
+						{{ knp_pagination_sortable(pagination, 'Id', 'n.id') }}
 						</th>
 					<th id="sf_admin_list_th_name">
 						{{ knp_pagination_sortable(pagination, 'Nombre', 'n.name') }}

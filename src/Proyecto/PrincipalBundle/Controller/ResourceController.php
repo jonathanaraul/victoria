@@ -37,7 +37,10 @@ class ResourceController extends Controller {
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 		$data = new CmsResource();
-		$form = $this -> createFormBuilder($data) -> add('name', 'text', array('required' => false)) -> add('published', 'choice', array('choices' => $filtros['published'], 'required' => false, )) -> getForm();
+		$form = $this -> createFormBuilder($data) 
+		-> add('name', 'text', array('required' => false)) 
+		-> add('published', 'choice', array('choices' => $filtros['published'], 'required' => false, )) 
+		-> getForm();
 
 		$em = $this -> getDoctrine() -> getEntityManager();
 
@@ -100,7 +103,7 @@ class ResourceController extends Controller {
 		}
 
 		$paginator = $this -> get('knp_paginator');
-		$pagination = $paginator -> paginate($query, $this -> getRequest() -> query -> get('page', 1), 15);
+		$pagination = $paginator -> paginate($query, $this -> getRequest() -> query -> get('page', 1), 10);
 
 		$objects = $pagination -> getItems();
 		$auxiliar = array();
@@ -109,7 +112,7 @@ class ResourceController extends Controller {
 			$auxiliar[$i]['id'] = $objects[$i] -> getId();
 			$auxiliar[$i]['name'] = $objects[$i] -> getName();
 			$auxiliar[$i]['published'] = $objects[$i] -> getPublished();
-			$auxiliar[$i]['default'] = $objects[$i] -> getDefault();
+			$auxiliar[$i]['home'] = $objects[$i] -> getHome();
 			$auxiliar[$i]['dateCreated'] = $objects[$i] -> getDateCreated() -> format('d/m/Y');
 			$auxiliar[$i]['path'] = $objects[$i] -> getWebPath();
 
@@ -160,11 +163,15 @@ class ResourceController extends Controller {
 
 		$filtros = array();
 		//$filtros['published'] = array(1 => 'Si', 0 => 'No');
-		//$filtros['default'] = array(1 => 'Si', 0 => 'No');
 
-		$form = $class -> createFormBuilder($data) -> add('name', 'text', array('required' => true)) 
-		-> add('file', 'file', array('required' => false)) 
-		-> add('published', 'checkbox', array('label' => 'Publicado', 'required' => false, )) -> add('default', 'checkbox', array('label' => 'Pagina Principal', 'required' => false, )) -> getForm();
+		
+		$form = $class -> createFormBuilder($data) 
+		-> add('name', 'text', array('required' => true)) 
+		-> add('file', 'file', array('required' => true)) 
+		-> add('published', 'checkbox', array('label' => 'Publicado', 'required' => false, )) 
+		-> add('home', 'checkbox', array('label' => 'Pagina Principal', 'required' => false, )) 
+		-> getForm();
+		
 
 		if ($class -> getRequest() -> isMethod('POST')) {
 
@@ -200,9 +207,7 @@ class ResourceController extends Controller {
 				}
 
 				return $class -> redirect($class -> generateUrl('proyecto_principal_resource_list', array('type' => $array['type'])));
-
 			}
-
 		}
 
 		$array['form'] = $form -> createView();
@@ -255,14 +260,8 @@ class ResourceController extends Controller {
 		$id = $post -> get("id");
 		$em = $this -> getDoctrine() -> getManager();
 
-		//Remover traduccion
-		$object = $em -> getRepository('ProyectoPrincipalBundle:CmsArticleTranslate') -> findOneByArticle($id);
-		if ($object) {
-			$em -> remove($object);
-			$em -> flush();
-		}
 		//Remover original
-		$object = $em -> getRepository('ProyectoPrincipalBundle:CmsArticle') -> find($id);
+		$object = $em -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($id);
 		$em -> remove($object);
 		$em -> flush();
 
@@ -283,16 +282,30 @@ class ResourceController extends Controller {
 		$tarea = intval($post -> get("tarea"));
 
 		$em = $this -> getDoctrine() -> getManager();
-		$object = $em -> getRepository('ProyectoPrincipalBundle:CmsArticle') -> find($id);
+		$object = $em -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($id);
 		$object -> setPublished($tarea);
 		$em -> flush();
 
-		//Codigo a borrar a futuro e incluir el elemento pusblished en las traducciones
-		$object = $em -> getRepository('ProyectoPrincipalBundle:CmsArticleTranslate') -> findOneByArticle($id);
-		if ($object) {
-			$object -> setPublished($tarea);
-			$em -> flush();
-		}
+
+		$estado = true;
+		$respuesta = new response(json_encode(array('estado' => $estado)));
+		$respuesta -> headers -> set('content_type', 'aplication/json');
+		return $respuesta;
+	}
+	public function homeAction() {
+
+		$peticion = $this -> getRequest();
+		$doctrine = $this -> getDoctrine();
+		$post = $peticion -> request;
+		//INICIALIZAR VARIABLES
+
+		$id = $post -> get("id");
+		$tarea = intval($post -> get("tarea"));
+
+		$em = $this -> getDoctrine() -> getManager();
+		$object = $em -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($id);
+		$object -> setHome($tarea);
+		$em -> flush();
 
 		$estado = true;
 		$respuesta = new response(json_encode(array('estado' => $estado)));

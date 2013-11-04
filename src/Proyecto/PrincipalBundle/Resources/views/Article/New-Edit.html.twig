@@ -63,8 +63,8 @@
 						{{ form_widget(form.media, { 'attr': {'class': 'photo_toggle'} }) }}
 						<div class="media_container">
 							{%for object in media%}
-							<div class="media_{{object.mediaId}}" style="display: none;">
-								<img alt="{{object.friendlyName}}" src="{{asset('uploads/media/mini/'~ object.fileNameMini ~'')}}" style="height: 100px;width: 106px;">
+							<div class="media_{{object.id}}" style="display: none;">
+								<img alt="{{object.name}}" src="{{ object.getWebPath | apply_filter('my_thumb') }}" style="height: 100px;width: 106px;">
 							</div>
 							{%endfor%}
 						</div>
@@ -76,7 +76,7 @@
 						{{ form_widget(form.theme, { 'attr': {'class': 'theme_toggle'} }) }}
 						<div class="theme_container">
 							{%for object in themes%}
-							<div class="theme_{{object.themeId}}" style="background-color: {{object.color}}; display: none;height: 100px;width: 106px;"></div>
+							<div class="theme_{{object.id}}" style="background-color: {{object.color}}; display: none;height: 100px;width: 106px;"></div>
 							{%endfor%}
 						</div>
 					</div>

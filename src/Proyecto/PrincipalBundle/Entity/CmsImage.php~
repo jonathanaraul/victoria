@@ -1,0 +1,74 @@
+<?php
+
+namespace Proyecto\PrincipalBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * CmsImage
+ *
+ * @ORM\Table(name="cms_image")
+ * @ORM\Entity
+ */
+class CmsImage
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="pdf", type="string", length=255, nullable=false)
+     */
+    private $pdf;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_created", type="datetime", nullable=false)
+     */
+    private $dateCreated;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_updated", type="datetime", nullable=true)
+     */
+    private $dateUpdated;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="published", type="boolean", nullable=false)
+     */
+    private $published;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="default", type="boolean", nullable=false)
+     */
+    private $default;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="type", type="integer", nullable=false)
+     */
+    private $type;
+
+
+}

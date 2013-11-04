@@ -94,7 +94,7 @@ class LinkController extends Controller {
 		$auxiliar = array();
 
 		for ($i = 0; $i < count($objects); $i++) {
-			$auxiliar[$i]['linkId'] = $objects[$i] -> getLinkId();
+			$auxiliar[$i]['id'] = $objects[$i] -> getId();
 			$auxiliar[$i]['name'] = $objects[$i] -> getName();
 			$auxiliar[$i]['www'] = $objects[$i] -> getWww();
 			$auxiliar[$i]['newWindow'] = $objects[$i] -> getNewWindow();
@@ -118,6 +118,7 @@ class LinkController extends Controller {
 		$secondArray = array('accion' => 'editar');
 		$secondArray['url'] = $this -> generateUrl('proyecto_principal_link_edit', array('id' => $id));
 		$secondArray['id'] = $id;
+		$secondArray['lang'] = 0;
 		$array = array_merge($firstArray, $secondArray);
 		$array = array_merge($array, $config);
 
@@ -132,6 +133,7 @@ class LinkController extends Controller {
 
 		$secondArray = array('accion' => 'nuevo');	
 		$secondArray['url'] = $this -> generateUrl('proyecto_principal_link_create');
+		$secondArray['lang'] = 0;
 		$array = array_merge($firstArray, $secondArray);
 		$array = array_merge($array, $config);
 
@@ -163,7 +165,8 @@ class LinkController extends Controller {
 			
 			//if ($form -> isValid()) {
 			if ($array['accion'] == 'nuevo') {
-				
+				$data -> setLang($array['lang']);
+				$data -> setMirror(0);
 				$data -> setSuspended(0);
 				$data -> setDateCreated(new \DateTime());
 				$data -> setRank(0);
@@ -173,7 +176,7 @@ class LinkController extends Controller {
 			}
 			
 			$data -> setIp($class -> container -> get('request') -> getClientIp());
-			$data -> setUserId($array['user'] -> getId());
+			$data -> setUser($array['user'] -> getId());
 			
 			if ($array['accion'] == 'nuevo')
 				$em -> persist($data);

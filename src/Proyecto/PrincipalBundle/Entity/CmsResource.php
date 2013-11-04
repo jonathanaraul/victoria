@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+
 /**
  * CmsResource
  *
@@ -13,6 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
+
 class CmsResource
 {
     /**
@@ -34,7 +36,7 @@ class CmsResource
     /**
      * @var string
      *
-     * @ORM\Column(name="path", type="string", length=255, nullable=true)
+     * @ORM\Column(name="path", type="string", length=255, nullable=false)
      */
     private $path;
 
@@ -51,13 +53,13 @@ class CmsResource
      * @ORM\Column(name="published", type="boolean", nullable=false)
      */
     private $published;
-	
+
     /**
      * @var boolean
      *
-     * @ORM\Column(name="default", type="boolean", nullable=false)
+     * @ORM\Column(name="home", type="boolean", nullable=false)
      */
-    private $default;
+    private $home;
 
     /**
      * @var boolean
@@ -72,7 +74,7 @@ class CmsResource
      * @ORM\Column(name="type", type="integer", nullable=false)
      */
     private $type;
-	
+
     /**
      * @var integer
      *
@@ -101,11 +103,13 @@ class CmsResource
      */
     private $dateUpdated;
 
+
 	/**
 	 * @Assert\File(maxSize="6000000")
 	 */
 	private $file;
 	private $temp;
+
 
     /**
      * Get id
@@ -141,6 +145,29 @@ class CmsResource
     }
 
     /**
+     * Set path
+     *
+     * @param string $path
+     * @return CmsResource
+     */
+    public function setPath($path)
+    {
+        $this->path = $path;
+    
+        return $this;
+    }
+
+    /**
+     * Get path
+     *
+     * @return string 
+     */
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    /**
      * Set rank
      *
      * @param integer $rank
@@ -163,7 +190,7 @@ class CmsResource
         return $this->rank;
     }
 
-   /**
+    /**
      * Set published
      *
      * @param boolean $published
@@ -186,27 +213,27 @@ class CmsResource
         return $this->published;
     }
 
-   /**
-     * Set default
+    /**
+     * Set home
      *
-     * @param boolean $default
+     * @param boolean $home
      * @return CmsResource
      */
-    public function setDefault($default)
+    public function setHome($home)
     {
-        $this->default = $default;
+        $this->home = $home;
     
         return $this;
     }
 
     /**
-     * Get default
+     * Get home
      *
      * @return boolean 
      */
-    public function getDefault()
+    public function getHome()
     {
-        return $this->default;
+        return $this->home;
     }
 
     /**
@@ -231,8 +258,8 @@ class CmsResource
     {
         return $this->suspended;
     }
-  
-   /**
+
+    /**
      * Set type
      *
      * @param integer $type
@@ -433,6 +460,10 @@ class CmsResource
 
 	protected function getUploadDir() {
 		$directorio = 'resource';
+		if($this -> getType()==3)$directorio .= '/images'; 
+		else{
+			$directorio .= '/backgrounds'; 
+		}
 		return 'uploads/' . $directorio;
 	}
 }

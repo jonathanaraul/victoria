@@ -18,39 +18,39 @@ class CmsPage
     /**
      * @var integer
      *
-     * @ORM\Column(name="page_id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $pageId;
+    private $id;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="parent_page_id", type="integer", nullable=false)
+     * @ORM\Column(name="parent_page", type="integer", nullable=false)
      */
-    private $parentPageId;
+    private $parentPage;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="media_id", type="integer", nullable=false)
+     * @ORM\Column(name="media", type="integer", nullable=false)
      */
-    private $mediaId;
+    private $media;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="background_id", type="integer", nullable=false)
+     * @ORM\Column(name="background", type="integer", nullable=false)
      */
-    private $backgroundId;
+    private $background;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="theme_id", type="integer", nullable=false)
+     * @ORM\Column(name="theme", type="integer", nullable=false)
      */
-    private $themeId;
+    private $theme;
 
     /**
      * @var integer
@@ -132,9 +132,9 @@ class CmsPage
     /**
      * @var string
      *
-     * @ORM\Column(name="pdf", type="string", length=255, nullable=true)
+     * @ORM\Column(name="path", type="string", length=255, nullable=true)
      */
-    private $pdf;
+    private $path;
 
     /**
      * @var string
@@ -181,9 +181,23 @@ class CmsPage
     /**
      * @var integer
      *
-     * @ORM\Column(name="user_id", type="integer", nullable=false)
+     * @ORM\Column(name="user", type="integer", nullable=false)
      */
-    private $userId;
+    private $user;
+	
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="lang", type="integer", nullable=false)
+     */
+    private $lang;
+	
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="mirror", type="integer", nullable=false)
+     */
+    private $mirror;
 
 	/**
 	 * @Assert\File(maxSize="6000000")
@@ -192,105 +206,105 @@ class CmsPage
 	private $temp;
 
     /**
-     * Get pageId
+     * Get id
      *
      * @return integer 
      */
-    public function getPageId()
+    public function getId()
     {
-        return $this->pageId;
+        return $this->id;
     }
 
     /**
-     * Set parentPageId
+     * Set parentPage
      *
-     * @param integer $parentPageId
+     * @param integer $parentPage
      * @return CmsPage
      */
-    public function setParentPageId($parentPageId)
+    public function setParentPage($parentPage)
     {
-        $this->parentPageId = $parentPageId;
+        $this->parentPage = $parentPage;
     
         return $this;
     }
 
     /**
-     * Get parentPageId
+     * Get parentPage
      *
      * @return integer 
      */
-    public function getParentPageId()
+    public function getParentPage()
     {
-        return $this->parentPageId;
+        return $this->parentPage;
     }
 
     /**
-     * Set mediaId
+     * Set media
      *
-     * @param integer $mediaId
+     * @param integer $media
      * @return CmsPage
      */
-    public function setMediaId($mediaId)
+    public function setMedia($media)
     {
-        $this->mediaId = $mediaId;
+        $this->media = $media;
     
         return $this;
     }
 
     /**
-     * Get mediaId
+     * Get media
      *
      * @return integer 
      */
-    public function getMediaId()
+    public function getMedia()
     {
-        return $this->mediaId;
+        return $this->media;
     }
 
     /**
-     * Set backgroundId
+     * Set background
      *
-     * @param integer $backgroundId
+     * @param integer $background
      * @return CmsPage
      */
-    public function setBackgroundId($backgroundId)
+    public function setBackground($background)
     {
-        $this->backgroundId = $backgroundId;
+        $this->background = $background;
     
         return $this;
     }
 
     /**
-     * Get backgroundId
+     * Get background
      *
      * @return integer 
      */
-    public function getBackgroundId()
+    public function getBackground()
     {
-        return $this->backgroundId;
+        return $this->background;
     }
 
     /**
-     * Set themeId
+     * Set theme
      *
-     * @param integer $themeId
+     * @param integer $theme
      * @return CmsPage
      */
-    public function setThemeId($themeId)
+    public function setTheme($theme)
     {
-        $this->themeId = $themeId;
+        $this->theme = $theme;
     
         return $this;
     }
 
     /**
-     * Get themeId
+     * Get theme
      *
      * @return integer 
      */
-    public function getThemeId()
+    public function getTheme()
     {
-        return $this->themeId;
+        return $this->theme;
     }
 
     /**
@@ -547,26 +561,26 @@ class CmsPage
     }
 
     /**
-     * Set pdf
+     * Set path
      *
-     * @param string $pdf
+     * @param string $path
      * @return CmsPage
      */
-    public function setPdf($pdf)
+    public function setPath($path)
     {
-        $this->pdf = $pdf;
+        $this->path = $path;
     
         return $this;
     }
 
     /**
-     * Get pdf
+     * Get path
      *
      * @return string 
      */
-    public function getPdf()
+    public function getPath()
     {
-        return $this->pdf;
+        return $this->path;
     }
 
     /**
@@ -708,26 +722,72 @@ class CmsPage
     }
 
     /**
-     * Set userId
+     * Set user
      *
-     * @param integer $userId
+     * @param integer $user
      * @return CmsPage
      */
-    public function setUserId($userId)
+    public function setUser($user)
     {
-        $this->userId = $userId;
+        $this->user = $user;
     
         return $this;
     }
 
     /**
-     * Get userId
+     * Get user
      *
      * @return integer 
      */
-    public function getUserId()
+    public function getUser()
     {
-        return $this->userId;
+        return $this->user;
+    }
+
+    /**
+     * Set lang
+     *
+     * @param integer $lang
+     * @return CmsPage
+     */
+    public function setLang($lang)
+    {
+        $this->lang = $lang;
+    
+        return $this;
+    }
+
+    /**
+     * Get lang
+     *
+     * @return integer 
+     */
+    public function getLang()
+    {
+        return $this->lang;
+    }
+
+    /**
+     * Set mirror
+     *
+     * @param integer $mirror
+     * @return CmsPage
+     */
+    public function setMirror($mirror)
+    {
+        $this->mirror = $mirror;
+    
+        return $this;
+    }
+
+    /**
+     * Get lang
+     *
+     * @return integer 
+     */
+    public function getMirror()
+    {
+        return $this->mirror;
     }
 	
 		/**
@@ -738,12 +798,12 @@ class CmsPage
 	public function setFile(UploadedFile $file = null) {
 		$this -> file = $file;
 		// check if we have an old image path
-		if (isset($this -> pdf)) {
+		if (isset($this -> path)) {
 			// store the old name to delete after the update
-			$this -> temp = $this -> pdf;
-			$this -> pdf = null;
+			$this -> temp = $this -> path;
+			$this -> path = null;
 		} else {
-			$this -> pdf = 'inicial';
+			$this -> path = 'inicial';
 		}
 	}
 
@@ -755,7 +815,7 @@ class CmsPage
 		if (null !== $this -> getFile()) {
 			// do whatever you want to generate a unique name
 			$filename = sha1(uniqid(mt_rand(), true));
-			$this -> pdf = $filename . '.' . $this -> getFile() -> guessExtension();
+			$this -> path = $filename . '.' . $this -> getFile() -> guessExtension();
 		}
 	}
 
@@ -771,7 +831,7 @@ class CmsPage
 		// if there is an error when moving the file, an exception will
 		// be automatically thrown by move(). This will properly prevent
 		// the entity from being persisted to the database on error
-		$this -> getFile() -> move($this -> getUploadRootDir(), $this -> pdf);
+		$this -> getFile() -> move($this -> getUploadRootDir(), $this -> path);
 
 		// check if we have an old image
 		if (isset($this -> temp)) {
@@ -801,11 +861,11 @@ class CmsPage
 	}
 
 	public function getAbsolutePath() {
-		return null === $this -> pdf ? null : $this -> getUploadRootDir() . '/' . $this -> pdf;
+		return null === $this -> path ? null : $this -> getUploadRootDir() . '/' . $this -> path;
 	}
 
 	public function getWebPath() {
-		return null === $this -> pdf ? null : $this -> getUploadDir() . '/' . $this -> pdf;
+		return null === $this -> path ? null : $this -> getUploadDir() . '/' . $this -> path;
 	}
 
 	protected function getUploadRootDir() {
@@ -815,7 +875,7 @@ class CmsPage
 	}
 
 	protected function getUploadDir() {
-		$directorio = 'pdf';
+		$directorio = 'page';
 		return 'uploads/' . $directorio;
 	}
 }
