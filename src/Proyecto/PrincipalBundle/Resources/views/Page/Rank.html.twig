@@ -1,4 +1,4 @@
-{% extends "ProyectoPrincipalBundle:Helpers2:baseInterna.html.twig" %}
+{% extends "ProyectoPrincipalBundle:Helpers:baseInterna.html.twig" %}
 
 {%block js%} <script type="text/javascript" src="{{asset('sf/prototype/js/prototype.js')}}"></script>
 <script type="text/javascript" src="{{asset('sf/prototype/js/builder.js')}}"></script>
@@ -15,11 +15,11 @@
 </style><h1>Determinar orden</h1>
 <ul id="order">
 	{%for object in objects%}
-	<li id="page_{{object.pageId}}" class="sortable" style="position: relative;">
+	<li id="page_{{object.id}}" class="sortable" style="position: relative;">
 		
 	
 	{%if object.spacer == 0%}
-	 ID: {{object.pageId}}, <b>{{object.title|title}} </b>
+	 ID: {{object.id}}, <b>{{object.title|title}} </b>
 	{%else%}
 		<p class="spacer">
 			spacer

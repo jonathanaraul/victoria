@@ -22,34 +22,39 @@ use Proyecto\PrincipalBundle\Entity\CmsMedia;
 
 class PageController extends Controller {
 
-	public function listAction(Request $request) {
+	public function listAction($mirror,Request $request) {
+		
+		$config = UtilitiesAPI::getConfig('pages',$this);
 		$url = $this -> generateUrl('proyecto_principal_page_list');
 		$firstArray = UtilitiesAPI::getDefaultContent('PAGINAS', 'Mostrar Información', $this);
+		$firstArray['lang'] = array('original' => 0, 'traduccion'=>1);
+		
+		$form = null;		
+		$filtros = null;
 
+		if($mirror==0){
+			
 		$objects = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> findAll();
 		$themes = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsTheme') -> findAll();
 		$filtros['theme'] = array();
 		$filtros['parentPage'] = array();
 		$filtros['published'] = array(1 => 'Si', 0 => 'No');
 
-		for ($i = 0; $i < count($themes); $i++) {
-			$filtros['theme'][$themes[$i] -> getId()] = $themes[$i] -> getName();
-		}
-		for ($i = 0; $i < count($objects); $i++) {
-			$filtros['parentPage'][$objects[$i] -> getId()] = $objects[$i] -> getName();
-		}
+		$filtros['theme']= UtilitiesAPI::getFilter('CmsPage',$this);
+		$filtros['parentPage']= UtilitiesAPI::getFilter('CmsTheme',$this);
 
-		///////////////////////////////////////////////////////////////////////////////////////////////////
+
 		$data = new CmsPage();
 		$form = $this -> createFormBuilder($data) 
 		-> add('name', 'text', array('required' => false)) 
 		-> add('parentPage', 'choice', array('choices' => $filtros['parentPage'], 'required' => false, )) 
 		-> add('theme', 'choice', array('choices' => $filtros['theme'], 'required' => false, )) 
 		-> add('published', 'choice', array('choices' => $filtros['published'], 'required' => false, ))
-		 -> getForm();
-
+		-> getForm();
+		
+		}	
 		$em = $this -> getDoctrine() -> getEntityManager();
-
+				
 		if ($this -> getRequest() -> isMethod('POST')) {
 			$form -> bind($this -> getRequest());
 
@@ -100,7 +105,16 @@ class PageController extends Controller {
 					}
 					$dql .= ' n.published = :published ';
 				}
-
+				
+				if ($where == false) {
+					$dql .= 'WHERE ';
+					$where = true;
+					} 
+				else{
+					$dql .= 'AND ';
+					}
+				$dql .= ' n.lang = :lang ';
+		
 				$query = $em -> createQuery($dql);
 
 				if (!(trim($data -> getParentPage()) == false)) {
@@ -115,13 +129,18 @@ class PageController extends Controller {
 				if (!(trim($data -> getPublished()) == false)) {
 					$query -> setParameter('published', $data -> getPublished());
 				}
+				$query -> setParameter('lang', $firstArray['lang']['original']);
 
 			}
 		}
 		//////////////////////////////////////////////////////////////////////////////////////////////////
 		else {
-			$dql = "SELECT n FROM ProyectoPrincipalBundle:CmsPage n";
+			$dql = "SELECT n FROM ProyectoPrincipalBundle:CmsPage n ";
+			$dql .= 'WHERE n.lang = :lang ';
+			if($mirror>0) $dql .= 'And n.mirror = :mirror ';
 			$query = $em -> createQuery($dql);
+			$query -> setParameter('lang', $firstArray['lang']['original']);
+			if($mirror>0) $query -> setParameter('mirror', $mirror);
 		}
 
 		$paginator = $this -> get('knp_paginator');
@@ -141,11 +160,158 @@ class PageController extends Controller {
 
 		}
 		$objects = $auxiliar;
-
-		$secondArray = array('pagination' => $pagination, 'filtros' => $filtros, 'objects' => $objects, 'form' => $form -> createView(), 'url' => $url);
-
+		$secondArray = array('pagination' => $pagination, 'filtros' => $filtros, 'objects' => $objects, 'url' => $url);
+		$secondArray['form'] = ($mirror==0) ?  $form -> createView() : $form;
+		
 		$array = array_merge($firstArray, $secondArray);
 		return $this -> render('ProyectoPrincipalBundle:Page:List.html.twig', $array);
+	}
+
+
+	public function createAction(Request $request) {
+
+		$firstArray = UtilitiesAPI::getDefaultContent('PAGINAS', 'Nueva Pagina', $this);
+		$secondArray = array('accion' => 'nuevo');
+		$secondArray['url'] = $this -> generateUrl('proyecto_principal_page_create');
+		$secondArray['lang'] = array('original' => 0, 'traduccion'=>1, 'mirror' =>0 );
+		$secondArray['data'] = new CmsPage();
+		$secondArray['isTranslate'] = false;
+
+		$array = array_merge($firstArray, $secondArray);
+		return PageController::procesar($array, $request, $this);
+	}
+
+	public function editAction($id, Request $request) {
+
+		$firstArray = UtilitiesAPI::getDefaultContent('PAGINAS', 'Editar Información', $this);
+		$secondArray = array('accion' => 'edicion');
+		$secondArray['url'] = $this -> generateUrl('proyecto_principal_page_edit', array('id' => $id));
+		$secondArray['id'] = $id;
+		
+
+		$secondArray['data'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> find($id);
+		if (!$secondArray['data']) {
+			throw $this -> createNotFoundException('La pagina que intenta e no existe ');
+		}
+		
+		$secondArray['lang'] = array('original' => 0, 'traduccion'=>1, 'mirror' =>$secondArray['data']->getMirror() );
+		$secondArray['isTranslate'] = false;
+
+		$array = array_merge($firstArray, $secondArray);
+		return PageController::procesar($array, $request, $this);
+	}
+	public function translateAction($id, Request $request) {
+
+		$config = UtilitiesAPI::getConfig('pages',$this);
+		$firstArray = UtilitiesAPI::getDefaultContent('PAGINAS', $config['translate'], $this);
+
+		$page = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> find($id);
+		if (!$page) {
+			throw $this -> createNotFoundException('La pagina que intenta traducir no existe ');
+		}
+
+		$secondArray = array();
+		$secondArray['lang'] = array('original' => 0, 'traduccion'=>1, 'mirror' =>$id );
+		$secondArray['isTranslate'] = true;
+		$data = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> findOneByMirror($id);
+
+		if (!$data) {
+			$secondArray['accion'] = 'nuevo';
+			$secondArray['data'] = new CmsPage();
+		} else {
+			$secondArray['accion'] = 'edicion';
+			$secondArray['data'] = $data;
+		}
+
+		$secondArray['url'] = $this -> generateUrl('proyecto_principal_page_translate', array('id' => $id));
+
+		$array = array_merge($firstArray, $secondArray);
+		return PageController::procesar($array, $request, $this);
+	}
+	public static function procesar($array, Request $request, $class) {
+
+		$data = $array['data'];
+
+		$array['themes'] = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsTheme') -> findAll();
+		$array['media']  = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> findByType(3);
+		$array['background'] = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> findByType(4);
+
+		$filtros = array();
+		$filtros['published'] = array(1 => 'Si', 0 => 'No');
+		$filtros['theme'] = UtilitiesAPI::getFilterData($array['themes']);
+		$filtros['parentPage'] = UtilitiesAPI::getFilter('CmsPage',$class);
+		$filtros['media'] = UtilitiesAPI::getFilterData($array['media']);
+		$filtros['background'] = UtilitiesAPI::getFilterData($array['background']);
+
+		$form = $class -> createFormBuilder($data) -> add('name', 'text', array('required' => true))
+		 -> add('title', 'text', array('required' => true)) 
+		 -> add('descriptionMeta', 'text', array('required' => true)) 
+		 -> add('keywords', 'text', array('required' => true)) 
+		 -> add('content', 'hidden', array('data' => '', ))
+		 -> add('upperText', 'text', array('required' => true)) 
+		 -> add('lowerText', 'text', array('required' => true))
+		 -> add('file', 'file', array('required' => false)) 
+		 -> add('parentPage', 'choice', array('choices' => $filtros['parentPage'], 'required' => false, )) 
+		 -> add('theme', 'choice', array('choices' => $filtros['theme'], 'required' => true, )) 
+		 -> add('media', 'choice', array('choices' => $filtros['media'], 'required' => true, )) 
+		 -> add('background', 'choice', array('choices' => $filtros['background'], 'required' => true, )) 
+		 -> add('published', 'checkbox', array('label' => 'Publicado', 'required' => false, )) 
+		 -> getForm();
+
+		if ($class -> getRequest() -> isMethod('POST')) {
+
+			$contenido = $request -> request -> all();
+			$contenido = $contenido['page']['content'];
+
+			$form -> bind($class -> getRequest());
+			$em = $class -> getDoctrine() -> getManager();
+
+			if ($array['accion'] == 'nuevo') {
+				
+				if($array['isTranslate'] == false)$data -> setLang($array['lang']['original']);
+				else $data -> setLang($array['lang']['traduccion']);
+				
+				$data -> setMirror($array['lang']['mirror']);
+
+				$data -> setRank(100);
+				$data -> setSuspended(0);
+				$data -> setSpacer(0);
+				$data -> setTemplate(0);
+				$data -> setDescription('');
+				$data -> setDateCreated(new \DateTime());
+			} else {
+				$data -> setDateUpdated(new \DateTime());
+			}
+			$data -> setContent($contenido);
+			$data -> setIp($class -> container -> get('request') -> getClientIp());
+			$data -> setUser($array['user'] -> getId());
+			$data -> setFriendlyName($data -> getName());
+
+			if ($array['accion'] == 'nuevo')
+				$em -> persist($data);
+
+			$em -> flush();
+
+			if ($array['accion'] == 'nuevo') {
+				$data -> setRank($data -> getId());
+				$em -> flush();
+			}
+			
+			if($array['isTranslate'] == true){
+				
+				$original = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> find($array['lang']['mirror']);
+				$original -> setMirror($data -> getId());
+				$em -> flush();
+			}
+			
+			return $class -> redirect($class -> generateUrl('proyecto_principal_page_list'));
+			//if ($form -> isValid()) {}
+		}
+		$array['form'] = $form -> createView();
+		$array['contenido'] = $array['form'] -> getVars();
+		$array['contenido'] = $array['contenido']['value'] -> getContent();
+
+		return $class -> render('ProyectoPrincipalBundle:Page:New-Edit.html.twig', $array);
 	}
 
 	public function rankAction() {
@@ -222,209 +388,6 @@ class PageController extends Controller {
 		$respuesta = new response(json_encode(array('estado' => $estado)));
 		$respuesta -> headers -> set('content_type', 'aplication/json');
 		return $respuesta;
-	}
-
-	public function createAction(Request $request) {
-
-		$firstArray = UtilitiesAPI::getDefaultContent('PAGINAS', 'Nueva Pagina', $this);
-		$secondArray = array('accion' => 'nuevo');
-		$secondArray['url'] = $this -> generateUrl('proyecto_principal_page_create');
-		$secondArray['lang'] = 0;
-
-		$array = array_merge($firstArray, $secondArray);
-		return PageController::procesarNormal($array, $request, $this);
-	}
-
-	public function editAction($id, Request $request) {
-
-		$firstArray = UtilitiesAPI::getDefaultContent('PAGINAS', 'Editar Información', $this);
-		$secondArray = array('accion' => 'edicion');
-		$secondArray['url'] = $this -> generateUrl('proyecto_principal_page_edit', array('id' => $id));
-		$secondArray['id'] = $id;
-		$secondArray['lang'] = 0;
-
-		$array = array_merge($firstArray, $secondArray);
-		return PageController::procesarNormal($array, $request, $this);
-	}
-
-	public static function procesarNormal($array, Request $request, $class) {
-
-		if ($array['accion'] == 'nuevo')
-			$data = new CmsPage();
-		else
-			$data = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> find($array['id']);
-
-		$objects = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> findAll();
-		$themes = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsTheme') -> findAll();
-		$media = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> findByType(3);
-		$background = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> findByType(4);
-
-		$filtros = array();
-		$filtros['published'] = array(1 => 'Si', 0 => 'No');
-		$filtros['theme'] = UtilitiesAPI::getFilter($themes);
-		$filtros['parentPage'] = UtilitiesAPI::getFilter($objects);
-		$filtros['media'] = UtilitiesAPI::getFilter($media);
-		$filtros['background'] = UtilitiesAPI::getFilter($background);
-
-		$form = $class -> createFormBuilder($data) -> add('name', 'text', array('required' => true))
-		 -> add('title', 'text', array('required' => true)) 
-		 -> add('descriptionMeta', 'text', array('required' => true)) 
-		 -> add('keywords', 'text', array('required' => true)) 
-		 -> add('content', 'hidden', array('data' => '', ))
-		 -> add('upperText', 'text', array('required' => true)) 
-		 -> add('lowerText', 'text', array('required' => true))
-		 -> add('file', 'file', array('required' => false)) 
-		 -> add('parentPage', 'choice', array('choices' => $filtros['parentPage'], 'required' => false, )) 
-		 -> add('theme', 'choice', array('choices' => $filtros['theme'], 'required' => true, )) 
-		 -> add('media', 'choice', array('choices' => $filtros['media'], 'required' => true, )) 
-		 -> add('background', 'choice', array('choices' => $filtros['background'], 'required' => true, )) 
-		 -> add('published', 'checkbox', array('label' => 'Publicado', 'required' => false, )) 
-		 -> getForm();
-
-		if ($class -> getRequest() -> isMethod('POST')) {
-
-			$contenido = $request -> request -> all();
-			$contenido = $contenido['page']['content'];
-
-			$form -> bind($class -> getRequest());
-			$em = $class -> getDoctrine() -> getManager();
-
-			if ($array['accion'] == 'nuevo') {
-				$data -> setLang($array['lang']);
-				$data -> setMirror(0);
-				$data -> setRank(100);
-				$data -> setSuspended(0);
-				$data -> setSpacer(0);
-				$data -> setTemplate(0);
-				$data -> setDescription('');
-				$data -> setDateCreated(new \DateTime());
-			} else {
-				$data -> setDateUpdated(new \DateTime());
-			}
-			$data -> setContent($contenido);
-			$data -> setIp($class -> container -> get('request') -> getClientIp());
-			$data -> setUser($array['user'] -> getId());
-			$data -> setFriendlyName($data -> getName());
-
-			if ($array['accion'] == 'nuevo')
-				$em -> persist($data);
-
-			$em -> flush();
-
-			if ($array['accion'] == 'nuevo') {
-				$data -> setRank($data -> getId());
-				$em -> flush();
-			}
-
-			return $class -> redirect($class -> generateUrl('proyecto_principal_page_list'));
-			//if ($form -> isValid()) {}
-		}
-		$array['form'] = $form -> createView();
-		$array['themes'] = $themes;
-		$array['media'] = $media;
-		$array['background'] = $background;
-		
-		$array['contenido'] = $array['form'] -> getVars();
-		$array['contenido'] = $array['contenido']['value'] -> getContent();
-
-		return $class -> render('ProyectoPrincipalBundle:Page:New-Edit.html.twig', $array);
-	}
-
-	public function translateAction($id, Request $request) {
-
-		$firstArray = UtilitiesAPI::getDefaultContent('PAGINAS', 'Editar Información', $this);
-
-		$data = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPageTranslate') -> findOneByPage($id);
-		$page = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> find($id);
-
-		if (!$page) {
-			throw $this -> createNotFoundException('La pagina que intenta traducir no existe ');
-		}
-		$secondArray = array();
-		$secondArray['page'] = $page;
-
-
-		if (!$data) {
-			$secondArray['accion'] = 'nuevo';
-			$secondArray['data'] = new CmsPageTranslate();
-		} else {
-			$secondArray['accion'] = 'edicion';
-			$secondArray['data'] = $data;
-		}
-
-		$secondArray['url'] = $this -> generateUrl('proyecto_principal_page_translate', array('id' => $id));
-		//$secondArray['id'] = $id;
-
-		$array = array_merge($firstArray, $secondArray);
-		return PageController::procesarTraduccion($array, $request, $this);
-	}
-
-	public static function procesarTraduccion($array, Request $request, $class) {
-
-		$data = $array['data'];
-
-		$objects = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> findAll();
-		$themes = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsTheme') -> findAll();
-		$media = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsMedia') -> findAll();
-		$background = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsBackground') -> findAll();
-
-		$filtros = array();
-		$filtros['lang'] = array(1 => 'english');
-
-
-		$form = $class -> createFormBuilder($data) 
-		-> add('name', 'text', array('required' => true)) 
-		-> add('title', 'text', array('required' => true)) 
-		-> add('descriptionMeta', 'text', array('required' => true)) 
-		-> add('keywords', 'text', array('required' => true)) 
-		-> add('content', 'hidden', array('data' => '', )) 
-		-> add('upperText', 'text', array('required' => true)) 
-		-> add('lowerText', 'text', array('required' => true)) 
-		-> add('file', 'file', array('required' => false)) 
-		-> add('lang', 'choice', array('choices' => $filtros['lang'], 'required' => true, )) 
-		-> getForm();
-
-		if ($class -> getRequest() -> isMethod('POST')) {
-
-			$contenido = $request -> request -> all();
-			$contenido = $contenido['page']['content'];
-
-			$form -> bind($class -> getRequest());
-			$em = $class -> getDoctrine() -> getManager();
-
-			if ($array['accion'] == 'nuevo') {
-				$data -> setPage($array['page']->getPage());
-				$data -> setMedia($array['page']->getMedia());
-				$data -> setBackground($array['page']->getBackground());
-				$data -> setTheme($array['page']->getTheme());
-				$data -> setPublished($array['page']->getPublished());
-				$data -> setSuspended($array['page']->getSuspended());
-				$data -> setRank($array['page']->getRank());
-				$data -> setSuspended(0);
-				$data -> setSpacer(0);
-				$data -> setDescription('');
-				$data -> setDateCreated(new \DateTime());
-			} else {
-				$data -> setDateUpdated(new \DateTime());
-			}
-			$data -> setContent($contenido);
-			$data -> setIp($class -> container -> get('request') -> getClientIp());
-			$data -> setUser($array['user'] -> getId());
-			$data -> setFriendlyName($data -> getTitle());//Modificar
-
-			if ($array['accion'] == 'nuevo')
-				$em -> persist($data);
-
-			$em -> flush();
-			return $class -> redirect($class -> generateUrl('proyecto_principal_page_list'));
-			//if ($form -> isValid()) {}
-		}
-		$array['form'] = $form -> createView();
-
-		$array['contenido'] = $array['form'] -> getVars();
-		$array['contenido'] = $array['contenido']['value'] -> getContent();
-
-		return $class -> render('ProyectoPrincipalBundle:Page:Translate.html.twig', $array);
 	}
 
 }

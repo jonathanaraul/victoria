@@ -141,7 +141,21 @@ class CmsArticle
      * @ORM\Column(name="type", type="integer", nullable=false)
      */
     private $type;
-
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="duration", type="string", length=255, nullable=false)
+     */
+    private $duration;
+	
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="gender", type="string", length=255, nullable=false)
+     */
+    private $gender;
+    
     /**
      * @var integer
      *
@@ -261,6 +275,52 @@ class CmsArticle
     public function getFriendlyName()
     {
         return $this->friendlyName;
+    }
+
+    /**
+     * Set duration
+     *
+     * @param string duration
+     * @return CmsArticle
+     */
+    public function setDuration($duration)
+    {
+        $this->duration = $duration;
+    
+        return $this;
+    }
+
+    /**
+     * Get duration
+     *
+     * @return string 
+     */
+    public function getDuration()
+    {
+        return $this->duration;
+    }
+
+    /**
+     * Set gender
+     *
+     * @param string gender
+     * @return CmsArticle
+     */
+    public function setGender($gender)
+    {
+        $this->gender = $gender;
+    
+        return $this;
+    }
+
+    /**
+     * Get gender
+     *
+     * @return string 
+     */
+    public function getGender()
+    {
+        return $this->gender;
     }
 
     /**

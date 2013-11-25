@@ -1,36 +1,38 @@
 <div class="menu-cont">
-	<div class="menu">
+	<div class="menu" style="width: 144px;">
+		
 		<div class="menu-element">
-			<a href="{{path('proyecto_front_biografia')}}">BIOGRAFÍA</a>
+			<a href="#">BIOGRAFÍA</a>
 			{%if menu == 'biografia'%}
 			<hr class="men-sel" style="background-color: #ffffff;">
 			{%endif%}
 		</div>
 		<div class="menu-element">
-			<a href="{{path('proyecto_front_noticias')}}">NOTICIAS</a>
+			<a href="#">NOTICIAS</a>
 			{%if menu == 'noticias'%}
 			<hr class="men-sel" style="background-color: #ffdd00;">
 			{%endif%}
 		</div>
 		<div class="menu-element">
-			<a href="{{path('proyecto_front_carteleraoctubre')}}">CARTELERA OCTUBRE</a>
+			<a href="#">CARTELERA</a>
 			{%if menu == 'carteleraoctubre'%}
 			<hr class="men-sel" style="background-color: #780e12;">
 			{%endif%}
 		</div>
 		<div class="menu-element">
-			<a href="#">PROGRAMACIÓN</a>
+			<a href="#">TALLERES</a>
 			{%if menu == 'programacion'%}
 			<hr class="men-sel" style="background-color: #f49401;">
 			{%endif%}
 		</div>
 		<div class="menu-element">
-			<a href="{{path('proyecto_front_cursoregular')}}">CURSO REGULAR PARA ACTORES 2013/2014 </a>
+			<a href="#">PROGRAMACIÓN</a>
 			{%if menu == 'cursoregular'%}
 			<hr class="men-sel" style="background-color: #ec0052;">
 			{%endif%}
 		</div>
-		<div class="menu-element">
+		{%if bio is defined%}
+		<!--<div class="menu-element">
 			<a href="{{path('proyecto_front_tallerteatro')}}">TALLER DE TEATRO PARA AFICIONADOS</a>
 			{%if menu == 'tallerteatro'%}
 			<hr class="men-sel" style="background-color: #780e12;">
@@ -66,14 +68,15 @@
 			{%if menu == 'reservasy'%}
 			<hr class="men-sel" style="background-color: #898989;">
 			{%endif%}
-		</div>
+		</div>-->
+		{%endif%}
 		<div class="designed-menu">
 			<div class="designed" style="bottom: 0px;">
 				<div>
 					<span class="copyrighted">Copyrights © La Victoria</span>
 				</div>
 				<div>
-					<a target="_blank" href="http://realego.es/">Realego ES<!--<img alt="Yeslogo.es" src="./La Victoria_files/white.png">--></a>
+					<p><img src="{{asset('design.png')}}"></p>
 				</div>
 			</div>
 		</div>

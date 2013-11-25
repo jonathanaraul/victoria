@@ -22,6 +22,7 @@ use Proyecto\PrincipalBundle\Entity\CmsPageTranslate;
 use Proyecto\PrincipalBundle\Entity\CmsBackground;
 use Proyecto\PrincipalBundle\Entity\CmsTheme;
 use Proyecto\PrincipalBundle\Entity\CmsMedia;
+use Proyecto\PrincipalBundle\Entity\CmsDate;
 
 class ArticleController extends Controller {
 
@@ -151,6 +152,21 @@ class ArticleController extends Controller {
 		$secondArray = array('accion' => 'editar');
 		$secondArray['url'] = $this -> generateUrl('proyecto_principal_article_edit', array('type'=>$type,'id' => $id));
 		$secondArray['id'] = $id;
+		$secondArray['fechasprevias'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsDate') -> findByArticle($id);
+		
+		if($secondArray['fechasprevias']!= null){
+			$auxiliar = array();
+			for ($i=0; $i < count($secondArray['fechasprevias']); $i++) {
+
+				$auxiliar[$i] = date_format($secondArray['fechasprevias'][$i]->getDate(), 'd-m-Y H:i:s');
+				
+					}
+			$secondArray['fechasprevias'] = $auxiliar;
+			
+
+		}
+
+		
 		$secondArray['lang'] = 0;
 		$array = array_merge($firstArray, $secondArray);
 		$array = array_merge($array, $config);
@@ -193,10 +209,15 @@ class ArticleController extends Controller {
 		$filtros['background'] = UtilitiesAPI::getFilter($background);
 		$filtros['category'] = UtilitiesAPI::getFilter($category);
 		
+		$validaciones = array(true,true);
+		if($array['type']=='news') 	$validaciones = array(false,false);
+		
 		$form = $class -> createFormBuilder($data) 
 		-> add('name', 'text', array('required' => true)) 
 		-> add('category', 'choice', array('choices' => $filtros['category'], 'required' => true, )) 
 		-> add('description', 'text', array('required' => true)) 
+		-> add('duration', 'text', array('required' => $validaciones[0])) 
+		-> add('gender', 'text', array('required' => $validaciones[1])) 
 		-> add('keywords', 'text', array('required' => true)) 
 		-> add('content', 'hidden', array('data' => '', )) 
 		-> add('file', 'file', array('required' => false)) 
@@ -209,10 +230,17 @@ class ArticleController extends Controller {
 		if ($class -> getRequest() -> isMethod('POST')) {
 
 			$contenido = $request -> request -> all();
+
+			$em = $class -> getDoctrine() -> getManager();
+			$fechas = null;
+			if($array['type'] != 'news'){
+			$fechas = $contenido['fechas'];
+			}
+			
 			$contenido = $contenido['page']['content'];
 
 			$form -> bind($class -> getRequest());
-			$em = $class -> getDoctrine() -> getManager();
+			
 
 			if ($array['accion'] == 'nuevo') {
 				$data -> setLang($array['lang']);
@@ -220,6 +248,10 @@ class ArticleController extends Controller {
 				$data -> setSuspended(0);
 				$data -> setDateCreated(new \DateTime());
 				$data -> setType($array['idtype']);
+				if($array['type']=='news'){
+					$data -> setGender('');
+					$data -> setDuration('');
+				}
 				
 			} else {
 				$data -> setDateUpdated(new \DateTime());
@@ -233,7 +265,28 @@ class ArticleController extends Controller {
 				$em -> persist($data);
 
 			$em -> flush();
+			
+			if($array['type'] != 'news'){
+				
+				$fechasBorrar= $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsDate') -> findByArticle($data->getId());
+				for ($i=0; $i < count($fechasBorrar); $i++) {
+				$em -> remove($fechasBorrar[$i]);
+				$em -> flush();
+					}
+		
+		
+				
+				
 
+			foreach ($fechas as $key => $value) {
+
+				$fecha = new CmsDate();
+				$fecha->setArticle($data->getId());
+				$fecha->setDate(UtilitiesAPI::convertirFechaNormal($value,$class));
+				$em -> persist($fecha);
+				$em -> flush();
+			}
+			}
 			return $class -> redirect($class -> generateUrl('proyecto_principal_article_list',array('type' => $array['type'])));
 			//if ($form -> isValid()) {}
 		}

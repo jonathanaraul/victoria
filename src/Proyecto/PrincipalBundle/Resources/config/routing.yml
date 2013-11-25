@@ -12,8 +12,8 @@ proyecto_principal_acceso:
     defaults: { _controller: ProyectoPrincipalBundle:User:login }
 
 proyecto_principal_page_list:
-    pattern:  /page/list
-    defaults: { _controller: ProyectoPrincipalBundle:Page:list }
+    pattern:  /page/list/{mirror}
+    defaults: { _controller: ProyectoPrincipalBundle:Page:list, mirror: '0' }
 proyecto_principal_page_rank:
     pattern:  /page/rank
     defaults: { _controller: ProyectoPrincipalBundle:Page:rank }

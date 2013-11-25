@@ -220,7 +220,7 @@ a, a:link, a:hover, a:active, a:visited{
 .menu{
     position: absolute;
     top: 270px;
-    right: 25px;
+    right: 70px;
     z-index: 140;
     /*margin: 270px 25px 0 0;*/
 }

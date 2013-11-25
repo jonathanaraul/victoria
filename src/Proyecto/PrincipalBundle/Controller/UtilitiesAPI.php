@@ -15,7 +15,14 @@ class UtilitiesAPI extends Controller {
 	public static function getConfig($type,$class){
 
 		$array =  array( );
-		
+		if($type == 'pages'){
+			//$array['idtype'] = 0;
+			$array['list'] = 'Mostrar Páginas';
+			$array['create'] = 'Añadir Página';
+			$array['edit'] = 'Editar Pagina';
+			$array['translate'] = 'Traducción de Página';
+			$array['type'] = $type;
+		}
 		if($type == 'news'){
 			$array['idtype'] = 0;
 			$array['list'] = 'Mostrar Noticias';
@@ -26,10 +33,10 @@ class UtilitiesAPI extends Controller {
 		}
 		else if($type == 'events'){
 			$array['idtype'] = 1;
-			$array['list'] = 'Mostrar Eventos';
-			$array['create'] = 'Añadir Evento';
-			$array['edit'] = 'Editar Evento';
-			$array['translate'] = 'Traducir Evento';
+			$array['list'] = 'Mostrar Espéctaculos';
+			$array['create'] = 'Añadir Espéctaculo';
+			$array['edit'] = 'Editar Espéctaculo';
+			$array['translate'] = 'Traducir Espéctaculo';
 			$array['type'] = $type;
 		}
 		else if($type == 'programs'){
@@ -73,52 +80,24 @@ class UtilitiesAPI extends Controller {
 		return $array;
 	}
 
-	public static function getFilter($data) {
+	public static function getFilter($clase,$class) {
+		$data = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:'.$clase) -> findAll();
+
 		$array = array();
 		for ($i = 0; $i < count($data); $i++) {
 			$array[$data[$i] -> getId()] = $data[$i] -> getName();
 		}
 		return $array;
 	}
-	public static function getFilterTheme($data) {
-		$array = array();
-		for ($i = 0; $i < count($data); $i++) {
-			$array[$data[$i] -> getThemeId()] = $data[$i] -> getName();
-		}
-		return $array;
-	}
-
-	public static function getFilterParentPage($data) {
-		$array = array();
-		for ($i = 0; $i < count($data); $i++) {
-			$array[$data[$i] -> getPageId()] = $data[$i] -> getName();
-		}
-		return $array;
-	}
-
-	public static function getFilterMedia($data) {
-		$array = array();
-		for ($i = 0; $i < count($data); $i++) {
-			$array[$data[$i] -> getMediaId()] = $data[$i] -> getName();
-		}
-		return $array;
-	}
-
-	public static function getFilterBackground($data) {
-		$array = array();
-		for ($i = 0; $i < count($data); $i++) {
-			$array[$data[$i] -> getBackgroundId()] = $data[$i] -> getName();
-		}
-		return $array;
-	}
-	public static function getFilterCategory($data) {
+	public static function getFilterData($data) {
 		$array = array();
 		for ($i = 0; $i < count($data); $i++) {
 			$array[$data[$i] -> getId()] = $data[$i] -> getName();
 		}
 		return $array;
 	}
-		public static function removeData($id,$class){
+
+	public static function removeData($id,$class){
 			
 		$object = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:Data') -> find($id);
 		$em = $class -> getDoctrine() -> getManager();
@@ -249,7 +228,24 @@ class UtilitiesAPI extends Controller {
 		$em -> persist($user);
 		$em -> flush();
 	}
+	 public static function convertirFechaNormal($fechaOriginal, $class) {
+	
+	 $fechaOriginal = trim($fechaOriginal);
+	 $arreglo1 = explode(" ", $fechaOriginal);
+	 $arreglo = explode("-", $arreglo1[0]);
+	 $fecha = new \DateTime();
+	 $fecha -> setDate($arreglo[2], $arreglo[1], $arreglo[0]);
+	 $arreglo = explode(":", $arreglo1[1]);
+	 $fecha -> setTime ( $arreglo[0], $arreglo[1], $arreglo[2] );
+	 
+	 return $fecha;
+	 }
 
+	 public static function convertirAFechaNormal($fechaOriginal, $class) {
+
+	 $fechaOriginal = new \DateTime($fechaOriginal);
+	 return date_format($fechaOriginal, 'd/m/Y'); ;
+	 }
 	/*
 
 	 public static function obtenerFechaSistema($class) {

@@ -1,4 +1,4 @@
-{% extends "ProyectoPrincipalBundle:Helpers2:baseInterna.html.twig" %}
+{% extends "ProyectoPrincipalBundle:Helpers:baseInterna.html.twig" %}
 {%block js%}
 <script type="text/javascript">
 var eliminarPagina = '{{path('proyecto_principal_page_delete')}}';
@@ -9,10 +9,12 @@ var cambiarStatusPagina = '{{path('proyecto_principal_page_status')}}';
 
 {%block contents%} <td id="contents"><!-- whole contents -->
 <div id="sf_admin_container">
-	<h1>Listado de páginas</h1>
+	<h1>{{menu.subseccion}}</h1>
 	<div id="sf_admin_header"></div>
+	{%if form is not null%}
 	<div id="sf_admin_bar">
 		<div class="sf_admin_filters">
+		
 			<form id="filter-form" action="{{ url }}" method="post" {{ form_enctype(form) }}>
 				<fieldset>
 					<h2>Filtros</h2>
@@ -55,6 +57,7 @@ var cambiarStatusPagina = '{{path('proyecto_principal_page_status')}}';
 			</form>
 		</div>
 	</div>
+	{%endif%}
 	<div id="sf_admin_content">
 		<table cellspacing="0" class="sf_admin_list" style="width: 842px;">
 			<thead>
