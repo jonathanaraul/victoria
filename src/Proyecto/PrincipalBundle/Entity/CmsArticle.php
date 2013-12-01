@@ -644,7 +644,7 @@ class CmsArticle
     {
         return $this->mirror;
     }
-		/**
+	/**
 	 * Sets file.
 	 *
 	 * @param UploadedFile $file

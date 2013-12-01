@@ -1,7 +1,8 @@
 {% extends "ProyectoFrontBundle:Helpers2:body.html.twig" %}
 
 {%block imagenes%}
-var images = ;
+
+var images =  ["{{ asset(''~ backgrounds[0].getWebPath ~'') }}","{{ asset(''~ backgrounds[1].getWebPath ~'') }}","{{ asset(''~ backgrounds[2].getWebPath ~'') }}"];
 {%endblock%}
 
 {%block contenido%}

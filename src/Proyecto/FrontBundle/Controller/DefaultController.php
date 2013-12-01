@@ -13,8 +13,11 @@ use Proyecto\PrincipalBundle\Entity\Usuario;
 
 class DefaultController extends Controller {
 	public function inicioAction() {
-		$array = UtilitiesAPI::getDefaultContent('inicio', $this);
+		$firstArray = UtilitiesAPI::getDefaultContent('inicio', $this);
+		$secondArray = array();
+		$secondArray['backgrounds'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> findByHome(1);
 
+		$array = array_merge($firstArray, $secondArray);
 		return $this -> render('ProyectoFrontBundle:Default2:inicio.html.twig', $array);
 	}
 	public function biografiaAction() {
