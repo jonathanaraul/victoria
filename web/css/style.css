@@ -342,7 +342,7 @@ a, a:link, a:hover, a:active, a:visited{
 }
 
 .news-big-title{
-    top: 1000px !important;
+    #top: 1000px !important;
     padding-bottom: 30px !important;
 }
 
@@ -478,7 +478,7 @@ a, a:link, a:hover, a:active, a:visited{
 
 .content-cont, .biography-cont, .news-cont{
     position: relative;
-    margin: 90px 0 0 90px;
+    margin: 50px 0 0 90px;
 }
 
 .content-cont, .biography-cont{
@@ -499,7 +499,7 @@ a, a:link, a:hover, a:active, a:visited{
 }
 
 .news-cont{
-    width: 450px;
+    width: 634px;
 }
 
 .content-cont{
@@ -516,12 +516,12 @@ a, a:link, a:hover, a:active, a:visited{
 }
 
 .biography-cont{
-    width: 410px;
+    width: 575px;
     height: 360px;
 }
 
 .news-cont{
-    height: 630px;
+    height: 500px;
 }
 
 #scroll-me{
@@ -561,7 +561,7 @@ a, a:link, a:hover, a:active, a:visited{
 }
 
 .content-news, .biography-content{
-    width: 400px;
+    width: 563px;
 }
 
 .content-news{

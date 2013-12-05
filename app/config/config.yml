@@ -80,3 +80,6 @@ avalanche_imagine:
         my_thumb:
             type:    thumbnail
             options: { size: [120, 90], mode: outbound }
+        my_thumb2:
+            type:    thumbnail
+            options: { size: [372, 240], mode: outbound }

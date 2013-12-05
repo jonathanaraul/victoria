@@ -2,31 +2,33 @@
 
 {%block imagenes%}
 
-	var images =  ["{{ asset(''~ resource.getWebPath ~'') }}"];
+	var images =  ["{{asset('uploads/resource/images/1a8aadd2c7351a55ab453db93d6c1b71.jpg')}}"];
 	
 {%endblock%}
 
 {%block contenido%}
-<div class="middle-right">
+<div class="middle-right-sub">
 	{% include 'ProyectoFrontBundle:Default2:titulo.html.twig' %}
 
 	<div class="biography-cont">
 		<p class="content-title">
-			BIOGRAFÍA
+			{{article.name}}
 		</p>
 		<div class="biography-content scroll-4" id="scroll-me">
-			{{page.content|raw}}
-			{{page.media|raw}}
+			{{article.content|raw}}
+
+			<p><img alt="" src="{{ media.getWebPath | apply_filter('my_thumb2') }}"></p>
 		</div>
 		<div class="lower-text"></div>
 		<div class="lower-box"></div>
 		<div class="biography-logo"></div>
 	</div>
-	<div class="biography-big-text">
-		ESPACIO CULTURAL
-	</div>
 </div>
+
+
+
+
 {%endblock%}
 
-{%block celda%} <div class="cell-right"></div>
+{%block celda%} <div class="cell-right-sub"></div>
 {%endblock%} 

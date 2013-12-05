@@ -7,6 +7,12 @@ proyecto_front_biografia:
 proyecto_front_noticias:
     pattern:  /noticias
     defaults: { _controller: ProyectoFrontBundle:Default:noticias }
+proyecto_front_programacion:
+    pattern:  /programacion
+    defaults: { _controller: ProyectoFrontBundle:Default:programacion }
+proyecto_front_article:
+    pattern:  /article/{id}
+    defaults: { _controller: ProyectoFrontBundle:Default:article }
 proyecto_front_carteleraoctubre:
     pattern:  /cartelera-octubre
     defaults: { _controller: ProyectoFrontBundle:Default:carteleraOctubre }

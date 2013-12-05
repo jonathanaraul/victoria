@@ -37,7 +37,7 @@ class ArticleController extends Controller {
 		$category = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsCategory') -> findByType($config['idtype']);
 
 		$filtros['published'] = array(1 => 'Si', 0 => 'No');
-		$filtros['category'] = UtilitiesAPI::getFilterCategory($category);
+		$filtros['category'] = UtilitiesAPI::getFilterData($category);
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 		$data = new CmsArticle();
@@ -162,11 +162,9 @@ class ArticleController extends Controller {
 				
 					}
 			$secondArray['fechasprevias'] = $auxiliar;
-			
 
 		}
 
-		
 		$secondArray['lang'] = 0;
 		$array = array_merge($firstArray, $secondArray);
 		$array = array_merge($array, $config);

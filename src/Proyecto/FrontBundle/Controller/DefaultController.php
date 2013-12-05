@@ -21,14 +21,55 @@ class DefaultController extends Controller {
 		return $this -> render('ProyectoFrontBundle:Default2:inicio.html.twig', $array);
 	}
 	public function biografiaAction() {
-		$array = UtilitiesAPI::getDefaultContent('biografia', $this);
+		$firstArray = UtilitiesAPI::getDefaultContent('biografia', $this);
+		$secondArray = array();
+		$secondArray['page'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> find(3);
+		$secondArray['resource'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($secondArray['page']->getBackground());
+		$secondArray['media'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($secondArray['page']->getMedia());
 
+		$array = array_merge($firstArray, $secondArray);
 		return $this -> render('ProyectoFrontBundle:Default2:biografia.html.twig', $array);
 	}
 	public function noticiasAction() {
-		$array = UtilitiesAPI::getDefaultContent('noticias', $this);
-
+		$firstArray = UtilitiesAPI::getDefaultContent('noticias', $this);
+		$secondArray = array();
+		$secondArray['articles'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsArticle') -> findByType(0);
+		$secondArray['media'] = array();
+		
+		for($i=0;$i<count($secondArray['articles']);$i++){
+			$secondArray['media'][$i] =  $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($secondArray['articles'][$i]->getMedia()); 
+		}
+		$secondArray['page'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> find(3);
+		
+		$array = array_merge($firstArray, $secondArray);
 		return $this -> render('ProyectoFrontBundle:Default2:noticias.html.twig', $array);
+	}
+	public function articleAction($id) {
+		$firstArray = UtilitiesAPI::getDefaultContent('noticias', $this);
+		$secondArray = array();
+		$secondArray['article'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsArticle') -> find($id);
+		
+		$secondArray['resource'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($secondArray['article']->getBackground());
+		$secondArray['media'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($secondArray['article']->getMedia());
+		
+		$array = array_merge($firstArray, $secondArray);
+		return $this -> render('ProyectoFrontBundle:Default2:article.html.twig', $array);
+	}
+	public function programacionAction() {
+		$firstArray = UtilitiesAPI::getDefaultContent('programacion', $this);
+		$secondArray = array();
+		$secondArray['articles'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsArticle') -> findByType(1);
+		$secondArray['media'] = array();
+		
+		for($i=0;$i<count($secondArray['articles']);$i++){
+			$secondArray['media'][$i] =  $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($secondArray['articles'][$i]->getMedia()); 
+			$secondArray['dates'][$i] =  $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsDate') -> findByArticle($secondArray['articles'][$i]->getId()); 
+		}
+		$secondArray['page'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> find(2);
+		$secondArray['background'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($secondArray['page']->getBackground());
+		
+		$array = array_merge($firstArray, $secondArray);
+		return $this -> render('ProyectoFrontBundle:Default2:programacion.html.twig', $array);
 	}
 	public function carteleraOctubreAction() {
 		$array = UtilitiesAPI::getDefaultContent('carteleraoctubre', $this);

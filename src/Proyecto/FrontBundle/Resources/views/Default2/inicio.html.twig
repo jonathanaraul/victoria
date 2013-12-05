@@ -2,13 +2,17 @@
 
 {%block imagenes%}
 
-var images =  ["{{ asset(''~ backgrounds[0].getWebPath ~'') }}","{{ asset(''~ backgrounds[1].getWebPath ~'') }}","{{ asset(''~ backgrounds[2].getWebPath ~'') }}"];
+	var images =  new Array();
+	{%for element in backgrounds%}
+		images[{{loop.index0}}] = "{{ asset(''~ element.getWebPath ~'') }}";
+	{%endfor%}
+
 {%endblock%}
 
 {%block contenido%}
 <div class="middle-right-sub">
 	{% include 'ProyectoFrontBundle:Default2:titulo.html.twig' %}
-	<div class="main-big-text">
+	<div class="main-big-text" style="margin-top: 160px;">
 		<p>
 			ESPACIO
 			<br>

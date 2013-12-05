@@ -1,8 +1,7 @@
 {% extends "ProyectoFrontBundle:Helpers2:body.html.twig" %}
 
 {%block imagenes%}
-var images = ["{{asset('uploads/resource/images/e143f645ecdbae5e895098b05b9eb5c0.jpg')}}"];
-
+var images = ["{{ asset(''~ background.getWebPath ~'') }}"];
 {%endblock%}
 
 {%block contenido%}
@@ -28,57 +27,43 @@ var images = ["{{asset('uploads/resource/images/e143f645ecdbae5e895098b05b9eb5c0
 			ESPACIO CULTURAL
 		</div>
 	</div>
-	<div class="upper-text" style="background-color: #ffdd00 !important"></div>
+	<div class="upper-text" style="background-color: #f49401 !important"></div>
 	<div class="news-cont">
 		<hr>
 		<p class="content-title">
-			NOTICIAS
+			Programación
 		</p>
 		<div class="content-news scroll-10">
-			{%for element in articles%}
+			{%set contador =0%}
+			{%for element in articles if contador <3%}
+			{%set contador = contador + 1%}
 			<div class="news-cell">
-				<!--<div class="" style="width: 85px;">
-					</
-				</div>
-				<div class="news-left" style="width: 85px;">
-					
-				</div>
-				<div class="news-right" style="width: 350px;">
-					<div class="news-title-more">
-						
-					</div>
-					<div class="rel">
-						<div class="news-more">
-							{{element.content|raw}}
-						</div>
-					</div>
-				</div>
-			-->
 				<table>
 					<tr>
-						<td width="20%"><img alt="" src="{{ media[loop.index0].getWebPath | apply_filter('my_thumb') }}"></td>
-						<td width="20%" valign="top"><b>{{element.getDateCreated.format('Y-m-d')}}</b></td>
+						<td width="20%">
+							<img alt="" src="{{ media[loop.index0].getWebPath | apply_filter('my_thumb') }}">
+						</td>
 						<td width="60%"  valign="top">
 							<p>{{element.name}}</p> 
 							<p> 
 							{{element.content|raw}}
 							</p>
-							<p style="text-align: right;"><a href="{{ path('proyecto_front_article', {'id': element.id}) }}" style="color: black;">Leer noticia</a></p>´
-							</td>
-
+							<p >Atributo 1: Attr1  Atributo 2: Attr2</p>
+							<p ><a href="{{ path('proyecto_front_article', {'id': element.id}) }}" style="color: black;">RESERVA AHORA</a></p>
+					
+						</td>
 					</tr>
 				</table>
-				
 			</div>
 			{%endfor%}
-		<div class="next-news p-2"></div>
+		
 		</div>
 		<div class="lower-text"></div>
-		<div class="lower-box"></div>
+		<div class="lower-box" style="right: 200px;"></div>
 	</div>
 	<div class="main-big-title news-big-title" style="padding-top: 86px;">
-		<div class="theme-sel-10">
-			Noticias
+		<div class="theme-sel-6">
+			Programación
 		</div>
 	</div>
 </div>

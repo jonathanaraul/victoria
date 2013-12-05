@@ -2,13 +2,13 @@
 	<div class="menu" style="width: 144px;">
 		
 		<div class="menu-element">
-			<a href="#">BIOGRAFÍA</a>
+			<a href="{{path('proyecto_front_biografia')}}">BIOGRAFÍA</a>
 			{%if menu == 'biografia'%}
 			<hr class="men-sel" style="background-color: #ffffff;">
 			{%endif%}
 		</div>
 		<div class="menu-element">
-			<a href="#">NOTICIAS</a>
+			<a href="{{path('proyecto_front_noticias')}}">NOTICIAS</a>
 			{%if menu == 'noticias'%}
 			<hr class="men-sel" style="background-color: #ffdd00;">
 			{%endif%}
@@ -21,13 +21,13 @@
 		</div>
 		<div class="menu-element">
 			<a href="#">TALLERES</a>
-			{%if menu == 'programacion'%}
+			{%if menu == 'talleres'%}
 			<hr class="men-sel" style="background-color: #f49401;">
 			{%endif%}
 		</div>
 		<div class="menu-element">
-			<a href="#">PROGRAMACIÓN</a>
-			{%if menu == 'cursoregular'%}
+			<a href="{{path('proyecto_front_programacion')}}">PROGRAMACIÓN</a>
+			{%if menu == 'programacion'%}
 			<hr class="men-sel" style="background-color: #ec0052;">
 			{%endif%}
 		</div>
