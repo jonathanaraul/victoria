@@ -71,6 +71,22 @@ class DefaultController extends Controller {
 		$array = array_merge($firstArray, $secondArray);
 		return $this -> render('ProyectoFrontBundle:Default2:programacion.html.twig', $array);
 	}
+	public function talleresAction() {
+		$firstArray = UtilitiesAPI::getDefaultContent('talleres', $this);
+		$secondArray = array();
+		$secondArray['articles'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsArticle') -> findByType(2);
+		$secondArray['media'] = array();
+		
+		for($i=0;$i<count($secondArray['articles']);$i++){
+			$secondArray['media'][$i] =  $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($secondArray['articles'][$i]->getMedia()); 
+			$secondArray['dates'][$i] =  $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsDate') -> findByArticle($secondArray['articles'][$i]->getId()); 
+		}
+		$secondArray['page'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> find(7);
+		$secondArray['background'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($secondArray['page']->getBackground());
+		
+		$array = array_merge($firstArray, $secondArray);
+		return $this -> render('ProyectoFrontBundle:Default2:talleres.html.twig', $array);
+	}
 	public function carteleraOctubreAction() {
 		$array = UtilitiesAPI::getDefaultContent('carteleraoctubre', $this);
 

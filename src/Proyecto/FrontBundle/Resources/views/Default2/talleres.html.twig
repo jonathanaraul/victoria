@@ -1,0 +1,73 @@
+{% extends "ProyectoFrontBundle:Helpers2:body.html.twig" %}
+
+{%block imagenes%}
+var images = ["{{ asset(''~ background.getWebPath ~'') }}"];
+{%endblock%}
+
+{%block contenido%}
+<div class="middle-right-sub">
+	<div class="middle-right-sub-back">
+		<div class="black-top"></div>
+		<div>
+			<div class="black-top-left"></div>
+			<div class="black-top-right"></div>
+		</div>
+		<div class="black-middle"></div>
+		<div>
+			<div class="black-middle-left"></div>
+			<div class="black-middle-right"></div>
+		</div>
+		<div class="black-bottom" style="height: 1170px;"></div>
+	</div>
+	<div class="top-main-text">
+		<div class="top-main-big">
+			LA VICTORIA
+		</div>
+		<div class="top-main-small">
+			ESPACIO CULTURAL
+		</div>
+	</div>
+	<div class="upper-text" style="background-color: #ec0052 !important"></div>
+	<div class="news-cont">
+		<hr>
+		<p class="content-title">
+			Talleres
+		</p>
+		<div class="content-news scroll-10">
+			{%set contador =0%}
+			{%for element in articles if contador <3%}
+			{%set contador = contador + 1%}
+			<div class="news-cell">
+				<table>
+					<tr>
+						<td width="20%">
+							<img alt="" src="{{ media[loop.index0].getWebPath | apply_filter('my_thumb') }}">
+						</td>
+						<td width="60%"  valign="top">
+							<p>{{element.name}}</p> 
+							<p> 
+							{{element.content|raw}}
+							</p>
+							<p >Atributo 1: Attr1  Atributo 2: Attr2</p>
+							<p ><a href="{{ path('proyecto_front_article', {'id': element.id}) }}" style="color: black;">RESERVA AHORA</a></p>
+					
+						</td>
+					</tr>
+				</table>
+			</div>
+			{%endfor%}
+		
+		</div>
+		<div class="lower-text"></div>
+		<div class="lower-box" style="right: 200px;"></div>
+	</div>
+	<div class="main-big-title news-big-title" style="padding-top: 86px;">
+		<div class="theme-sel-12">
+			Talleres
+		</div>
+	</div>
+</div>
+{%endblock%}
+
+{%block celda%} <div class="cell-right-sub"></div>
+{%endblock%} 

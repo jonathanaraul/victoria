@@ -10,6 +10,9 @@ proyecto_front_noticias:
 proyecto_front_programacion:
     pattern:  /programacion
     defaults: { _controller: ProyectoFrontBundle:Default:programacion }
+proyecto_front_talleres:
+    pattern:  /talleres
+    defaults: { _controller: ProyectoFrontBundle:Default:talleres }
 proyecto_front_article:
     pattern:  /article/{id}
     defaults: { _controller: ProyectoFrontBundle:Default:article }
