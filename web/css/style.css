@@ -334,7 +334,7 @@ a, a:link, a:hover, a:active, a:visited{
 }
 
 .main-big-title{
-    position: absolute;
+    position: static;
     top: 620px;
     left: 130px;
     color: #FFF;
@@ -521,7 +521,7 @@ a, a:link, a:hover, a:active, a:visited{
 }
 
 .news-cont{
-    height: 500px;
+    #height: 500px;
 }
 
 #scroll-me{
@@ -565,7 +565,7 @@ a, a:link, a:hover, a:active, a:visited{
 }
 
 .content-news{
-    height: 590px;
+    #height: 590px;
 }
 
 .biography-content{

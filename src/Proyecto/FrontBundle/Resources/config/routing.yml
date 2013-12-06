@@ -16,57 +16,12 @@ proyecto_front_talleres:
 proyecto_front_article:
     pattern:  /article/{id}
     defaults: { _controller: ProyectoFrontBundle:Default:article }
-proyecto_front_carteleraoctubre:
-    pattern:  /cartelera-octubre
-    defaults: { _controller: ProyectoFrontBundle:Default:carteleraOctubre }
-proyecto_front_cursoregular:
-    pattern:  /curso-regular
-    defaults: { _controller: ProyectoFrontBundle:Default:cursoRegular }
-proyecto_front_tallerteatro:
-    pattern:  /taller-teatro
-    defaults: { _controller: ProyectoFrontBundle:Default:tallerTeatro }
-proyecto_front_losmartes:
-    pattern:  /los-martes
-    defaults: { _controller: ProyectoFrontBundle:Default:losMartes }
 proyecto_front_gastrobar:
     pattern:  /gastrobar
     defaults: { _controller: ProyectoFrontBundle:Default:gastrobar }
-proyecto_front_presentanos:
-    pattern:  /tu-proyecto
-    defaults: { _controller: ProyectoFrontBundle:Default:presentanos }
-proyecto_front_informacion_reservas:
-    pattern:  /informacion-reservas
-    defaults: { _controller: ProyectoFrontBundle:Default:informacionReservas }
-proyecto_front_reservas_contacto:
-    pattern:  /reservas-contacto
-    defaults: { _controller: ProyectoFrontBundle:Default:reservasContacto }
-proyecto_front_organizacion:
-    pattern:  /organizacion
-    defaults: { _controller: ProyectoFrontBundle:Default:organizacion }
-proyecto_front_organizacion_articulo:
-    pattern:  /organizacion/{id}
-    defaults: { _controller: ProyectoFrontBundle:Default:articulo,id: '1' }
-proyecto_front_informacion:
-    pattern:  /informacion
-    defaults: { _controller: ProyectoFrontBundle:Default:informacion }
-proyecto_front_informacion_articulo:
-    pattern:  /informacion/{id}
-    defaults: { _controller: ProyectoFrontBundle:Default:articulo,id: '1' }
-proyecto_front_descargas:
-    pattern:  /descargas
-    defaults: { _controller: ProyectoFrontBundle:Default:descargas }
 proyecto_front_contacto:
     pattern:  /contacto
     defaults: { _controller: ProyectoFrontBundle:Default:contacto }
-proyecto_front_registro:
-    pattern:  /registro
-    defaults: { _controller: ProyectoFrontBundle:Users:registro }
-proyecto_front_perfil:
-    pattern:  /perfil
-    defaults: { _controller: ProyectoFrontBundle:Users:perfil }
-proyecto_front_entrada:
-    pattern:  /entrada
-    defaults: { _controller: ProyectoFrontBundle:Users:entrada }
 proyecto_front_validacion:
     pattern:  /validacion
     defaults: { _controller: ProyectoFrontBundle:Users:validacion }

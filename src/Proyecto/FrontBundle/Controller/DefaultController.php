@@ -87,141 +87,28 @@ class DefaultController extends Controller {
 		$array = array_merge($firstArray, $secondArray);
 		return $this -> render('ProyectoFrontBundle:Default2:talleres.html.twig', $array);
 	}
-	public function carteleraOctubreAction() {
-		$array = UtilitiesAPI::getDefaultContent('carteleraoctubre', $this);
-
-		return $this -> render('ProyectoFrontBundle:Default2:carterleraoctubre.html.twig', $array);
-	}
-	public function cursoRegularAction() {
-		$array = UtilitiesAPI::getDefaultContent('cursoregular', $this);
-
-		return $this -> render('ProyectoFrontBundle:Default2:cursoregular.html.twig', $array);
-	}
-	public function tallerTeatroAction() {
-		$array = UtilitiesAPI::getDefaultContent('tallerteatro', $this);
-
-		return $this -> render('ProyectoFrontBundle:Default2:tallerteatro.html.twig', $array);
-	}
-	public function losMartesAction() {
-		$array = UtilitiesAPI::getDefaultContent('losmartes', $this);
-
-		return $this -> render('ProyectoFrontBundle:Default2:losmartes.html.twig', $array);
-	}
+	
 	public function gastrobarAction() {
-		$array = UtilitiesAPI::getDefaultContent('gastrobarla', $this);
+		$firstArray = UtilitiesAPI::getDefaultContent('gastrobarla', $this);
+		$secondArray = array();
+		$secondArray['page'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> find(33);
+		
+		$secondArray['background'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($secondArray['page']->getBackground());
+		$secondArray['media'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($secondArray['page']->getMedia());
+		$secondArray['theme'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsTheme') -> find($secondArray['page']->getTheme());
 
-		return $this -> render('ProyectoFrontBundle:Default2:gastrobarla.html.twig', $array);
+		$array = array_merge($firstArray, $secondArray);
+		return $this -> render('ProyectoFrontBundle:Default2:gastrobar.html.twig', $array);
 	}
-	public function presentanosAction() {
-		$array = UtilitiesAPI::getDefaultContent('presentanostu', $this);
-
-		return $this -> render('ProyectoFrontBundle:Default2:presentanos.html.twig', $array);
-	}
-	public function informacionReservasAction() {
-		$array = UtilitiesAPI::getDefaultContent('informaciony', $this);
-
-		return $this -> render('ProyectoFrontBundle:Default2:informacionreservas.html.twig', $array);
-	}
-	public function reservasContactoAction() {
-		$array = UtilitiesAPI::getDefaultContent('reservasy', $this);
-
-		return $this -> render('ProyectoFrontBundle:Default2:reservascontacto.html.twig', $array);
-	}
-/*
-	public function organizacionAction() {
-		$array = UtilitiesAPI::getDefaultContent('organizacion', $this);
-		$array['titulo'] = 'La Organizaci&oacute;n';
-		$array['objects'] = APIController::findDataByTitleCategory($array['menu'], $this);
-		$array['ruta'] = 'proyecto_front_organizacion_articulo';
-
-		return $this -> render('ProyectoFrontBundle:Default:articulos.html.twig', $array);
-	}
-
-	public function informacionAction() {
-		$array = UtilitiesAPI::getDefaultContent('informacion', $this);
-		$array['titulo'] = 'Informaci&oacute;n';
-		$array['ruta'] = 'proyecto_front_informacion_articulo';
-		$array['objects'] = APIController::findDataByTitleCategory($array['menu'], $this);
-
-		return $this -> render('ProyectoFrontBundle:Default:articulos.html.twig', $array);
-	}
-
-	public function articuloAction($id) {
-		$array = UtilitiesAPI::getDefaultContent('articulo', $this);
-		$array['object'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:Data') -> find($id);
-
-		if (!$array['object']) {
-			throw $this -> createNotFoundException('Articulo no encontrado');
-		}
-
-		if ($array['object'] -> getCategoria() -> getTitulo() != 'informacion' && $array['object'] -> getCategoria() -> getTitulo() != 'organizacion') {
-			throw $this -> createNotFoundException('Articulo no encontrado');
-		}
-
-		$array['menu'] = $array['object'] -> getCategoria() -> getTitulo();
-
-		return $this -> render('ProyectoFrontBundle:Default:articulo.html.twig', $array);
-	}
-
-	public function descargasAction() {
-		$array = UtilitiesAPI::getDefaultContent('descargas', $this);
-		$array['objects'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:Categoria') -> findByTipo(1);
-
-		$em = $this -> getDoctrine() -> getManager();
-		$query = $em -> createQuery('SELECT d
-    								 FROM ProyectoPrincipalBundle:Data d,
-    	 								  ProyectoPrincipalBundle:Categoria c
-   	 								 WHERE d.categoria = c.id AND
-   	 								       c.tipo = :tipo
-    								 ORDER BY d.titulo ASC') -> setParameter('tipo', '1');
-
-		$array['downloads'] = $query -> getResult();
-
-		return $this -> render('ProyectoFrontBundle:Default:descargas.html.twig', $array);
-	}
-
 	public function contactoAction() {
-		$array = UtilitiesAPI::getDefaultContent('contacto', $this);
+		$firstArray = UtilitiesAPI::getDefaultContent('contacto', $this);
+		$secondArray = array();
+		$secondArray['page'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> find(14);
+		$secondArray['background'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($secondArray['page']->getBackground());
+		$secondArray['theme'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsTheme') -> find($secondArray['page']->getTheme());
 
-		$data = new Entrada();
-		if($array['usuario']!=null){
-			$data->setNombre($array['usuario']->getNombre() .' '.$array['usuario']->getApellido());
-			$data->setEmail($array['usuario']->getEmail());
-		}
-		$tipo = '3';
-		//3= Entrada de archivos
-
-		$form = $this -> createFormBuilder($data) 
-				-> add('nombre', 'text',array('disabled' => true) ) 
-				-> add('email', 'text',array('disabled' => true) ) 
-				-> add('mensaje', 'textarea') 
-				-> add('categoria', 'entity', array('class' => 'ProyectoPrincipalBundle:Categoria', 'query_builder' => function(EntityRepository $er) use ($tipo) {
-			return $er -> createQueryBuilder('sc') -> where('sc.tipo = :tipo') -> setParameter('tipo', $tipo);
-		}, )) 
-				-> add('file') -> getForm();
-
-		if ($this -> getRequest() -> isMethod('POST')) {
-			$form -> bind($this -> getRequest());
-
-			if ($form -> isValid()) {
-
-				//$array = array();
-				$array['mensaje'] = 'Su mensaje fue enviado exitosamente...Su respuesta sera enviada a su correo electr&oacute;nico y a su vez podr&aacute; leerla a trav&eacute;s de su perfil en nuestro portal web cuando sea procesada...';
-				$array['titulo'] = 'Mensaje Enviado';
-
-				$em = $this -> getDoctrine() -> getManager();
-				$data -> setLeido(0);
-				$data -> setRespondido(0);
-				$data -> setFecha(new \DateTime());
-				$em -> persist($data);
-				$em -> flush();
-				return $this -> render('ProyectoFrontBundle:Helpers:mensaje.html.twig', $array);
-			}
-		}
-
-		$array['form'] = $form -> createView();
-
-		return $this -> render('ProyectoFrontBundle:Default:contacto.html.twig', $array);
+		$array = array_merge($firstArray, $secondArray);
+		return $this -> render('ProyectoFrontBundle:Default2:contacto.html.twig', $array);
 	}
-*/
+
 }
