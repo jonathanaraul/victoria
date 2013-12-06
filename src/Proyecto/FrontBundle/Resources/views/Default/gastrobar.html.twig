@@ -1,4 +1,4 @@
-{% extends "ProyectoFrontBundle:Helpers2:body.html.twig" %}
+{% extends "ProyectoFrontBundle:Helpers:body.html.twig" %}
 
 {%block imagenes%}
 var images = ["{{ asset(''~ background.getWebPath ~'') }}"];
@@ -27,43 +27,36 @@ var images = ["{{ asset(''~ background.getWebPath ~'') }}"];
 			ESPACIO CULTURAL
 		</div>
 	</div>
-	<div class="upper-text" style="background-color: #ec0052 !important"></div>
+	<div class="upper-text" style="background-color: {{theme.color}} !important"></div>
 	<div class="news-cont">
 		<hr>
 		<p class="content-title">
-			Talleres
+			Gastrobar
 		</p>
 		<div class="content-news scroll-10">
-			{%set contador =0%}
-			{%for element in articles if contador <3%}
-			{%set contador = contador + 1%}
+
 			<div class="news-cell">
 				<table>
 					<tr>
-						<td width="20%">
-							<img alt="" src="{{ media[loop.index0].getWebPath | apply_filter('my_thumb') }}">
-						</td>
-						<td width="60%"  valign="top">
-							<p>{{element.name}}</p> 
+
+						<td width="100%"  valign="top">
+							<p>{{page.name}}</p> 
 							<p> 
-							{{element.content|raw}}
+							{{page.content|raw}}
 							</p>
-							<p >Atributo 1: Attr1  Atributo 2: Attr2</p>
-							<p ><a href="{{ path('proyecto_front_article', {'id': element.id}) }}" style="color: black;">RESERVA AHORA</a></p>
-					
+			
 						</td>
 					</tr>
 				</table>
 			</div>
-			{%endfor%}
 		
 		</div>
 		<div class="lower-text"></div>
 		<div class="lower-box" style="right: 200px;"></div>
 	</div>
 	<div class="main-big-title news-big-title" style="">
-		<div class="theme-sel-12">
-			Talleres
+		<div class="theme-sel-2">
+			Gastrobar
 		</div>
 	</div>
 </div>

@@ -28,3 +28,6 @@ proyecto_front_validacion:
 proyecto_front_cerrarsesion:
     pattern:  /logout
     defaults: { _controller: ProyectoFrontBundle:Default:inicio }
+proyecto_front_reservation:
+    pattern:  /reservation/{id}
+    defaults: { _controller: ProyectoFrontBundle:Default:reservation }

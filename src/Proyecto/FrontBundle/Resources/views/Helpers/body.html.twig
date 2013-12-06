@@ -1,26 +1,36 @@
 {% extends "ProyectoFrontBundle:Helpers:base.html.twig" %}
 {%block body%}
-<body onload="prettyPrint()">
-	<div id="wrap" class="boxed">
-		<div class="container">
-			<!-- Header
-			=========================================================================================================== -->
-			{% include 'ProyectoFrontBundle:Helpers:encabezado.html.twig' %} <!-- Content
-			============================================================================================================== -->
-			{%block contenido%}
-			{%endblock%}
+<body style="">
+	{% include 'ProyectoFrontBundle:Helpers:social.html.twig' %}
+	<div class="main-tab">
+		<div class="main-row" style="height: 766px;">
+			<div class="cell-left"></div>
+			<div class="cell-middle cell-main">
+				<div class="middle-tab">
+					{% include 'ProyectoFrontBundle:Helpers:lenguajes.html.twig' %}
+					<div class="middle-row">
+						<div class="middle-left">
+							<div class="logo">
+								<a title="Home page" href="{{path('proyecto_front_homepage')}}"> </a>
+							</div>
+							{% include 'ProyectoFrontBundle:Helpers:menu.html.twig' %}
+						</div>
+						
+						{%block contenido%}
+						{%endblock%}
+						
+					
+						
+					</div>
+				</div>
+			</div>
+				{%block celda%}
+				{%endblock%}
+			
 		</div>
-		<!--/container-->
-		<!-- Footer
-		============================================================================================================= -->
-		<div class="container darkBg">
-			{% include 'ProyectoFrontBundle:Helpers:piepagina.html.twig' %}
-		</div><!--/container-->
-	</div><!--/wrap-->
-	<!-- Start Style Switcher -->
-	<!-- End Style Switcher -->
-	<!-- javascript
-	============================================================================================================= -->
-	{% include 'ProyectoFrontBundle:Helpers:scripts.html.twig' %}
+	</div>
+	<div id="culture">
+		es
+	</div>
 </body>
 {%endblock%}

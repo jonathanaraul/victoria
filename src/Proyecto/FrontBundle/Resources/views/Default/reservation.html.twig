@@ -1,0 +1,84 @@
+{% extends "ProyectoFrontBundle:Helpers:body.html.twig" %}
+
+{%block imagenes%}
+var images = ["{{ asset(''~ background ~'') }}"];
+{%endblock%}
+
+{%block contenido%}
+<div class="middle-right-sub">
+	<div class="top-main-text">
+		<div class="top-main-big">
+			LA VICTORIA
+		</div>
+		<div class="top-main-small">
+			ESPACIO CULTURAL
+		</div>
+	</div>
+	<div class="upper-text" style="background-color: {{theme}} !important"></div>
+	<div class="news-cont">
+		<hr>
+		<p class="content-title">
+			Reservaciones
+		</p>
+		<div class="content-news scroll-10">
+			<div class="news-cell">
+				{%if message == ''%}
+				<form action="{{ url }}" method="post" {{ form_enctype(form) }}>
+					<table>
+						<tr>
+							<td>
+								Nombre:
+							</td>
+							<td>
+								{{ form_widget(form.name, { 'attr': {'size': '40'} }) }}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Apellido:
+							</td>
+							<td>
+								{{ form_widget(form.lastName, { 'attr': {'size': '40'} }) }}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Email:
+							</td>
+							<td>
+								{{ form_widget(form.email, { 'attr': {'size': '40'} }) }}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Telefono:
+							</td>
+							<td>
+								{{ form_widget(form.phone, { 'attr': {'size': '40'} }) }}
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<input type="submit" name="save" value="Guardar">
+							</td>
+						</tr>
+					</table>
+				</form>
+				{%else%}
+				<p>{{message}}</p>
+				{%endif%}
+			</div>
+		</div>
+		<div class="lower-text"></div>
+		<div class="lower-box" style=""></div>
+	</div>
+	<div class="main-big-title news-big-title" style="">
+		<div class="theme-sel-2">
+			Reservacion
+		</div>
+	</div>
+</div>
+{%endblock%}
+
+{%block celda%} <div class="cell-right-sub"></div>
+{%endblock%} 

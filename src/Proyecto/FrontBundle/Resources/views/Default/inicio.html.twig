@@ -1,87 +1,26 @@
 {% extends "ProyectoFrontBundle:Helpers:body.html.twig" %}
 
-{%block contenido%}
+{%block imagenes%}
 
-{{ render(controller('ProyectoFrontBundle:Helpers:slideshow')) }}
-<div class="catchText">
-	<div class="row">
-		<div class="span8">
-			</br>
-			<p class="padL30">
-			
-				¿Desea obtener un pr&eacute;stamo bancario? ¿Esta interesado(a) en conocer nuestros servicios?
-			</p>
-		</div>
-		<div class="span3 offset1 marT20">
-			<button class="btn-large btn color-bg" onclick="document.location.href = '{{path('proyecto_front_contacto')}}'">
-				Cont&aacute;ctenos
-			</button>
-		</div>
+	var images =  new Array();
+	{%for element in backgrounds%}
+		images[{{loop.index0}}] = "{{ asset(''~ element.getWebPath ~'') }}";
+	{%endfor%}
+
+{%endblock%}
+
+{%block contenido%}
+<div class="middle-right-sub">
+	{% include 'ProyectoFrontBundle:Default:titulo.html.twig' %}
+	<div class="main-big-text" style="margin-top: 160px;">
+		<p>
+			ESPACIO
+			<br>
+			CULTURAL
+		</p>
 	</div>
 </div>
-<!-- middle container (Main Content) -->
-<!-- Services Blocks -->
-<section class="outerDiv">
-	<div class="row">
-		<!-- Part
-		================-->
-		<div class="span3 centered tooltip-title">
-			<div class="block">
-				<div class="icon-block">
-					<i class="icon-briefcase"></i>
-				</div>
-				<h3 class="color-text">5 A&ntilde;os</h3>
-				<p>
-					En los cuales hemos acumulado una gran experiencia en el asesoramiento de nuestros clientes...</a>
-				</p>
-			</div>
-		</div><!--/-->
-		<!-- Part
-		================-->
-		<div class="span3 centered tooltip-title">
-			<div class="block">
-				<div class="icon-block">
-					<i class="icon-group"></i>
-				</div>
-				<h3 class="color-text">Afiliaciones economicas</h3>
-				<p>
-					A muy bajo costo, podras formar parte de nuestra propera sociedad y recibir todos los beneficios que te correspondan...
-				</p>
-			</div>
-		</div><!--/-->
-		<!-- Part
-		================-->
-		<div class="span3 centered tooltip-title">
-			<div class="block">
-				<div class="icon-block">
-					<i class="icon-comments-alt"></i>
-				</div>
-				<h3 class="color-text">Facil comunicac&oacute;n</h3>
-				<p>
-					Ahora gracias a nuestra nueva plataforma tecn&oacute;logica podr&aacute;s conocer el estatus de tus solicitudes en l&iacute;nea...
-				</p>
-			</div>
-		</div><!--/-->
-		<!-- Part
-		================-->
-		<div class="span3 centered tooltip-title">
-			<div class="block">
-				<div class="icon-block">
-					<i class="icon-sitemap"></i>
-				</div>
-				<h3 class="color-text">Apoyo institucional</h3>
-				<p>
-						S.G.R.M. cuenta con todo el apoyo institucional de la gobernaci&oacute;n del estado monagas, as&iacute; como de otras organizaciones...
-				</p>
-			</div>
-		</div><!--/-->
-	</div>
-	<!--/Block1-->
-</section><!--/Services Blocks-->
-<!-- Latest Projects -->
+{%endblock%}
 
-{{ render(controller('ProyectoFrontBundle:Helpers:galeria', { 'tipo': 'equipo','titulo':'El Equipo' })) }}
-{{ render(controller('ProyectoFrontBundle:Helpers:ultimosArticulos', { 'tipo': 0,'titulo':'&Uacute;ltimos Art&iacute;culos' })) }}
-<p style="text-align: center"><img src="{{asset('front/images/barra.jpg')}}" style="width: 1200px;"/></p>
-<!-- This row contains // Latest from blog -->
+{%block celda%} <div class="cell-right-sub"></div>
 {%endblock%} 

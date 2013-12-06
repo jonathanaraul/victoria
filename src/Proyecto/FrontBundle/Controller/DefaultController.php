@@ -10,6 +10,7 @@ use Proyecto\PrincipalBundle\Entity\Data;
 use Proyecto\PrincipalBundle\Entity\Categoria;
 use Proyecto\PrincipalBundle\Entity\Entrada;
 use Proyecto\PrincipalBundle\Entity\Usuario;
+use Proyecto\PrincipalBundle\Entity\CmsReservation;
 
 class DefaultController extends Controller {
 	public function inicioAction() {
@@ -18,7 +19,7 @@ class DefaultController extends Controller {
 		$secondArray['backgrounds'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> findByHome(1);
 
 		$array = array_merge($firstArray, $secondArray);
-		return $this -> render('ProyectoFrontBundle:Default2:inicio.html.twig', $array);
+		return $this -> render('ProyectoFrontBundle:Default:inicio.html.twig', $array);
 	}
 	public function biografiaAction() {
 		$firstArray = UtilitiesAPI::getDefaultContent('biografia', $this);
@@ -28,7 +29,7 @@ class DefaultController extends Controller {
 		$secondArray['media'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($secondArray['page']->getMedia());
 
 		$array = array_merge($firstArray, $secondArray);
-		return $this -> render('ProyectoFrontBundle:Default2:biografia.html.twig', $array);
+		return $this -> render('ProyectoFrontBundle:Default:biografia.html.twig', $array);
 	}
 	public function noticiasAction() {
 		$firstArray = UtilitiesAPI::getDefaultContent('noticias', $this);
@@ -42,7 +43,7 @@ class DefaultController extends Controller {
 		$secondArray['page'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> find(3);
 		
 		$array = array_merge($firstArray, $secondArray);
-		return $this -> render('ProyectoFrontBundle:Default2:noticias.html.twig', $array);
+		return $this -> render('ProyectoFrontBundle:Default:noticias.html.twig', $array);
 	}
 	public function articleAction($id) {
 		$firstArray = UtilitiesAPI::getDefaultContent('noticias', $this);
@@ -53,7 +54,7 @@ class DefaultController extends Controller {
 		$secondArray['media'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($secondArray['article']->getMedia());
 		
 		$array = array_merge($firstArray, $secondArray);
-		return $this -> render('ProyectoFrontBundle:Default2:article.html.twig', $array);
+		return $this -> render('ProyectoFrontBundle:Default:article.html.twig', $array);
 	}
 	public function programacionAction() {
 		$firstArray = UtilitiesAPI::getDefaultContent('programacion', $this);
@@ -69,7 +70,7 @@ class DefaultController extends Controller {
 		$secondArray['background'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($secondArray['page']->getBackground());
 		
 		$array = array_merge($firstArray, $secondArray);
-		return $this -> render('ProyectoFrontBundle:Default2:programacion.html.twig', $array);
+		return $this -> render('ProyectoFrontBundle:Default:programacion.html.twig', $array);
 	}
 	public function talleresAction() {
 		$firstArray = UtilitiesAPI::getDefaultContent('talleres', $this);
@@ -85,7 +86,7 @@ class DefaultController extends Controller {
 		$secondArray['background'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($secondArray['page']->getBackground());
 		
 		$array = array_merge($firstArray, $secondArray);
-		return $this -> render('ProyectoFrontBundle:Default2:talleres.html.twig', $array);
+		return $this -> render('ProyectoFrontBundle:Default:talleres.html.twig', $array);
 	}
 	
 	public function gastrobarAction() {
@@ -98,7 +99,7 @@ class DefaultController extends Controller {
 		$secondArray['theme'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsTheme') -> find($secondArray['page']->getTheme());
 
 		$array = array_merge($firstArray, $secondArray);
-		return $this -> render('ProyectoFrontBundle:Default2:gastrobar.html.twig', $array);
+		return $this -> render('ProyectoFrontBundle:Default:gastrobar.html.twig', $array);
 	}
 	public function contactoAction() {
 		$firstArray = UtilitiesAPI::getDefaultContent('contacto', $this);
@@ -108,7 +109,48 @@ class DefaultController extends Controller {
 		$secondArray['theme'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsTheme') -> find($secondArray['page']->getTheme());
 
 		$array = array_merge($firstArray, $secondArray);
-		return $this -> render('ProyectoFrontBundle:Default2:contacto.html.twig', $array);
+		return $this -> render('ProyectoFrontBundle:Default:contacto.html.twig', $array);
+	}
+	
+	public function reservationAction($id, Request $request) {
+		$firstArray = UtilitiesAPI::getDefaultContent('reservation', $this);
+		$secondArray = array();
+		$secondArray['article'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsArticle') -> find($id);
+		
+		///////////////////////////////////////////////////////////////////////////////////////////////////
+		$data = new CmsReservation();
+		$form = $this -> createFormBuilder($data) 
+		-> add('name', 'text', array('required' => false))
+		-> add('lastName', 'text', array('required' => false)) 
+		-> add('phone', 'text', array('required' => false)) 
+		-> add('email', 'text', array('required' => false)) 
+		-> getForm();
+
+		$em = $this -> getDoctrine() -> getEntityManager();
+		$secondArray['message'] = '';
+
+		if ($this -> getRequest() -> isMethod('POST')) {
+			$form -> bind($this -> getRequest());
+			
+			$data -> setDate(new \DateTime());
+			$data -> setChecked(false);
+			$data -> setArticle($secondArray['article']);
+			
+			$em -> persist($data);
+			$em -> flush();
+			
+			$secondArray['message'] = 'Estimado(a) '.ucfirst($data -> getName()).' '.ucfirst($data -> getLastName()).' su reservación ha sido guardada exitosamente...';
+			
+														}
+		
+		$secondArray['form'] = $form -> createView();
+		$secondArray['url'] =  $this -> generateUrl('proyecto_front_reservation', array('id' => $id));
+		$secondArray['theme'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsTheme') -> find(6)->getColor();
+		$secondArray['background'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find(50)->getWebPath();
+		
+
+		$array = array_merge($firstArray, $secondArray);
+		return $this -> render('ProyectoFrontBundle:Default:reservation.html.twig', $array);
 	}
 
 }
