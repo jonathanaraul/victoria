@@ -77,6 +77,10 @@ class UtilitiesAPI extends Controller {
 			$array['translate'] = 'Traducir Opcion';
 			$array['type'] = $type;
 		}
+		else if($type == 'reservation'){
+			$array['list'] = 'Mostrar Reservaciones';
+			$array['type'] = $type;
+		}
 		return $array;
 	}
 

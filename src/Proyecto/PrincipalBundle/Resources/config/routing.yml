@@ -129,6 +129,9 @@ proyecto_principal_setting_translate:
     pattern:  /setting/translate/{id}
     defaults: { _controller: ProyectoPrincipalBundle:Setting:translate, id: '1' }
 
+proyecto_principal_reservation_list:
+    pattern:  /reservation/list
+    defaults: { _controller: ProyectoPrincipalBundle:Reservation:list }
 
 proyecto_principal_validacion:
     pattern:  /validacion

@@ -39,6 +39,8 @@
 				<td><img src="{{asset('images/cms_yeslogo_big_dots.jpg')}}" alt="Cms_yeslogo_big_dots"></td>
 				<td class="menu_button{%if menu.seccion =='SETTING'%}_click{%endif%}"><a class="menu" href="{%if menu.seccion =='SETTING'%}#{%else%}{{path('proyecto_principal_setting_list')}}{%endif%}">OPCIONES</a></td>
 				<td><img src="{{asset('images/cms_yeslogo_big_dots.jpg')}}" alt="Cms_yeslogo_big_dots"></td>
+				<td class="menu_button{%if menu.seccion =='RESERVACIONES'%}_click{%endif%}"><a class="menu" href="{%if menu.seccion =='RESERVACIONES'%}#{%else%}{{path('proyecto_principal_reservation_list')}}{%endif%}">RESERVACIONES</a></td>
+				<td><img src="{{asset('images/cms_yeslogo_big_dots.jpg')}}" alt="Cms_yeslogo_big_dots"></td>
 			</tr>
 		</tbody>
 	</table>
@@ -70,10 +72,10 @@
 				{%elseif menu.seccion == 'LINKS'%}
 				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_link_list')}}">Mostrar Links</a></td>
 				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_link_create')}}">Añadir Link</a></td>
-				
 				{%elseif menu.seccion == 'SETTING'%}
 				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_setting_list')}}">Mostrar Opciones</a></td>
-				
+				{%elseif menu.seccion == 'RESERVATION'%}
+				<td class="submenu_button"><a class="menu" href="{{path('proyecto_principal_reservation_list')}}">Mostrar Reservaciones</a></td>
 				{%endif%}
 				<td id="rest">&nbsp;</td>
 			</tr>
