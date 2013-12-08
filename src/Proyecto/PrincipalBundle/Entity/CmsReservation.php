@@ -34,16 +34,9 @@ class CmsReservation
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=100, nullable=false)
+     * @ORM\Column(name="name", type="string", length=300, nullable=false)
      */
     private $name;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="last_name", type="string", length=100, nullable=false)
-     */
-    private $lastName;
 	
     /**
      * @var string
@@ -104,29 +97,6 @@ class CmsReservation
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Set lastName
-     *
-     * @param string $lastName
-     * @return Reservation
-     */
-    public function setLastName($lastName)
-    {
-        $this->lastName = $lastName;
-    
-        return $this;
-    }
-
-    /**
-     * Get lastName
-     *
-     * @return string 
-     */
-    public function getLastName()
-    {
-        return $this->lastName;
     }
 	
     /**

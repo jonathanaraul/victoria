@@ -121,7 +121,6 @@ class DefaultController extends Controller {
 		$data = new CmsReservation();
 		$form = $this -> createFormBuilder($data) 
 		-> add('name', 'text', array('required' => false))
-		-> add('lastName', 'text', array('required' => false)) 
 		-> add('phone', 'text', array('required' => false)) 
 		-> add('email', 'text', array('required' => false)) 
 		-> getForm();
@@ -139,7 +138,7 @@ class DefaultController extends Controller {
 			$em -> persist($data);
 			$em -> flush();
 			
-			$secondArray['message'] = 'Estimado(a) '.ucfirst($data -> getName()).' '.ucfirst($data -> getLastName()).' su reservación ha sido guardada exitosamente...';
+			$secondArray['message'] = 'Estimado(a) '.ucwords($data -> getName()).' su reservación ha sido guardada exitosamente...';
 			
 														}
 		

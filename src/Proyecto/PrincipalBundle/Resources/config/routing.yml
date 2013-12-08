@@ -132,6 +132,11 @@ proyecto_principal_setting_translate:
 proyecto_principal_reservation_list:
     pattern:  /reservation/list
     defaults: { _controller: ProyectoPrincipalBundle:Reservation:list }
+proyecto_principal_link_checked:
+    pattern:  /reservation/checked
+    defaults: { _controller: ProyectoPrincipalBundle:Reservation:checked }
+    requirements:
+      _method: POST
 
 proyecto_principal_validacion:
     pattern:  /validacion
