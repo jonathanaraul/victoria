@@ -12,7 +12,7 @@
 	.sortable {
 		cursor: move;
 	}
-</style><h1>Determinar orden</h1>
+</style><h1>{% trans %}Determinar orden{% endtrans %}</h1>
 <ul id="order">
 	{%for object in objects%}
 	<li id="page_{{object.id}}" class="sortable" style="position: relative;">
@@ -44,11 +44,11 @@
 </script>
 <ul class="sf_admin_actions">
 	<li>
-		<input class="cms_action_submit" value="Listado" type="button" onclick="document.location.href='{{path('proyecto_principal_page_list')}}';">
+		<input class="cms_action_submit" value="{% trans %}Listado{% endtrans %}" type="button" onclick="document.location.href='{{path('proyecto_principal_page_list')}}';">
 	</li>
 </ul>
 <hr>
 <div class="example">
-	Ejemplo:
+	{% trans %}Ejemplo{% endtrans %}:
 </div><!-- end whole contents --></td>
 {%endblock%}

@@ -238,10 +238,10 @@ class PageController extends Controller {
 
 		$filtros = array();
 		$filtros['published'] = array(1 => 'Si', 0 => 'No');
-		$filtros['theme'] = UtilitiesAPI::getFilterData($array['themes']);
+		$filtros['theme'] = UtilitiesAPI::getFilterData($array['themes'],$class);
 		$filtros['parentPage'] = UtilitiesAPI::getFilter('CmsPage',$class);
-		$filtros['media'] = UtilitiesAPI::getFilterData($array['media']);
-		$filtros['background'] = UtilitiesAPI::getFilterData($array['background']);
+		$filtros['media'] = UtilitiesAPI::getFilterData($array['media'],$class);
+		$filtros['background'] = UtilitiesAPI::getFilterData($array['background'],$class);
 
 		$form = $class -> createFormBuilder($data) -> add('name', 'text', array('required' => true))
 		 -> add('title', 'text', array('required' => true)) 

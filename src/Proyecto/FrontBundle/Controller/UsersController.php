@@ -21,7 +21,7 @@ class UsersController extends Controller {
 		if ($usuario == NULL || $usuario -> getJerarquia() == false) 
 			return $this -> redirect($this -> generateUrl('proyecto_front_homepage'));
 		 else 
-			return $this -> redirect($this -> generateUrl('proyecto_principal_homepage'));
+			return $this -> redirect($this -> generateUrl('proyecto_principal_homepage',array('_locale' => 'es')));
 
 		return $this -> render('ProyectoFrontBundle:Default:inicio.html.twig', $array);
 	}

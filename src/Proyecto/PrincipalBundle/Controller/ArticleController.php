@@ -37,7 +37,7 @@ class ArticleController extends Controller {
 		$category = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsCategory') -> findByType($config['idtype']);
 
 		$filtros['published'] = array(1 => 'Si', 0 => 'No');
-		$filtros['category'] = UtilitiesAPI::getFilterData($category);
+		$filtros['category'] = UtilitiesAPI::getFilterData($category,$this);
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 		$data = new CmsArticle();
@@ -198,14 +198,14 @@ class ArticleController extends Controller {
 		$category = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsCategory') -> findByType($array['idtype']);
 		$media = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> findByType(3);
 		$background = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> findByType(4);
-
+		
 		$filtros = array();
 		$filtros['published'] = array(1 => 'Si', 0 => 'No');
-		$filtros['theme'] = UtilitiesAPI::getFilter($themes);
-		$filtros['parentPage'] = UtilitiesAPI::getFilter($objects);
-		$filtros['media'] = UtilitiesAPI::getFilter($media);
-		$filtros['background'] = UtilitiesAPI::getFilter($background);
-		$filtros['category'] = UtilitiesAPI::getFilter($category);
+		$filtros['theme'] = UtilitiesAPI::getFilterData($themes, $class);
+		$filtros['parentPage'] = UtilitiesAPI::getFilterData($objects, $class);
+		$filtros['media'] = UtilitiesAPI::getFilterData($media, $class);
+		$filtros['background'] = UtilitiesAPI::getFilterData($background, $class);
+		$filtros['category'] = UtilitiesAPI::getFilterData($category, $class);
 		
 		$validaciones = array(true,true);
 		if($array['type']=='news') 	$validaciones = array(false,false);
@@ -224,7 +224,7 @@ class ArticleController extends Controller {
 		-> add('background', 'choice', array('choices' => $filtros['background'], 'required' => true, )) 
 		-> add('published', 'checkbox', array('label' => 'Publicado', 'required' => false, )) 
 		-> getForm();
-
+		
 		if ($class -> getRequest() -> isMethod('POST')) {
 
 			$contenido = $request -> request -> all();

@@ -68,7 +68,7 @@ class UserController extends Controller {
 				$em -> persist($data);
 				$em -> flush();
 				
-				return $class->redirect($class->generateUrl('proyecto_principal_homepage'));
+				return $class->redirect($class->generateUrl('proyecto_principal_homepage',array('_locale' => 'es')));
 				
 			}
 		}

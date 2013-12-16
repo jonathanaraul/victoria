@@ -9,27 +9,27 @@ var cambiarStatus = '{{path('proyecto_principal_article_status')}}';
 
 {%block contents%} <td id="contents"><!-- whole contents -->
 <div id="sf_admin_container">
-	<h1>{{menu.subseccion}}</h1>
+	<h1>{{menu.subseccion|trans}}</h1>
 	<div id="sf_admin_header"></div>
 	<div id="sf_admin_bar">
 		<div class="sf_admin_filters">
 			<form id="filter-form" action="{{ url }}" method="post" {{ form_enctype(form) }}>
 				<fieldset>
-					<h2>Filtros</h2>
+					<h2>{% trans %}Filtros{% endtrans %}</h2>
 					<div class="form-row">
-						<label for="parent_page_id">Categoria:</label>
+						<label for="parent_page_id">{% trans %}Categoría{% endtrans %}:</label>
 						<div class="content">
 							{{ form_widget(form.category, { 'attr': {'class': 'theme_toggle'} }) }}
 						</div>
 					</div>
 					<div class="form-row">
-						<label for="name">Nombre:</label>
+						<label for="name">{% trans %}Nombre{% endtrans %}:</label>
 						<div class="content">
 							{{ form_widget(form.name, { 'attr': {'size': '15'} }) }}
 						</div>
 					</div>
 					<div class="form-row">
-						<label for="published">Publicado:</label>
+						<label for="published">{% trans %}Publicado{% endtrans %}:</label>
 						<div class="content">
 							{{ form_widget(form.published, { 'attr': {'class': 'theme_toggle'} }) }}
 						</div>
@@ -37,10 +37,10 @@ var cambiarStatus = '{{path('proyecto_principal_article_status')}}';
 				</fieldset>
 				<ul class="sf_admin_actions">
 					<li>
-						<input class="sf_admin_action_reset_filter" value="Mostrar todo" type="button" onclick="document.location.href='{{url}}';">
+						<input class="sf_admin_action_reset_filter" value="{% trans %}Mostrar todo{% endtrans %}" type="button" onclick="document.location.href='{{url}}';">
 					</li>
 					<li>
-						<input type="submit" name="filter" value="Filtro" >
+						<input type="submit" name="filter" value="{% trans %}Filtro{% endtrans %}" >
 					</li>
 				</ul>
 				<div style="display: none">
@@ -58,22 +58,21 @@ var cambiarStatus = '{{path('proyecto_principal_article_status')}}';
 						{{ knp_pagination_sortable(pagination, 'Id', 'n.id') }}
 						</th>
 					<th id="sf_admin_list_th_name">
-						{{ knp_pagination_sortable(pagination, 'Nombre', 'n.name') }}
+						{{ knp_pagination_sortable(pagination, 'Nombre'|trans, 'n.name') }}
 					</th>
 					<th id="sf_admin_list_th_name">
-						{{ knp_pagination_sortable(pagination, 'Categoria', 'n.category') }}
+						{{ knp_pagination_sortable(pagination, 'Categoría'|trans, 'n.category') }}
 					</th>
 					<th id="sf_admin_list_th_media_id">
-						{{ knp_pagination_sortable(pagination, 'Imagen', 'n.media') }}
+						{{ knp_pagination_sortable(pagination, 'Imagen'|trans, 'n.media') }}
 						</th>
 					<th id="sf_admin_list_th_theme_id">
-						{{ knp_pagination_sortable(pagination, 'Fecha', 'n.dateCreated') }}
+						{{ knp_pagination_sortable(pagination, 'Fecha'|trans, 'n.dateCreated') }}
 						</th>
 					<th id="sf_admin_list_th_published">
-						{{ knp_pagination_sortable(pagination, 'Publicado', 'n.published') }}
-						
+						{{ knp_pagination_sortable(pagination, 'Publicado'|trans, 'n.published') }}
 						</th>
-					<th id="sf_admin_list_th_sf_actions">Acciones</th>
+					<th id="sf_admin_list_th_sf_actions">{% trans %}Acciones{% endtrans %}</th>
 				</tr>
 				{%endif%}
 			</thead>
@@ -94,14 +93,14 @@ var cambiarStatus = '{{path('proyecto_principal_article_status')}}';
 					 {{ knp_pagination_render(pagination) }}
 					</div> 
 					
-					{{ pagination.getTotalItemCount }} resultados</th>
+					{{ pagination.getTotalItemCount }} {% trans %}resultados{% endtrans %}</th>
 				</tr>
 			</tfoot>
 		</table>
 		
 		<ul class="sf_admin_actions">
 			<li>
-				<input class="sf_admin_action_create" value="Anadir" type="button" onclick="document.location.href='{{path('proyecto_principal_article_create',{'type': type})}}';">
+				<input class="sf_admin_action_create" value="{% trans %}Añadir{% endtrans %}" type="button" onclick="document.location.href='{{path('proyecto_principal_article_create',{'type': type})}}';">
 			</li>
 			<!--<li>
 				<input class="sf_admin_action_rank" value="Determinar orden" type="button" onclick="document.location.href='{{path('proyecto_principal_page_rank')}}';">

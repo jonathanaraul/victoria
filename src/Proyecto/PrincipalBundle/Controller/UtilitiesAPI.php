@@ -64,26 +64,33 @@ class UtilitiesAPI extends Controller {
 			$array['type'] = $type;
 		}
 		else if($type == 'links'){
-			$array['list'] = 'Mostrar Links';
-			$array['create'] = 'Añadir Link';
-			$array['edit'] = 'Editar Link';
-			$array['translate'] = 'Traducir Link';
+			$array['list'] = 'Mostrar Enlaces';
+			$array['create'] = 'Añadir Enlace';
+			$array['edit'] = 'Editar Enlace';
+			$array['translate'] = 'Traducir Enlace';
 			$array['type'] = $type;
 		}
 		else if($type == 'setting'){
 			$array['list'] = 'Mostrar Opciones';
 			$array['create'] = 'Añadir Opcion';
-			$array['edit'] = 'Editar Opcion';
+			$array['edit'] = 'Editar Opción';
 			$array['translate'] = 'Traducir Opcion';
 			$array['type'] = $type;
 		}
 		else if($type == 'reservation'){
-			$array['list'] = 'Mostrar Reservaciones';
+			$array['list'] = 'Mostrar Reservas';
 			$array['type'] = $type;
 		}
 		return $array;
 	}
-
+	public static function generaTrans($class){
+		echo"<div>\n";
+		for ($i=43; $i < 300; $i++) { 
+			echo "            <trans-unit id=".$i.">\n                <source></source>\n                <target></target>\n            </trans-unit>\n";
+		}
+		echo"\n</div>";
+		exit;
+	}
 	public static function getFilter($clase,$class) {
 		$data = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:'.$clase) -> findAll();
 
@@ -93,7 +100,7 @@ class UtilitiesAPI extends Controller {
 		}
 		return $array;
 	}
-	public static function getFilterData($data) {
+	public static function getFilterData($data,$class) {
 		$array = array();
 		for ($i = 0; $i < count($data); $i++) {
 			$array[$data[$i] -> getId()] = $data[$i] -> getName();

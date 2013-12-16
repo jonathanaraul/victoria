@@ -27,7 +27,6 @@ class SettingController extends Controller {
 		$firstArray = UtilitiesAPI::getDefaultContent('SETTING', $config['list'], $this);
 		$firstArray['type'] = $config['type'];
 
-
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 		$em = $this -> getDoctrine() -> getEntityManager();
 		$dql = "SELECT n FROM ProyectoPrincipalBundle:CmsSetting n";
