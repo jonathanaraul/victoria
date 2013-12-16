@@ -132,8 +132,13 @@ class ArticleController extends Controller {
 			$auxiliar[$i]['name'] = $objects[$i] -> getName();
 			$auxiliar[$i]['published'] = $objects[$i] -> getPublished();
 			$auxiliar[$i]['dateCreated'] = $objects[$i] -> getDateCreated()->format('d/m/Y');
-			$auxiliar[$i]['media'] = ($objects[$i] -> getMedia() == 0) ? '0' : '' . $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($objects[$i] -> getMedia()) -> getWebPath();
-
+			$auxiliar[$i]['media'] = '0';
+			if($objects[$i] -> getMedia() != 0){
+				$helper = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($objects[$i] -> getMedia());
+				if($helper!= NULL){
+					$auxiliar[$i]['media'] = $helper  -> getWebPath();
+				}
+			}
 		}
 		$objects = $auxiliar;
 

@@ -156,7 +156,14 @@ class PageController extends Controller {
 			$auxiliar[$i]['published'] = $objects[$i] -> getPublished();
 			$auxiliar[$i]['background'] = ($objects[$i] -> getBackground() == 0) ? '-' : '' . $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($objects[$i] -> getBackground()) -> getWebPath();
 			$auxiliar[$i]['theme'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsTheme') -> find($objects[$i] -> getTheme()) -> getColor();
-			$auxiliar[$i]['media'] = ($objects[$i] -> getMedia() == 0) ? '0' : '' . $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($objects[$i] -> getMedia()) -> getWebPath();
+			//$auxiliar[$i]['media'] = ($objects[$i] -> getMedia() == 0) ? '0' : '' . $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($objects[$i] -> getMedia()) -> getWebPath();
+			$auxiliar[$i]['media'] = '0';
+			if($objects[$i] -> getMedia() != 0){
+				$helper = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($objects[$i] -> getMedia());
+				if($helper!= NULL){
+					$auxiliar[$i]['media'] = $helper  -> getWebPath();
+				}
+			}
 
 		}
 		$objects = $auxiliar;
