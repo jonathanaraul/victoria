@@ -21,6 +21,7 @@ class ReservationController extends Controller {
 
 	public function listAction(Request $request) {
 
+		$locale = UtilitiesAPI::getLocale($this);
 		$type = 'reservation';
 		$config = UtilitiesAPI::getConfig($type,$this);
 		$url = $this -> generateUrl('proyecto_principal_reservation_list');
@@ -79,6 +80,14 @@ class ReservationController extends Controller {
 					$dql .= ' n.checked = :checked ';
 				}
 
+				if ($where == false) {
+					$dql .= 'WHERE ';
+					$where = true;
+					} 
+				else{
+					$dql .= 'AND ';
+					}
+				$dql .= ' n.lang = :lang ';
 
 				$query = $em -> createQuery($dql);
 
@@ -91,15 +100,18 @@ class ReservationController extends Controller {
 				if (!(trim($data -> getChecked()) == false)) {
 					$query -> setParameter('checked', intval($data -> getChecked()));
 				}
-				//$query -> setParameter('type', $config['idtype']);
+				$query -> setParameter('lang', $locale);
 
 			}
 		}
 		//////////////////////////////////////////////////////////////////////////////////////////////////
 		else {
-			$dql = "SELECT n FROM ProyectoPrincipalBundle:CmsReservation n WHERE n.checked = :checked";
+			$dql = "SELECT n FROM ProyectoPrincipalBundle:CmsReservation n
+					 WHERE n.checked = :checked AND n.lang = :lang  ";
 			$query = $em -> createQuery($dql);	
 			$query -> setParameter('checked', 0);
+			$query -> setParameter('lang', $locale);
+
 		}
 
 		$paginator = $this -> get('knp_paginator');

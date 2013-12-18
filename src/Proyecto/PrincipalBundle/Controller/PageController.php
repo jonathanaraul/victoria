@@ -22,18 +22,16 @@ use Proyecto\PrincipalBundle\Entity\CmsMedia;
 
 class PageController extends Controller {
 
-	public function listAction($mirror,Request $request) {
+	public function listAction(Request $request) {
 		
 		$config = UtilitiesAPI::getConfig('pages',$this);
 		$url = $this -> generateUrl('proyecto_principal_page_list');
 		$firstArray = UtilitiesAPI::getDefaultContent('PAGINAS', 'Mostrar Información', $this);
-		$firstArray['lang'] = array('original' => 0, 'traduccion'=>1);
-		
+
+		$locale = UtilitiesAPI::getLocale($this);
 		$form = null;		
 		$filtros = null;
-
-		if($mirror==0){
-			
+	
 		$objects = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> findAll();
 		$themes = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsTheme') -> findAll();
 		$filtros['theme'] = array();
@@ -52,7 +50,6 @@ class PageController extends Controller {
 		-> add('published', 'choice', array('choices' => $filtros['published'], 'required' => false, ))
 		-> getForm();
 		
-		}	
 		$em = $this -> getDoctrine() -> getEntityManager();
 				
 		if ($this -> getRequest() -> isMethod('POST')) {
@@ -129,7 +126,8 @@ class PageController extends Controller {
 				if (!(trim($data -> getPublished()) == false)) {
 					$query -> setParameter('published', $data -> getPublished());
 				}
-				$query -> setParameter('lang', $firstArray['lang']['original']);
+				
+				$query -> setParameter('lang', $locale);
 
 			}
 		}
@@ -137,10 +135,8 @@ class PageController extends Controller {
 		else {
 			$dql = "SELECT n FROM ProyectoPrincipalBundle:CmsPage n ";
 			$dql .= 'WHERE n.lang = :lang ';
-			if($mirror>0) $dql .= 'And n.mirror = :mirror ';
 			$query = $em -> createQuery($dql);
-			$query -> setParameter('lang', $firstArray['lang']['original']);
-			if($mirror>0) $query -> setParameter('mirror', $mirror);
+			$query -> setParameter('lang', $locale);
 		}
 
 		$paginator = $this -> get('knp_paginator');
@@ -168,7 +164,7 @@ class PageController extends Controller {
 		}
 		$objects = $auxiliar;
 		$secondArray = array('pagination' => $pagination, 'filtros' => $filtros, 'objects' => $objects, 'url' => $url);
-		$secondArray['form'] = ($mirror==0) ?  $form -> createView() : $form;
+		$secondArray['form'] =  $form -> createView();
 		
 		$array = array_merge($firstArray, $secondArray);
 		return $this -> render('ProyectoPrincipalBundle:Page:List.html.twig', $array);
@@ -176,11 +172,9 @@ class PageController extends Controller {
 
 
 	public function createAction(Request $request) {
-
 		$firstArray = UtilitiesAPI::getDefaultContent('PAGINAS', 'Nueva Pagina', $this);
 		$secondArray = array('accion' => 'nuevo');
 		$secondArray['url'] = $this -> generateUrl('proyecto_principal_page_create');
-		$secondArray['lang'] = array('original' => 0, 'traduccion'=>1, 'mirror' =>0 );
 		$secondArray['data'] = new CmsPage();
 		$secondArray['isTranslate'] = false;
 
@@ -201,44 +195,17 @@ class PageController extends Controller {
 			throw $this -> createNotFoundException('La pagina que intenta e no existe ');
 		}
 		
-		$secondArray['lang'] = array('original' => 0, 'traduccion'=>1, 'mirror' =>$secondArray['data']->getMirror() );
 		$secondArray['isTranslate'] = false;
 
 		$array = array_merge($firstArray, $secondArray);
 		return PageController::procesar($array, $request, $this);
 	}
-	public function translateAction($id, Request $request) {
 
-		$config = UtilitiesAPI::getConfig('pages',$this);
-		$firstArray = UtilitiesAPI::getDefaultContent('PAGINAS', $config['translate'], $this);
-
-		$page = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> find($id);
-		if (!$page) {
-			throw $this -> createNotFoundException('La pagina que intenta traducir no existe ');
-		}
-
-		$secondArray = array();
-		$secondArray['lang'] = array('original' => 0, 'traduccion'=>1, 'mirror' =>$id );
-		$secondArray['isTranslate'] = true;
-		$data = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> findOneByMirror($id);
-
-		if (!$data) {
-			$secondArray['accion'] = 'nuevo';
-			$secondArray['data'] = new CmsPage();
-		} else {
-			$secondArray['accion'] = 'edicion';
-			$secondArray['data'] = $data;
-		}
-
-		$secondArray['url'] = $this -> generateUrl('proyecto_principal_page_translate', array('id' => $id));
-
-		$array = array_merge($firstArray, $secondArray);
-		return PageController::procesar($array, $request, $this);
-	}
 	public static function procesar($array, Request $request, $class) {
-
+			
+		$locale = UtilitiesAPI::getLocale($class);
 		$data = $array['data'];
-
+		
 		$array['themes'] = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsTheme') -> findAll();
 		$array['media']  = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> findByType(3);
 		$array['background'] = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> findByType(4);
@@ -275,12 +242,8 @@ class PageController extends Controller {
 
 			if ($array['accion'] == 'nuevo') {
 				
-				if($array['isTranslate'] == false)$data -> setLang($array['lang']['original']);
-				else $data -> setLang($array['lang']['traduccion']);
-				
-				$data -> setMirror($array['lang']['mirror']);
-
-				$data -> setRank(100);
+				$data -> setLang($locale);
+				$data -> setRank(UtilitiesAPI::getRank($locale, $class));
 				$data -> setSuspended(0);
 				$data -> setSpacer(0);
 				$data -> setTemplate(0);
@@ -298,18 +261,6 @@ class PageController extends Controller {
 				$em -> persist($data);
 
 			$em -> flush();
-
-			if ($array['accion'] == 'nuevo') {
-				$data -> setRank($data -> getId());
-				$em -> flush();
-			}
-			
-			if($array['isTranslate'] == true){
-				
-				$original = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> find($array['lang']['mirror']);
-				$original -> setMirror($data -> getId());
-				$em -> flush();
-			}
 			
 			return $class -> redirect($class -> generateUrl('proyecto_principal_page_list'));
 			//if ($form -> isValid()) {}
@@ -325,7 +276,10 @@ class PageController extends Controller {
 		$firstArray = UtilitiesAPI::getDefaultContent('PAGINAS', 'Mostrar Información', $this);
 
 		$em = $this -> getDoctrine() -> getManager();
-		$query = $em -> createQuery('SELECT p FROM ProyectoPrincipalBundle:CmsPage p ORDER BY p.rank ASC');
+		$dql = "SELECT n FROM ProyectoPrincipalBundle:CmsPage n WHERE n.lang = :lang ORDER BY n.rank ASC";
+		
+		$query = $em -> createQuery($dql);
+		$query -> setParameter('lang', UtilitiesAPI::getLocale($this));
 		$objects = $query -> getResult();
 
 		$secondArray = array('objects' => $objects);

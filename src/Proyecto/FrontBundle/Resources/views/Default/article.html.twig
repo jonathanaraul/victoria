@@ -17,7 +17,7 @@
 		<div class="biography-content scroll-4" id="scroll-me">
 			{{article.content|raw}}
 
-			<p><img alt="" src="{{ media.getWebPath | apply_filter('my_thumb2') }}"></p>
+			<p><img alt="" src="{%if  media is not null%}{{ media.getWebPath | apply_filter('my_thumb2') }}{%endif%}"></p>
 		</div>
 		<div class="lower-text"></div>
 		<div class="lower-box"></div>

@@ -4,6 +4,7 @@ namespace Proyecto\PrincipalBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\HttpFoundation\Request;
 
 use Proyecto\PrincipalBundle\Entity\Usuario;
 use Proyecto\PrincipalBundle\Entity\Autores;
@@ -12,6 +13,33 @@ use Proyecto\PrincipalBundle\Entity\Proyecto;
 
 class UtilitiesAPI extends Controller {
 		
+		
+	public static function getRank($locale, $class){
+
+        $em = $class->getDoctrine()->getManager();
+       
+        $qbCount = $em
+			->createQueryBuilder()
+			->select('count(g)')
+			->from('ProyectoPrincipalBundle:CmsPage','g')
+			->where("g.lang = '".$locale."'")	
+        ;
+        
+        $recordCount = $qbCount
+			->getQuery()
+			->getSingleScalarResult()
+        ;
+		
+		return $recordCount + 1;
+	}
+	public static function getLocale($class){
+		
+		$request = $class->getRequest();
+		$locale = $request->getLocale();
+		if($locale=='es')return 0;
+		else return 1;
+		
+	}
 	public static function getConfig($type,$class){
 
 		$array =  array( );

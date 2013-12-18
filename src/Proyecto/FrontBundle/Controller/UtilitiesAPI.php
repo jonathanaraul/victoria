@@ -14,7 +14,25 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 
 class UtilitiesAPI extends Controller {
-		public static function removeData($id,$class){
+
+	public static function sendMail($nombreEvento,$datosUsuario,$class)
+	{
+    $message = \Swift_Message::newInstance()
+        ->setSubject('Nueva Reservación')
+        ->setFrom('hjimenez45@gmail.com')
+        ->setTo('jonathan.araul@gmail.com')
+        ->setBody(
+            $class->renderView(
+                'ProyectoFrontBundle:Default:email.txt.twig',
+                array('nombreEvento' => $nombreEvento,'datosUsuario'=>$datosUsuario)
+            )
+        )
+    ;
+    $class->get('mailer')->send($message);
+
+    return true;
+	}
+	public static function removeData($id,$class){
 			
 		$object = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:Data') -> find($id);
 		$em = $class -> getDoctrine() -> getManager();
@@ -22,8 +40,6 @@ class UtilitiesAPI extends Controller {
 		$em->flush();
 	}
 
-	
-	
 	public static function getDefaultContent($menu,$class){
 
 		$user = UtilitiesAPI::getActiveUser($class);

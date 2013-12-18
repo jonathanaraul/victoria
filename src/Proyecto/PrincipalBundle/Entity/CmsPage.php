@@ -191,17 +191,7 @@ class CmsPage
      * @ORM\Column(name="lang", type="integer", nullable=false)
      */
     private $lang;
-	
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="mirror", type="integer", nullable=false)
-     */
-    private $mirror;
 
-	/**
-	 * @Assert\File(maxSize="6000000")
-	 */
 	private $file;
 	private $temp;
 
@@ -766,31 +756,8 @@ class CmsPage
     {
         return $this->lang;
     }
-
-    /**
-     * Set mirror
-     *
-     * @param integer $mirror
-     * @return CmsPage
-     */
-    public function setMirror($mirror)
-    {
-        $this->mirror = $mirror;
-    
-        return $this;
-    }
-
-    /**
-     * Get lang
-     *
-     * @return integer 
-     */
-    public function getMirror()
-    {
-        return $this->mirror;
-    }
 	
-		/**
+	/**
 	 * Sets file.
 	 *
 	 * @param UploadedFile $file

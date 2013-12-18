@@ -67,6 +67,13 @@ class CmsReservation
      private $checked;
 	 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="lang", type="integer", nullable=false)
+     */
+    private $lang;
+	
+    /**
      * Get id
      *
      * @return integer 
@@ -212,5 +219,29 @@ class CmsReservation
     public function getArticle()
     {
         return $this->article;
+    }
+
+	
+    /**
+     * Set lang
+     *
+     * @param integer $lang
+     * @return CmsReservation
+     */
+    public function setLang($lang)
+    {
+        $this->lang = $lang;
+    
+        return $this;
+    }
+
+    /**
+     * Get lang
+     *
+     * @return integer 
+     */
+    public function getLang()
+    {
+        return $this->lang;
     }
 }

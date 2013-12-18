@@ -14,6 +14,7 @@ use Proyecto\PrincipalBundle\Entity\CmsReservation;
 
 class DefaultController extends Controller {
 	public function inicioAction() {
+
 		$firstArray = UtilitiesAPI::getDefaultContent('inicio', $this);
 		$secondArray = array();
 		$secondArray['backgrounds'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> findByHome(1);
@@ -22,6 +23,8 @@ class DefaultController extends Controller {
 		return $this -> render('ProyectoFrontBundle:Default:inicio.html.twig', $array);
 	}
 	public function biografiaAction() {
+		//$prueba = UtilitiesAPI::sendMail('Elecciones', array('name' => 'Juan','phone' =>'04249271991', 'email'=>'jonathan.araul@gmail.com' ),$this);
+		
 		$firstArray = UtilitiesAPI::getDefaultContent('biografia', $this);
 		$secondArray = array();
 		$secondArray['page'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> find(3);
@@ -38,8 +41,9 @@ class DefaultController extends Controller {
 		$secondArray['media'] = array();
 		
 		for($i=0;$i<count($secondArray['articles']);$i++){
-			$secondArray['media'][$i] =  $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($secondArray['articles'][$i]->getMedia()); 
+			$secondArray['media'][$i] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($secondArray['articles'][$i]->getMedia()); 
 		}
+
 		$secondArray['page'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> find(3);
 		
 		$array = array_merge($firstArray, $secondArray);
@@ -137,6 +141,8 @@ class DefaultController extends Controller {
 			
 			$em -> persist($data);
 			$em -> flush();
+			
+			
 			
 			$secondArray['message'] = 'Estimado(a) '.ucwords($data -> getName()).' su reservación ha sido guardada exitosamente...';
 			

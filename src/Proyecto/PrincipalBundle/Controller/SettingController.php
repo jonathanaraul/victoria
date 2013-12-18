@@ -21,6 +21,7 @@ class SettingController extends Controller {
 
 	public function listAction(Request $request) {
 
+		$locale = UtilitiesAPI::getLocale($this);
 		$type = 'setting';
 		$config = UtilitiesAPI::getConfig($type,$this);
 		$url = $this -> generateUrl('proyecto_principal_setting_list');
@@ -29,10 +30,10 @@ class SettingController extends Controller {
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 		$em = $this -> getDoctrine() -> getEntityManager();
-		$dql = "SELECT n FROM ProyectoPrincipalBundle:CmsSetting n";
+		$dql = "SELECT n FROM ProyectoPrincipalBundle:CmsSetting n WHERE n.lang = :lang ";
 		$query = $em -> createQuery($dql);
+		$query -> setParameter('lang', $locale);
 		
-
 		$paginator = $this -> get('knp_paginator');
 		$pagination = $paginator -> paginate($query, $this -> getRequest() -> query -> get('page', 1), 15);
 
@@ -51,7 +52,6 @@ class SettingController extends Controller {
 
 		$array = array_merge($firstArray, $secondArray);
 		
-
 		return $this -> render('ProyectoPrincipalBundle:Setting:List.html.twig', $array);
 	}
 	
@@ -65,7 +65,6 @@ class SettingController extends Controller {
 		$secondArray = array('accion' => 'editar');
 		$secondArray['url'] = $this -> generateUrl('proyecto_principal_setting_edit', array('id' => $id));
 		$secondArray['id'] = $id;
-		$secondArray['lang'] = 0;
 		$array = array_merge($firstArray, $secondArray);
 		$array = array_merge($array, $config);
 
@@ -73,7 +72,8 @@ class SettingController extends Controller {
 	}
 
 	public static function normal($array, Request $request, $class) {
-
+			
+		$locale = UtilitiesAPI::getLocale($class);
 
 		if ($array['accion'] == 'nuevo')
 			$data = new CmsSetting();
@@ -96,7 +96,10 @@ class SettingController extends Controller {
 			$em = $class -> getDoctrine() -> getManager();
 			
 			
-			//CASO ESPECIAL MIRROR Y LANG
+			if ($array['accion'] == 'nuevo') {
+				$data -> setLang($locale);
+				
+			}
 			$data -> setValue($contenido);
 			$data -> setDateUpdated(new \DateTime());
 			$data -> setIp($class -> container -> get('request') -> getClientIp());
@@ -123,44 +126,6 @@ class SettingController extends Controller {
 		return $class -> render('ProyectoPrincipalBundle:Setting:New-Edit.html.twig', $array);
 	}
 
-
-	public function translateAction($type, $id, Request $request) {
-		
-		$config = UtilitiesAPI::getConfig($type,$this);
-		$firstArray = array();
-		$firstArray = UtilitiesAPI::getDefaultContent('ARTICULOS',$config['translate'], $this);
-
-		$secondArray = array('accion' => 'editar');
-		$secondArray['url'] = $this -> generateUrl('proyecto_principal_article_translate', array('type'=>$type,'id' => $id));
-		$secondArray['id'] = $id;
-
-
-		$data = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsArticleTranslate') -> findOneByArticle($id);
-		$object = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsArticle') -> find($id);
-
-		if (!$object) {
-			throw $this -> createNotFoundException('El articulo que intenta traducir no existe ');
-		}
-		//$secondArray = array();
-		$secondArray['object'] = $object;
-
-
-		if (!$data) {
-			$secondArray['accion'] = 'nuevo';
-			$secondArray['data'] = new CmsArticleTranslate();
-		} else {
-			$secondArray['accion'] = 'editar';
-			$secondArray['data'] = $data;
-		}
-
-		//$secondArray['id'] = $id;
-
-		$array = array_merge($firstArray, $secondArray);
-		$array = array_merge($array, $config);
-		
-		return ArticleController::traduccion($array, $request, $this);
-	}
-
 	public function deleteAction() {
 
 		$peticion = $this -> getRequest();
@@ -170,21 +135,10 @@ class SettingController extends Controller {
 
 		$id = $post -> get("id");
 		$em = $this -> getDoctrine() -> getManager();
-		
-		/*
-		//Remover traduccion
-		$object = $em -> getRepository('ProyectoPrincipalBundle:CmsArticleTranslate') -> findOneByArticle($id);
-		if ($object) {
-		$em -> remove($object);
-		$em -> flush();
-		}
-		 * 
-		 */
-		//Remover original
+
 		$object = $em -> getRepository('ProyectoPrincipalBundle:CmsLink') -> find($id);
 		$em -> remove($object);
-		$em -> flush();
-		
+		$em -> flush();		
 
 		$estado = true;
 		$respuesta = new response(json_encode(array('estado' => $estado)));

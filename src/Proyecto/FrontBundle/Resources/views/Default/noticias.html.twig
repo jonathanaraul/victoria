@@ -56,7 +56,7 @@ var images = ["{{asset('uploads/resource/images/e143f645ecdbae5e895098b05b9eb5c0
 			-->
 				<table>
 					<tr>
-						<td width="20%"><img alt="" src="{{ media[loop.index0].getWebPath | apply_filter('my_thumb') }}"></td>
+						<td width="20%"><img alt="" src="{%if  media[loop.index0] is not null%}{{ media[loop.index0].getWebPath | apply_filter('my_thumb') }}{%endif%}"></td>
 						<td width="20%" valign="top"><b>{{element.getDateCreated.format('Y-m-d')}}</b></td>
 						<td width="60%"  valign="top">
 							<p>{{element.name}}</p> 

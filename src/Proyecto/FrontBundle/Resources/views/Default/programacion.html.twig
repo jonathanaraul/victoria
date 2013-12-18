@@ -41,7 +41,7 @@ var images = ["{{ asset(''~ background.getWebPath ~'') }}"];
 				<table>
 					<tr>
 						<td width="20%">
-							<img alt="" src="{{ media[loop.index0].getWebPath | apply_filter('my_thumb') }}">
+							<img alt="" src="{%if  media[loop.index0] is not null%}{{ media[loop.index0].getWebPath | apply_filter('my_thumb') }}{%endif%}">
 						</td>
 						<td width="60%"  valign="top">
 							<p>{{element.name}}</p> 

@@ -21,14 +21,13 @@ class LinkController extends Controller {
 
 	public function listAction(Request $request) {
 		
+		$locale = UtilitiesAPI::getLocale($this);
 		$type = 'links';
 		$config = UtilitiesAPI::getConfig($type,$this);
 		$url = $this -> generateUrl('proyecto_principal_link_list');
 		$firstArray = UtilitiesAPI::getDefaultContent('LINKS', $config['list'], $this);
 		$firstArray['type'] = $config['type'];
-
 		$filtros['published'] = array(1 => 'Si', 0 => 'No');
-	
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 		$data = new CmsLink();
@@ -69,6 +68,15 @@ class LinkController extends Controller {
 					}
 					$dql .= ' n.published = :published ';
 				}
+				
+				if ($where == false) {
+					$dql .= 'WHERE ';
+					$where = true;
+					} 
+				else{
+					$dql .= 'AND ';
+					}
+				$dql .= ' n.lang = :lang ';
 
 				$query = $em -> createQuery($dql);
 
@@ -78,13 +86,16 @@ class LinkController extends Controller {
 				if (!(trim($data -> getPublished()) == false)) {
 					$query -> setParameter('published', $data -> getPublished());
 				}
+				
+				$query -> setParameter('lang', $locale);
 
 			}
 		}
 		//////////////////////////////////////////////////////////////////////////////////////////////////
 		else {
-			$dql = "SELECT n FROM ProyectoPrincipalBundle:CmsLink n";
+			$dql = "SELECT n FROM ProyectoPrincipalBundle:CmsLink n where n.lang = :lang ";
 			$query = $em -> createQuery($dql);
+			$query -> setParameter('lang', $locale);
 		}
 
 		$paginator = $this -> get('knp_paginator');
@@ -140,8 +151,9 @@ class LinkController extends Controller {
 		return LinkController::normal($array, $request, $this);
 	}
 	public static function normal($array, Request $request, $class) {
-
-
+			
+		$locale = UtilitiesAPI::getLocale($class);
+		
 		if ($array['accion'] == 'nuevo')
 			$data = new CmsLink();
 		else
@@ -165,8 +177,7 @@ class LinkController extends Controller {
 			
 			//if ($form -> isValid()) {
 			if ($array['accion'] == 'nuevo') {
-				$data -> setLang($array['lang']);
-				$data -> setMirror(0);
+				$data -> setLang($locale);
 				$data -> setSuspended(0);
 				$data -> setDateCreated(new \DateTime());
 				$data -> setRank(0);
@@ -195,43 +206,7 @@ class LinkController extends Controller {
 	}
 
 
-	public function translateAction($type, $id, Request $request) {
-		
-		$config = UtilitiesAPI::getConfig($type,$this);
-		$firstArray = array();
-		$firstArray = UtilitiesAPI::getDefaultContent('ARTICULOS',$config['translate'], $this);
-
-		$secondArray = array('accion' => 'editar');
-		$secondArray['url'] = $this -> generateUrl('proyecto_principal_article_translate', array('type'=>$type,'id' => $id));
-		$secondArray['id'] = $id;
-
-
-		$data = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsArticleTranslate') -> findOneByArticle($id);
-		$object = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsArticle') -> find($id);
-
-		if (!$object) {
-			throw $this -> createNotFoundException('El articulo que intenta traducir no existe ');
-		}
-		//$secondArray = array();
-		$secondArray['object'] = $object;
-
-
-		if (!$data) {
-			$secondArray['accion'] = 'nuevo';
-			$secondArray['data'] = new CmsArticleTranslate();
-		} else {
-			$secondArray['accion'] = 'editar';
-			$secondArray['data'] = $data;
-		}
-
-		//$secondArray['id'] = $id;
-
-		$array = array_merge($firstArray, $secondArray);
-		$array = array_merge($array, $config);
-		
-		return ArticleController::traduccion($array, $request, $this);
-	}
-
+	
 	public function deleteAction() {
 
 		$peticion = $this -> getRequest();
@@ -242,16 +217,6 @@ class LinkController extends Controller {
 		$id = $post -> get("id");
 		$em = $this -> getDoctrine() -> getManager();
 		
-		/*
-		//Remover traduccion
-		$object = $em -> getRepository('ProyectoPrincipalBundle:CmsArticleTranslate') -> findOneByArticle($id);
-		if ($object) {
-		$em -> remove($object);
-		$em -> flush();
-		}
-		 * 
-		 */
-		//Remover original
 		$object = $em -> getRepository('ProyectoPrincipalBundle:CmsLink') -> find($id);
 		$em -> remove($object);
 		$em -> flush();
