@@ -16,7 +16,7 @@ use Proyecto\PrincipalBundle\Entity\CmsPage;
 
 class DefaultController extends Controller {
 	public function indexAction() {
-	 $this->redirect($this->generateUrl('proyecto_front_homepage'),array('_locale'  => 'es'));
+	 return $this->redirect($this->generateUrl('proyecto_front_homepage',array('_locale' => 'es')));
 	}
 	public function inicioAction() {
 
