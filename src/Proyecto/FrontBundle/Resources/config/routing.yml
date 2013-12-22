@@ -1,6 +1,17 @@
-proyecto_front_homepage:
+proyecto_front_index:
     pattern:  /
+    defaults: { _controller: ProyectoFrontBundle:Default:index }
+proyecto_front_homepage:
+    pattern:  /{_locale}
     defaults: { _controller: ProyectoFrontBundle:Default:inicio }
+    requirements:
+        _locale:  es|en
+proyecto_front_page:
+    pattern:  /{_locale}/{id}/{friendlyname}
+    defaults: { _controller: ProyectoFrontBundle:Default:page }
+    requirements:
+        _locale:  es|en
+
 proyecto_front_biografia:
     pattern:  /biografia
     defaults: { _controller: ProyectoFrontBundle:Default:biografia }

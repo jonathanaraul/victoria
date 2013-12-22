@@ -249,13 +249,14 @@ class PageController extends Controller {
 				$data -> setTemplate(0);
 				$data -> setDescription('');
 				$data -> setDateCreated(new \DateTime());
+				$data -> setFriendlyName(UtilitiesAPI::getFriendlyName($data->getTitle(),$class));
 			} else {
 				$data -> setDateUpdated(new \DateTime());
 			}
 			$data -> setContent($contenido);
 			$data -> setIp($class -> container -> get('request') -> getClientIp());
 			$data -> setUser($array['user'] -> getId());
-			$data -> setFriendlyName($data -> getName());
+			
 
 			if ($array['accion'] == 'nuevo')
 				$em -> persist($data);

@@ -1,0 +1,77 @@
+{% extends "ProyectoFrontBundle:Helpers:body.html.twig" %}
+
+{%block imagenes%}
+var images = ["{{ asset(''~ background.getWebPath ~'') }}"];
+{%endblock%}
+
+{%block contenido%}
+<div class="middle-right-sub">
+	<div class="top-main-text">
+		<div class="top-main-big">
+			LA VICTORIA
+		</div>
+		<div class="top-main-small">
+			ESPACIO CULTURAL
+		</div>
+	</div>
+	<div class="upper-text" style="background-color: {{theme.color}} !important"></div>
+	<div class="news-cont">
+		<hr>
+		<p class="content-title">
+			{{page.name|title}}
+		</p>
+		<div class="content-news scroll-10">
+
+			<div class="news-cell">
+				<table>
+					<tr>
+						<td width="100%"  valign="top" colspan="3">
+							
+							{{page.content|raw}}
+							
+						</br></br></br>
+						</td>
+						
+					</tr>
+					{%if articles is not null%}
+						{%for element in articles %}
+						<tr>
+							<td width="20%"><img alt="" src="{%if  images[loop.index0] is not null%}{{ images[loop.index0].getWebPath | apply_filter('my_thumb') }}{%endif%}"></td>
+							<td width="20%" valign="top"><b>{{element.getDateCreated.format('Y-m-d')}}</b></td>
+							<td width="60%"  valign="top">
+								<div><b>{{element.name}}</b> </div>
+								<div> 
+								{{element.content|raw}}
+								</div>
+								<div style="text-align: right;">
+									<p style="text-align: right;"><b><a href="{{ path('proyecto_front_article', {'id': element.id}) }}" style="color: black;">Leer noticia</a></b></p>´
+								</div>
+								
+								
+								</td>
+						</tr>
+						{%endfor%}
+					{%endif%}
+				</table>
+			</div>
+		
+		</div>
+		<div class="lower-text"></div>
+		<div class="lower-box" style="#right: 200px;"></div>
+	</div>
+	<div class="main-big-title news-big-title" style="">
+		<div class="theme-sel-{{theme.id}}">
+			{{page.name|title}}
+		</div>
+	</div>
+</div>
+{%endblock%}
+
+{%block celda%} 
+<div class="cell-right-sub"></div>
+{%if page.name|title == 'Contacto'%}
+<div class="map">
+     <iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.pl/maps?hl=pl&amp;ie=UTF8&amp;ll=40.409040,-3.701783&amp;spn=0.00638,0.016512&amp;t=m&amp;z=17&amp;output=embed"></iframe>
+</div>
+{%endif%}
+{%endblock%} 

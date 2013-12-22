@@ -13,7 +13,34 @@ use Proyecto\PrincipalBundle\Entity\Proyecto;
 
 class UtilitiesAPI extends Controller {
 		
+	public static function getFriendlyName($title,$class){
+		$friendlyName = strtolower($title);
+		$friendlyName =  str_replace("á", "a", $friendlyName);
+		$friendlyName =  str_replace("é", "e", $friendlyName);
+		$friendlyName =  str_replace("í", "i", $friendlyName);
+		$friendlyName =  str_replace("ó", "o", $friendlyName);
+		$friendlyName =  str_replace("ú", "u", $friendlyName);
+		$friendlyName =  str_replace("'", "", $friendlyName);
+		$friendlyName =  str_replace('"', "", $friendlyName);
+		$friendlyName =  str_replace("ñ", "n", $friendlyName);
+		$friendlyName =  str_replace("_", " ", $friendlyName);
+		$friendlyName =  str_replace(".", " ", $friendlyName);
+		$friendlyName =  str_replace(":", " ", $friendlyName);
+		$friendlyName =  str_replace("-", " ", $friendlyName);
+		$friendlyName =  str_replace("           ", " ", $friendlyName);
+		$friendlyName =  str_replace("          ", " ", $friendlyName);
+		$friendlyName =  str_replace("         ", " ", $friendlyName);
+		$friendlyName =  str_replace("        ", " ", $friendlyName);
+		$friendlyName =  str_replace("       ", " ", $friendlyName);
+		$friendlyName =  str_replace("      ", " ", $friendlyName);
+		$friendlyName =  str_replace("     ", " ", $friendlyName);
+		$friendlyName =  str_replace("    ", " ", $friendlyName);
+		$friendlyName =  str_replace("   ", " ", $friendlyName);
+		$friendlyName =  str_replace("  ", " ", $friendlyName);
+		$friendlyName =  str_replace(" ", "-", $friendlyName);
 		
+		return $friendlyName;
+	}
 	public static function getRank($locale, $class){
 
         $em = $class->getDoctrine()->getManager();

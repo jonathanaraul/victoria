@@ -14,9 +14,33 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Proyecto\PrincipalBundle\Entity\User;
 use Proyecto\PrincipalBundle\Entity\Data;
 use Proyecto\PrincipalBundle\Entity\Categoria;
+use Proyecto\PrincipalBundle\Entity\CmsPage;
+
+
+
 
 class HelpersController extends Controller
 {
+    public function menuAction($idpage,$theme)
+    {
+    	$locale = UtilitiesAPI::getLocale($this);
+	
+		$em = $this->getDoctrine()->getManager();
+		
+		$query = $em -> createQuery('SELECT d
+    								 FROM ProyectoPrincipalBundle:CmsPage d
+   	 								 WHERE d.lang      = :locale and
+   	 								       d.published = :published
+    								 ORDER BY d.rank ASC') 
+    		   -> setParameter('locale', $locale)
+			   -> setParameter('published', 1);
+
+		$array['objects'] = $query -> getResult();
+		$array['idpage'] = $idpage;
+		$array['theme'] = $theme;
+	
+        return $this->render('ProyectoFrontBundle:Helpers:menu.html.twig', $array);
+    }
     public function ultimosArticulosAction($tipo,$titulo)
     {
     	$array = array('titulo'=>$titulo );
@@ -63,28 +87,11 @@ class HelpersController extends Controller
     	 								  ProyectoPrincipalBundle:Categoria c
    	 								 WHERE d.categoria = c.id AND
    	 								       c.titulo = :tipo
-    								 ORDER BY d.fecha DESC') -> setParameter('tipo', 'slideshow');
+    								 ORDER BY d.rank DESC') -> setParameter('tipo', 'slideshow');
 
 		$secondArray['objects'] = $query -> getResult();
 		
         return $this->render('ProyectoFrontBundle:Helpers:slideshow.html.twig', $secondArray);
     }
 
-	 public function menuAction()
-    {
-			
-		 $categorias = $this->getDoctrine()
-        ->getRepository('ProyectoPrincipalBundle:Categoria')
-        ->findByTipo(1);
-
-		$array = array();
-		
-		for ($i=0; $i < count($categorias) ; $i++) { 
-			$array[$i]['titulo'] = $categorias[$i]->getTitulo();
-			$array[$i]['url'] = $this->generateUrl('proyecto_front_descargas_categoria', array('id' => $categorias[$i]->getId()));
-		  
-		}
-		
-        return $this->render('ProyectoFrontBundle:Helpers:menu.html.twig', array('elementos' => $array));
-    }
 }
