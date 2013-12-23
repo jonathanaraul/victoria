@@ -6,6 +6,16 @@ proyecto_front_homepage:
 proyecto_front_index:
     pattern:  /
     defaults: { _controller: ProyectoFrontBundle:Default:index }
+proyecto_front_reservation:
+    pattern:  /{_locale}/reservation/{id}
+    defaults: { _controller: ProyectoFrontBundle:Default:reservation }
+    requirements:
+        _locale:  es|en
+proyecto_front_article:
+    pattern:  /{_locale}/article/{id}
+    defaults: { _controller: ProyectoFrontBundle:Default:article }
+    requirements:
+        _locale:  es|en
 proyecto_front_page:
     pattern:  /{_locale}/{id}/{friendlyname}
     defaults: { _controller: ProyectoFrontBundle:Default:page }
@@ -24,9 +34,7 @@ proyecto_front_programacion:
 proyecto_front_talleres:
     pattern:  /talleres
     defaults: { _controller: ProyectoFrontBundle:Default:talleres }
-proyecto_front_article:
-    pattern:  /article/{id}
-    defaults: { _controller: ProyectoFrontBundle:Default:article }
+
 proyecto_front_gastrobar:
     pattern:  /gastrobar
     defaults: { _controller: ProyectoFrontBundle:Default:gastrobar }
@@ -39,6 +47,3 @@ proyecto_front_validacion:
 proyecto_front_cerrarsesion:
     pattern:  /logout
     defaults: { _controller: ProyectoFrontBundle:Default:inicio }
-proyecto_front_reservation:
-    pattern:  /reservation/{id}
-    defaults: { _controller: ProyectoFrontBundle:Default:reservation }

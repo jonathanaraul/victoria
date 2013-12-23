@@ -194,6 +194,7 @@ class CmsPage
 
 	private $file;
 	private $temp;
+	private $remove;
 
     /**
      * Get id
@@ -203,6 +204,29 @@ class CmsPage
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set remove
+     *
+     * @param integer $remove
+     * @return CmsPage
+     */
+    public function setRemove($remove)
+    {
+        $this->remove = $remove;
+    
+        return $this;
+    }
+
+    /**
+     * Get remove
+     *
+     * @return integer 
+     */
+    public function getRemove()
+    {
+        return $this->remove;
     }
 
     /**
@@ -768,7 +792,7 @@ class CmsPage
 		if (isset($this -> path)) {
 			// store the old name to delete after the update
 			$this -> temp = $this -> path;
-			$this -> path = null;
+			//$this -> path = null;
 		} else {
 			$this -> path = 'inicial';
 		}
@@ -803,7 +827,7 @@ class CmsPage
 		// check if we have an old image
 		if (isset($this -> temp)) {
 			// delete the old image
-			unlink($this -> getUploadRootDir() . '/' . $this -> temp);
+			//unlink($this -> getUploadRootDir() . '/' . $this -> temp);
 			// clear the temp image path
 			$this -> temp = null;
 		}

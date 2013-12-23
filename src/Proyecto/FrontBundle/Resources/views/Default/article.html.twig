@@ -10,14 +10,31 @@
 <div class="middle-right-sub">
 	{% include 'ProyectoFrontBundle:Default:titulo.html.twig' %}
 
-	<div class="biography-cont">
+	<div class="news-cont">
 		<p class="content-title">
 			{{article.name}}
 		</p>
-		<div class="biography-content scroll-4" id="scroll-me">
+		<div class="content-news scroll-10">
+			<div class="news-cell">
 			{{article.content|raw}}
 
 			<p><img alt="" src="{%if  media is not null%}{{ media.getWebPath | apply_filter('my_thumb2') }}{%endif%}"></p>
+			
+			
+			{%if idpage == 37 or idpage==5%}
+				<div><b>{{article.gender}}</b></div>
+				<div><b>Fechas</b></div>
+				<ul>
+				{%for date in dates%}
+				
+					<li>{{date.date|date("m/d/Y")}}</li>
+				
+				{%endfor%}
+				</ul>
+				{%if idpage == 37 or idpage==5%}<span style="text-align: left;"><b><a href="{{ path('proyecto_front_reservation', {'id': article.id}) }}" style="color: black;">Reserva Ahora</a></b></span>
+									{%endif%}
+			{%endif%}
+			</div>
 		</div>
 		<div class="lower-text"></div>
 		<div class="lower-box"></div>

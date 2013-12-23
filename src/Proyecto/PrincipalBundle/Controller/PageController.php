@@ -253,6 +253,8 @@ class PageController extends Controller {
 			} else {
 				$data -> setDateUpdated(new \DateTime());
 			}
+			
+			//$data -> setRemove(1);
 			$data -> setContent($contenido);
 			$data -> setIp($class -> container -> get('request') -> getClientIp());
 			$data -> setUser($array['user'] -> getId());

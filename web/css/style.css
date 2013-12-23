@@ -1,4 +1,10 @@
 @font-face {
+    font-family: 'Calibri';
+    src: url('../fonts3/calibri.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
     font-family: 'FuturiCondensed';
     src: url('../fonts/Futuri_condensed/FuturiCondensedRegularSWFTE.eot');
     src: url('../fonts/Futuri_condensed/FuturiCondensedRegularSWFTE.eot?#iefix') format('embedded-opentype'),
@@ -28,7 +34,9 @@
     font-weight: normal;
     font-style: normal;
 }
-
+.calibri {
+    font-family: 'Calibri';
+}
 .futura {
     font-family: 'FuturaBkAt';
 }
@@ -57,6 +65,7 @@ body {
 }
 
 body, img, p{
+	font-family: "Calibri";
     margin: 0px;
     padding: 0px;
     border: 0px;

@@ -18,6 +18,7 @@ class DefaultController extends Controller {
 	public function indexAction() {
 	 return $this->redirect($this->generateUrl('proyecto_front_homepage',array('_locale' => 'es')));
 	}
+	
 	public function inicioAction() {
 
 		$firstArray = UtilitiesAPI::getDefaultContent('inicio', $this);
@@ -41,22 +42,34 @@ class DefaultController extends Controller {
 		$secondArray['articles'] = null;
 		
 		$secondArray['images'] = array();
-		if($secondArray['idpage']==1 ||$secondArray['idpage']==2 ||$secondArray['idpage']==5){
+		if($secondArray['idpage']==1 ||$secondArray['idpage']==37 ||$secondArray['idpage']==5 ||$secondArray['idpage']==38){
 			$idArticle = 0;
 			
-			if ($secondArray['idpage']==2) $idArticle = 1;
-			else $idArticle = 2;
+			if ($secondArray['idpage']==37) $idArticle = 1;
+			else if ($secondArray['idpage']==5 )$idArticle = 2;
 			
 			$secondArray['articles'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsArticle') -> findByType($idArticle);
-		
+
+		    if($secondArray['idpage']==38){
+		    	$em = $this -> getDoctrine() -> getEntityManager();
+				$dql = "SELECT n FROM ProyectoPrincipalBundle:CmsArticle n ";
+				$dql .= 'WHERE n.type = :type1 or n.type = :type2 ';
+				$query = $em -> createQuery($dql);
+				$query -> setParameter('type1', 1);
+				$query -> setParameter('type2', 2);
+				$secondArray['articles'] = $query -> getResult();
+		    }
+
+			
+			
 			for($i=0;$i<count($secondArray['articles']);$i++){
 				$secondArray['images'][$i] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($secondArray['articles'][$i]->getMedia()); 
 				$secondArray['articles'][$i]->setContent( substr ( $secondArray['articles'][$i]->getContent() , 0, 300 ) .'...');
 															 }
+			rsort ($secondArray['articles']);
+			rsort ($secondArray['images']);
 		
 		}
-
-		
 		
 		$array = array_merge($firstArray, $secondArray);
 		return $this -> render('ProyectoFrontBundle:Default2:page.html.twig', $array);
@@ -69,57 +82,29 @@ class DefaultController extends Controller {
 		$secondArray['media'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($secondArray['article']->getMedia());
 		$secondArray['theme'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsTheme') -> find($secondArray['article']->getTheme());
 		$secondArray['idpage'] = null;
+		if($secondArray['article']->getType()==0){
+			$secondArray['idpage'] = 1;
+		}
+		else if($secondArray['article']->getType()==1 || $secondArray['article']->getType()==2){
+			
+			if($secondArray['article']->getType()==1)$secondArray['idpage'] = 37;
+			else $secondArray['idpage'] = 5;
+			
+			$secondArray['dates'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsDate') -> findByArticle($secondArray['article']->getId());
+
+		}
+	
+		
 		$array = array_merge($firstArray, $secondArray);
 		return $this -> render('ProyectoFrontBundle:Default:article.html.twig', $array);
 	}
 	
-	public function programacionAction() {
-		$firstArray = UtilitiesAPI::getDefaultContent('programacion', $this);
-		$secondArray = array();
-		$secondArray['articles'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsArticle') -> findByType(1);
-		$secondArray['media'] = array();
-		
-		for($i=0;$i<count($secondArray['articles']);$i++){
-			$secondArray['media'][$i] =  $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($secondArray['articles'][$i]->getMedia()); 
-			$secondArray['dates'][$i] =  $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsDate') -> findByArticle($secondArray['articles'][$i]->getId()); 
-		}
-		$secondArray['page'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> find(2);
-		$secondArray['background'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($secondArray['page']->getBackground());
-		
-	
-		$secondArray['theme'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsTheme') -> find($secondArray['page']->getTheme());
-		$secondArray['idpage'] = $secondArray['page']->getId();
-
-		$array = array_merge($firstArray, $secondArray);
-		return $this -> render('ProyectoFrontBundle:Default:programacion.html.twig', $array);
-	}
-	public function talleresAction() {
-		$firstArray = UtilitiesAPI::getDefaultContent('talleres', $this);
-		$secondArray = array();
-		$secondArray['articles'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsArticle') -> findByType(2);
-		$secondArray['media'] = array();
-		
-		for($i=0;$i<count($secondArray['articles']);$i++){
-			$secondArray['media'][$i] =  $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($secondArray['articles'][$i]->getMedia()); 
-			$secondArray['dates'][$i] =  $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsDate') -> findByArticle($secondArray['articles'][$i]->getId()); 
-		}
-		$secondArray['page'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> find(7);
-		$secondArray['background'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($secondArray['page']->getBackground());
-		$secondArray['theme'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsTheme') -> find($secondArray['page']->getTheme());
-		$secondArray['idpage'] = $secondArray['page']->getId();
-		$array = array_merge($firstArray, $secondArray);
-		return $this -> render('ProyectoFrontBundle:Default:talleres.html.twig', $array);
-	}
-	
-
-	
 	public function reservationAction($id, Request $request) {
 		//$prueba = UtilitiesAPI::sendMail('Elecciones', array('name' => 'Juan','phone' =>'04249271991', 'email'=>'jonathan.araul@gmail.com' ),$this);
-		
 		$firstArray = UtilitiesAPI::getDefaultContent('reservation', $this);
 		$secondArray = array();
 		$secondArray['article'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsArticle') -> find($id);
-		
+		$locale = UtilitiesAPI::getLocale($this);
 		///////////////////////////////////////////////////////////////////////////////////////////////////
 		$data = new CmsReservation();
 		$form = $this -> createFormBuilder($data) 
@@ -133,7 +118,7 @@ class DefaultController extends Controller {
 
 		if ($this -> getRequest() -> isMethod('POST')) {
 			$form -> bind($this -> getRequest());
-			
+			$data -> setLang($locale);
 			$data -> setDate(new \DateTime());
 			$data -> setChecked(false);
 			$data -> setArticle($secondArray['article']);
@@ -147,12 +132,13 @@ class DefaultController extends Controller {
 		
 		$secondArray['form'] = $form -> createView();
 		$secondArray['url'] =  $this -> generateUrl('proyecto_front_reservation', array('id' => $id));
-		$secondArray['theme'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsTheme') -> find(6)->getColor();
+		$secondArray['theme'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsTheme') -> find(6);
 		$secondArray['background'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find(50)->getWebPath();
 		$secondArray['idpage'] = null;
 
 		$array = array_merge($firstArray, $secondArray);
 		return $this -> render('ProyectoFrontBundle:Default:reservation.html.twig', $array);
 	}
+
 
 }

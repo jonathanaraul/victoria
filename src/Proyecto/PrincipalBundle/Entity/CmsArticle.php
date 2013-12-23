@@ -624,7 +624,7 @@ class CmsArticle
 		if (isset($this -> pdf)) {
 			// store the old name to delete after the update
 			$this -> temp = $this -> pdf;
-			$this -> pdf = null;
+			//$this -> pdf = null;
 		} else {
 			$this -> pdf = 'inicial';
 		}
@@ -659,7 +659,7 @@ class CmsArticle
 		// check if we have an old image
 		if (isset($this -> temp)) {
 			// delete the old image
-			unlink($this -> getUploadRootDir() . '/' . $this -> temp);
+			//unlink($this -> getUploadRootDir() . '/' . $this -> temp);
 			// clear the temp image path
 			$this -> temp = null;
 		}
