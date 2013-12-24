@@ -15,6 +15,68 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class UtilitiesAPI extends Controller {
 
+	/**
+	* Constantes que representan los ids en la base de datos de las paginas especiales
+	*/
+	const NOTICIAS_ES = 1;
+	const CARTELERA_ES = 37;
+	const TALLERES_ES = 5;
+	const CALENDARIO_ES = 38;
+
+	const NOTICIAS_EN = 30;
+	const CARTELERA_EN = 30;
+	const TALLERES_EN = 30;
+	const CALENDARIO_EN = 30;
+
+	const TIPO_NOTICIAS = 0;
+	const TIPO_CARTELERA = 1;
+	const TIPO_TALLERES = 2;
+
+	public static function esListado($idpage, $class){
+		
+		$listado = null;
+		
+		if($idpage== UtilitiesAPI::NOTICIAS_ES 
+		 ||$idpage== UtilitiesAPI::CARTELERA_ES 
+		 ||$idpage== UtilitiesAPI::TALLERES_ES  
+		 ||$idpage== UtilitiesAPI::CALENDARIO_ES  )
+		 {
+
+			if($idpage == UtilitiesAPI::NOTICIAS_ES){
+				$listado = 'noticias';
+			}
+			else if($idpage == UtilitiesAPI::CARTELERA_ES){
+				$listado = 'cartelera';
+			}
+			else if($idpage == UtilitiesAPI::TALLERES_ES){
+				$listado = 'talleres';
+			}
+			else if($idpage == UtilitiesAPI::CALENDARIO_ES){
+				$listado = 'calendario';
+			}
+		 }
+		else if($idpage== UtilitiesAPI::NOTICIAS_EN 
+		      ||$idpage== UtilitiesAPI::CARTELERA_EN 
+		      ||$idpage== UtilitiesAPI::TALLERES_EN  
+		      ||$idpage== UtilitiesAPI::CALENDARIO_EN  )
+		 {
+			
+			if($idpage == UtilitiesAPI::NOTICIAS_EN){
+				$listado = 'noticias';
+			}
+			else if($idpage == UtilitiesAPI::CARTELERA_EN){
+				$listado = 'cartelera';
+			}
+			else if($idpage == UtilitiesAPI::TALLERES_EN){
+				$listado = 'talleres';
+			}
+			else if($idpage == UtilitiesAPI::CALENDARIO_EN){
+				$listado = 'calendario';
+			}
+		 }
+	
+	return $listado;
+	}
 	public static function getLocale($class){
 		
 		$request = $class->getRequest();

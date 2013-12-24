@@ -1,9 +1,7 @@
 {% extends "ProyectoFrontBundle:Helpers:body.html.twig" %}
 
 {%block imagenes%}
-
-	var images =  ["{{asset('uploads/resource/images/1a8aadd2c7351a55ab453db93d6c1b71.jpg')}}"];
-	
+var images = ["{{ asset(''~ background.getWebPath ~'') }}"];
 {%endblock%}
 
 {%block contenido%}

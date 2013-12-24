@@ -6,6 +6,12 @@ proyecto_front_homepage:
 proyecto_front_index:
     pattern:  /
     defaults: { _controller: ProyectoFrontBundle:Default:index }
+proyecto_front_page_pagina:
+    pattern:  /{_locale}/paginacion
+    defaults: { _controller: ProyectoFrontBundle:Listados:paginacion }
+    requirements:
+        _method: POST
+        _locale:  es|en
 proyecto_front_reservation:
     pattern:  /{_locale}/reservation/{id}
     defaults: { _controller: ProyectoFrontBundle:Default:reservation }
@@ -22,28 +28,8 @@ proyecto_front_page:
     requirements:
         _locale:  es|en
 
-proyecto_front_biografia:
-    pattern:  /biografia
-    defaults: { _controller: ProyectoFrontBundle:Default:biografia }
-proyecto_front_noticias:
-    pattern:  /noticias
-    defaults: { _controller: ProyectoFrontBundle:Default:noticias }
-proyecto_front_programacion:
-    pattern:  /programacion
-    defaults: { _controller: ProyectoFrontBundle:Default:programacion }
-proyecto_front_talleres:
-    pattern:  /talleres
-    defaults: { _controller: ProyectoFrontBundle:Default:talleres }
 
-proyecto_front_gastrobar:
-    pattern:  /gastrobar
-    defaults: { _controller: ProyectoFrontBundle:Default:gastrobar }
-proyecto_front_contacto:
-    pattern:  /contacto
-    defaults: { _controller: ProyectoFrontBundle:Default:contacto }
-proyecto_front_validacion:
-    pattern:  /validacion
-    defaults: { _controller: ProyectoFrontBundle:Users:validacion }
+
 proyecto_front_cerrarsesion:
     pattern:  /logout
     defaults: { _controller: ProyectoFrontBundle:Default:inicio }

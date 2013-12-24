@@ -1,88 +1,40 @@
-{% extends "ProyectoFrontBundle:Helpers:body.html.twig" %}
-
-{%block imagenes%}
-var images = ["{{asset('uploads/resource/images/e143f645ecdbae5e895098b05b9eb5c0.jpg')}}"];
-
-{%endblock%}
-
-{%block contenido%}
-<div class="middle-right-sub">
-	<div class="middle-right-sub-back">
-		<div class="black-top"></div>
-		<div>
-			<div class="black-top-left"></div>
-			<div class="black-top-right"></div>
-		</div>
-		<div class="black-middle"></div>
-		<div>
-			<div class="black-middle-left"></div>
-			<div class="black-middle-right"></div>
-		</div>
-		<div class="black-bottom" style="height: 1170px;"></div>
-	</div>
-	<div class="top-main-text">
-		<div class="top-main-big">
-			LA VICTORIA
-		</div>
-		<div class="top-main-small">
-			ESPACIO CULTURAL
-		</div>
-	</div>
-	<div class="upper-text" style="background-color: #ffdd00 !important"></div>
-	<div class="news-cont">
-		<hr>
-		<p class="content-title">
-			NOTICIAS
-		</p>
-		<div class="content-news scroll-10">
-			{%for element in articles%}
-			<div class="news-cell">
-				<!--<div class="" style="width: 85px;">
-					</
-				</div>
-				<div class="news-left" style="width: 85px;">
-					
-				</div>
-				<div class="news-right" style="width: 350px;">
-					<div class="news-title-more">
-						
+{%if articles is not null%}
+	{%for element in articles %}
+		<tr class="articulos borrar">
+			<td width="20%" valign="top">
+				<img alt="" src="{%if  images[loop.index0] is not null%}{{ images[loop.index0].getWebPath | apply_filter('my_thumb') }}{%endif%}">
+			</td>
+			<td width="20%" valign="top"><b>{{element.getDateCreated.format('Y-m-d')}}</b></td>
+			<td width="60%"  valign="top">
+					<div>
+							<b>{{element.name}}</b>
 					</div>
-					<div class="rel">
-						<div class="news-more">
+					<div>
 							{{element.content|raw}}
-						</div>
+					</div> 	
+					<div style="">
+						<span style="text-align: right;">
+							<b><a href="{{ path('proyecto_front_article', {'id': element.id}) }}" style="color: black;">Leer más...</a></b>
+						</span>´
 					</div>
-				</div>
-			-->
-				<table>
-					<tr>
-						<td width="20%"><img alt="" src="{%if  media[loop.index0] is not null%}{{ media[loop.index0].getWebPath | apply_filter('my_thumb') }}{%endif%}"></td>
-						<td width="20%" valign="top"><b>{{element.getDateCreated.format('Y-m-d')}}</b></td>
-						<td width="60%"  valign="top">
-							<p>{{element.name}}</p> 
-							<p> 
-							{{element.content|raw}}
-							</p>
-							<p style="text-align: right;"><a href="{{ path('proyecto_front_article', {'id': element.id}) }}" style="color: black;">Leer noticia</a></p>´
-							</td>
-
-					</tr>
-				</table>
-				
-			</div>
-			{%endfor%}
-		<div class="next-news p-2"></div>
-		</div>
-		<div class="lower-text"></div>
-		<div class="lower-box"></div>
-	</div>
-	<div class="main-big-title news-big-title" style="">
-		<div class="theme-sel-10">
-			Noticias
-		</div>
-	</div>
-</div>
-{%endblock%}
-
-{%block celda%} <div class="cell-right-sub"></div>
-{%endblock%} 
+			</td>
+		</tr>
+	{%endfor%}
+	<tr class="paginacion borrar">
+		<td colspan="2">
+			{%if izquierda !=0%}
+			<p style="text-align: right;"><img src="{{asset('izquierda.png')}}" style="cursor: pointer;" class="pagina-normal" id="izquierda" valor="{{izquierda}}"></p>
+			{%endif%}
+		</td>
+		<td >
+			{%if derecha !=0%}
+			<p style="text-align: right;"><img src="{{asset('derecha.png')}}" style="cursor: pointer;" class="pagina-normal" id="derecha" valor="{{derecha}}" ></p>
+			{%endif%}
+		</td>
+	</tr>
+	<tr id="fila-loader">
+		<td colspan="3" style="height: 350px;width:563px;display: none" id="loader">
+			<p style="text-align: center;"><img src="{{asset('loader.gif')}}" ></p>
+		</td>
+	</tr>
+{%endif%}
