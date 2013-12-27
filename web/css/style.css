@@ -1040,3 +1040,22 @@ a, a:link, a:hover, a:active, a:visited{
 .program-title a{
     color: #000;
 }
+.celdanoseleccionada {
+    text-align: center;
+    font-weight:bold;
+    background-color: white;
+    cursor: pointer;
+}
+.celdaseleccionada {
+    text-align: center;
+    font-weight:bold;
+    border-style: solid;
+	border-width: 5px;
+	border-color: #f49401;
+}
+.celdanovisible {
+    display: none;
+}
+.celdavisible {
+    display: none;
+}

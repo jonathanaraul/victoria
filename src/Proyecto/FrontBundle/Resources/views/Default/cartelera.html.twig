@@ -1,0 +1,36 @@
+{%if articles is not null%}
+	{%for element in articles %}
+		<tr class="articulos borrar">
+			<td width="20%" valign="top">
+				<img alt="" src="{%if  images[loop.index0] is not null%}{{ images[loop.index0].getWebPath | apply_filter('my_thumb') }}{%endif%}">
+			</td>
+			<td width="20%" valign="top"><b>{{element.getDate.format('h:i A')}}</b></td>
+			<td width="60%"  valign="top">
+					<div>
+							<b>{{element.article.name}}</b>
+					</div>
+					<div>
+							{{element.article.content|raw}}
+					</div> 	
+					<div>
+							<b>{{element.article.gender}}</b>
+					</div> 
+					<div style="">
+						<span style="text-align: left;">
+							<b><a href="{{ path('proyecto_front_reservation', {'id': element.article.id}) }}" style="color: black;">Reserva ahora</a></b>
+						</span>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<span style="text-align: right;">
+							<b><a href="{{ path('proyecto_front_article', {'id': element.article.id}) }}" style="color: black;">Leer más...</a></b>
+						</span>
+					</div>
+			</td>
+		</tr>
+	{%endfor%}
+
+	<tr id="fila-loader">
+		<td colspan="3" style="height: 350px;width:563px;display: none" id="loader">
+			<p style="text-align: center;"><img src="{{asset('loader.gif')}}" ></p>
+		</td>
+	</tr>
+{%endif%}

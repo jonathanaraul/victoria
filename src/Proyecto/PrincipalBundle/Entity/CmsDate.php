@@ -22,9 +22,12 @@ class CmsDate
     private $id;
 
     /**
-     * @var integer
+     * @var \CmsArticle
      *
-     * @ORM\Column(name="article", type="integer", nullable=false)
+     * @ORM\ManyToOne(targetEntity="CmsArticle")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="article", referencedColumnName="id")
+     * })
      */
     private $article;
 
@@ -49,10 +52,10 @@ class CmsDate
     /**
      * Set article
      *
-     * @param integer $article
+     * @param \Proyecto\PrincipalBundle\Entity\CmsArticle $article
      * @return CmsDate
      */
-    public function setArticle($article)
+    public function setArticle(\Proyecto\PrincipalBundle\Entity\CmsArticle $article = null)
     {
         $this->article = $article;
     
@@ -62,14 +65,13 @@ class CmsDate
     /**
      * Get article
      *
-     * @return integer 
+     * @return \Proyecto\PrincipalBundle\Entity\CmsArticle 
      */
     public function getArticle()
     {
         return $this->article;
     }
-
-
+	
     /**
      * Set date
      *

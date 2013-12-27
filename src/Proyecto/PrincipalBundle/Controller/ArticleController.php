@@ -289,7 +289,7 @@ class ArticleController extends Controller {
 			foreach ($fechas as $key => $value) {
 
 				$fecha = new CmsDate();
-				$fecha->setArticle($data->getId());
+				$fecha->setArticle($data);
 				$fecha->setDate(UtilitiesAPI::convertirFechaNormal($value,$class));
 				$em -> persist($fecha);
 				$em -> flush();

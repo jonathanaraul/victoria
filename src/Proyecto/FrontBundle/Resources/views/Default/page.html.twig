@@ -30,12 +30,15 @@ var images = ["{{ asset(''~ background.getWebPath ~'') }}"];
 					</tr>
 					{%if listado is not null%}
 						{%if listado == 'noticias'%}
-							{{ render(controller('ProyectoFrontBundle:Listados:noticias', { 'id': idpage })) }}
+							{{ render(controller('ProyectoFrontBundle:Listados:noticias')) }}
 						{%elseif listado == 'cartelera'%}
-							{{ render(controller('ProyectoFrontBundle:Listados:cartelera', { 'id': idpage })) }}
+							{{ render(controller('ProyectoFrontBundle:Listados:paginacionEspecial')) }}
+							{{ render(controller('ProyectoFrontBundle:Listados:cartelera')) }}
 						{%elseif listado == 'talleres'%}
-							{{ render(controller('ProyectoFrontBundle:Listados:talleres', { 'id': idpage })) }}
+						{{ render(controller('ProyectoFrontBundle:Listados:paginacionEspecial')) }}
+							{{ render(controller('ProyectoFrontBundle:Listados:talleres')) }}
 						{%elseif listado == 'calendario'%}
+							{{ render(controller('ProyectoFrontBundle:Listados:paginacionEspecial')) }}
 							{{ render(controller('ProyectoFrontBundle:Listados:calendario', { 'id': idpage })) }}
 						{%endif%}
 					{%endif%}

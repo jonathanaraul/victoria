@@ -32,6 +32,11 @@ class UtilitiesAPI extends Controller {
 	const TIPO_CARTELERA = 1;
 	const TIPO_TALLERES = 2;
 
+	public static function letraDia($cadena,$class){
+		$array = array('D','L','M','M','J','V','S' );
+		
+		return $array[$cadena];
+	}
 	public static function esListado($idpage, $class){
 		
 		$listado = null;
@@ -286,7 +291,32 @@ class UtilitiesAPI extends Controller {
 		$em -> persist($user);
 		$em -> flush();
 	}
+	 public static function fechaHoy($class) {
+	 	$hoy = getdate();
+		$fecha = $hoy['year'] . '-' . $hoy['mon'] . '-'.$hoy['mday'];
+		
+	 	return $fecha;
+	 }
+	 public static function fechaInicioFin($fecha,$class) {
+		$array= array('inicio' => $fecha.' 00:00:00', 'fin' => $fecha.' 23:59:59');
+	 	return $array;
+	 }
+	 public static function obtenerFechaSistema($class) {
+	 	$hoy = getdate();
+	 	$meses = array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
+	 	$anio = $hoy['year'];
+	 	$mes = intval($hoy['mon']) - 1;
+	 	$dia = $hoy['mday'];
+	 	$hora = $hoy['hours'];
+	 	$minuto = $hoy['minutes'];
 
+	 	$dias = array('Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado');
+	 	$dsemana = $hoy['wday'];
+
+	 	$fecha = $dias[$dsemana] . ", " . $dia . " de " . $meses[$mes] . ' de ' . $anio;
+	 //.' - '.$hora.':'.$minuto;
+	 	return $fecha;
+	 }
 	/*
 
 	 public static function obtenerFechaSistema($class) {
