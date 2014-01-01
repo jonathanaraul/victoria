@@ -312,6 +312,12 @@ class UtilitiesAPI extends Controller {
 	 $fechaOriginal = new \DateTime($fechaOriginal);
 	 return date_format($fechaOriginal, 'd/m/Y'); ;
 	 }
+	 public static function fechaHoy($class) {
+	 	$hoy = getdate();
+		$fecha = $hoy['year'] . '-' . $hoy['mon'] . '-'.$hoy['mday'];
+		
+	 	return $fecha;
+	 }
 	/*
 
 	 public static function obtenerFechaSistema($class) {

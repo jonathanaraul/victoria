@@ -38,14 +38,14 @@ class PageController extends Controller {
 		$filtros['parentPage'] = array();
 		$filtros['published'] = array(1 => 'Si', 0 => 'No');
 
-		$filtros['theme']= UtilitiesAPI::getFilter('CmsPage',$this);
-		$filtros['parentPage']= UtilitiesAPI::getFilter('CmsTheme',$this);
+		$filtros['theme']= UtilitiesAPI::getFilter('CmsTheme',$this);
+		$filtros['parentPage']= UtilitiesAPI::getFilter('CmsPage',$this);
 
 
 		$data = new CmsPage();
 		$form = $this -> createFormBuilder($data) 
 		-> add('name', 'text', array('required' => false)) 
-		-> add('parentPage', 'choice', array('choices' => $filtros['parentPage'], 'required' => false, )) 
+		-> add('special','choice', array('choices' => $filtros['published'], 'required' => false, ))
 		-> add('theme', 'choice', array('choices' => $filtros['theme'], 'required' => false, )) 
 		-> add('published', 'choice', array('choices' => $filtros['published'], 'required' => false, ))
 		-> getForm();
@@ -60,16 +60,16 @@ class PageController extends Controller {
 				$dql = "SELECT n FROM ProyectoPrincipalBundle:CmsPage n ";
 				$where = false;
 
-				if (!(trim($data -> getParentPage()) == false)) {
+				if (is_numeric($data -> getSpecial()))  {
 
 					if ($where == false) {
 						$dql .= 'WHERE ';
 						$where = true;
 					}
-					$dql .= ' n.parentPage = :parentPage ';
+					$dql .= ' n.special = :special ';
 
 				}
-				if (!(trim($data -> getTheme()) == false)) {
+				if (is_numeric($data -> getTheme())) {
 
 					if ($where == false) {
 						$dql .= 'WHERE ';
@@ -92,7 +92,7 @@ class PageController extends Controller {
 					$dql .= " n.name like :name ";
 
 				}
-				if (!(trim($data -> getPublished()) == false)) {
+				if (is_numeric($data -> getPublished())) {
 
 					if ($where == false) {
 						$dql .= 'WHERE ';
@@ -114,16 +114,16 @@ class PageController extends Controller {
 		
 				$query = $em -> createQuery($dql);
 
-				if (!(trim($data -> getParentPage()) == false)) {
-					$query -> setParameter('parentPage', $data -> getParentPage());
+				if (is_numeric ($data -> getSpecial())) {
+					$query -> setParameter('special', $data -> getSpecial());
 				}
-				if (!(trim($data -> getTheme()) == false)) {
+				if (is_numeric ($data -> getTheme()) ) {
 					$query -> setParameter('theme', $data -> getTheme());
 				}
 				if (!(trim($data -> getName()) == false)) {
 					$query -> setParameter('name', '%' . $data -> getName() . '%');
 				}
-				if (!(trim($data -> getPublished()) == false)) {
+				if (is_numeric ($data -> getPublished())) {
 					$query -> setParameter('published', $data -> getPublished());
 				}
 				
@@ -147,7 +147,9 @@ class PageController extends Controller {
 
 		for ($i = 0; $i < count($objects); $i++) {
 			$auxiliar[$i]['id'] = $objects[$i] -> getId();
-			$auxiliar[$i]['parentPage'] = ($objects[$i] -> getParentPage() == 0) ? '-' : '' . $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> find($objects[$i] -> getParentPage()) -> getName();
+			$auxiliar[$i]['spacer'] = $objects[$i] -> getSpacer();
+			$auxiliar[$i]['special'] = $objects[$i] -> getSpecial();
+			$auxiliar[$i]['friendlyName'] = $objects[$i] -> getFriendlyName();
 			$auxiliar[$i]['name'] = $objects[$i] -> getName();
 			$auxiliar[$i]['published'] = $objects[$i] -> getPublished();
 			$auxiliar[$i]['background'] = ($objects[$i] -> getBackground() == 0) ? '-' : '' . $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($objects[$i] -> getBackground()) -> getWebPath();
@@ -176,7 +178,6 @@ class PageController extends Controller {
 		$secondArray = array('accion' => 'nuevo');
 		$secondArray['url'] = $this -> generateUrl('proyecto_principal_page_create');
 		$secondArray['data'] = new CmsPage();
-		$secondArray['isTranslate'] = false;
 
 		$array = array_merge($firstArray, $secondArray);
 		return PageController::procesar($array, $request, $this);
@@ -188,15 +189,12 @@ class PageController extends Controller {
 		$secondArray = array('accion' => 'edicion');
 		$secondArray['url'] = $this -> generateUrl('proyecto_principal_page_edit', array('id' => $id));
 		$secondArray['id'] = $id;
-		
 
 		$secondArray['data'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsPage') -> find($id);
 		if (!$secondArray['data']) {
 			throw $this -> createNotFoundException('La pagina que intenta e no existe ');
 		}
 		
-		$secondArray['isTranslate'] = false;
-
 		$array = array_merge($firstArray, $secondArray);
 		return PageController::procesar($array, $request, $this);
 	}
@@ -208,14 +206,31 @@ class PageController extends Controller {
 		
 		$array['themes'] = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsTheme') -> findAll();
 		$array['media']  = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> findByType(3);
-		$array['background'] = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> findByType(4);
 
 		$filtros = array();
 		$filtros['published'] = array(1 => 'Si', 0 => 'No');
 		$filtros['theme'] = UtilitiesAPI::getFilterData($array['themes'],$class);
 		$filtros['parentPage'] = UtilitiesAPI::getFilter('CmsPage',$class);
 		$filtros['media'] = UtilitiesAPI::getFilterData($array['media'],$class);
-		$filtros['background'] = UtilitiesAPI::getFilterData($array['background'],$class);
+		
+		$em = $class -> getDoctrine() -> getEntityManager();	
+		
+		$dql = "SELECT n.id, n.name
+		        FROM ProyectoPrincipalBundle:CmsResource n 
+		        WHERE n.path not like :path and
+		              n.type = :type
+		        ORDER by n.name ASC ";
+	
+		$query = $em -> createQuery($dql);
+		$query -> setParameter('path', '%nodisponible.jpg%');
+		$query -> setParameter('type', 4);
+		
+		$filtros['background'] = $query -> getResult();
+		$helper = array();
+		for ($i=0; $i < count($filtros['background']) ; $i++) { 
+			$helper[$filtros['background'][$i]['id']] = $filtros['background'][$i]['name'];
+		}
+		$filtros['background'] = $helper;
 
 		$form = $class -> createFormBuilder($data) -> add('name', 'text', array('required' => true))
 		 -> add('title', 'text', array('required' => true)) 
@@ -241,7 +256,7 @@ class PageController extends Controller {
 			$em = $class -> getDoctrine() -> getManager();
 
 			if ($array['accion'] == 'nuevo') {
-				
+				$data -> setSpecial(0);
 				$data -> setLang($locale);
 				$data -> setRank(UtilitiesAPI::getRank($locale, $class));
 				$data -> setSuspended(0);

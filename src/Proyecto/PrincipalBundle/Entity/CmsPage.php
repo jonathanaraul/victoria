@@ -27,7 +27,7 @@ class CmsPage
     /**
      * @var integer
      *
-     * @ORM\Column(name="parent_page", type="integer", nullable=false)
+     * @ORM\Column(name="parent_page", type="integer", nullable=true)
      */
     private $parentPage;
 
@@ -65,6 +65,13 @@ class CmsPage
      * @ORM\Column(name="published", type="boolean", nullable=true)
      */
     private $published;
+	
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="special", type="boolean", nullable=false)
+     */
+    private $special;
 
     /**
      * @var integer
@@ -366,6 +373,32 @@ class CmsPage
     {
         return $this->published;
     }
+
+
+    /**
+     * Set special
+     *
+     * @param integer $special
+     * @return CmsPage
+     */
+    public function setSpecial($special)
+    {
+        $this->special = $special;
+    
+        return $this;
+    }
+
+    /**
+     * Get special
+     *
+     * @return integer 
+     */
+    public function getSpecial()
+    {
+        return $this->special;
+    }
+
+
 
     /**
      * Set suspended

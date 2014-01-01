@@ -4,44 +4,39 @@
 			<td width="20%" valign="top">
 				<img alt="" src="{%if  images[loop.index0] is not null%}{{ images[loop.index0].getWebPath | apply_filter('my_thumb') }}{%endif%}">
 			</td>
-			<td width="20%" valign="top"><b>{{element.getDateCreated.format('Y-m-d')}}</b></td>
+			<td width="20%" valign="top"><b>{{element.getDate.format('h:i A')}}</b></td>
 			<td width="60%"  valign="top">
 					<div>
-							<b>{{element.name}}</b>
+							<b>{{element.article.name}}</b>
 					</div>
 					<div>
-							{{element.content|raw}}
-					</div> 
+							{{element.article.content|raw}}
+					</div> 	
 					<div>
-							<b>{{element.gender}}</b>
+							<b>{{element.article.gender}}</b>
 					</div> 
 					<div style="">
 						<span style="text-align: left;">
-							<b><a href="{{ path('proyecto_front_reservation', {'id': element.id}) }}" style="color: black;">Reserva ahora</a></b>
+							<b><a href="{{ path('proyecto_front_reservation', {'id': element.article.id}) }}" style="color: black;">{% trans %}Reserva ahora{% endtrans %}</a></b>
 						</span>
 						&nbsp;&nbsp;&nbsp;&nbsp;
 						<span style="text-align: right;">
-							<b><a href="{{ path('proyecto_front_article', {'id': element.id}) }}" style="color: black;">Leer más...</a></b>
-						</span>´
+							<b><a href="{{ path('proyecto_front_article', {'id': element.article.id}) }}" style="color: black;">{% trans %}Leer más...{% endtrans %}</a></b>
+						</span>
 					</div>
 			</td>
 		</tr>
 	{%endfor%}
-	<tr class="paginacion borrar">
-		<td colspan="2">
-			{%if izquierda !=0%}
-			<p style="text-align: right;"><img src="{{asset('izquierda.png')}}" style="cursor: pointer;" class="pagina-cartelera" id="izquierda" valor="{{izquierda}}"></p>
-			{%endif%}
-		</td>
-		<td >
-			{%if derecha !=0%}
-			<p style="text-align: right;"><img src="{{asset('derecha.png')}}" style="cursor: pointer;" class="pagina-cartelera" id="derecha" valor="{{derecha}}" ></p>
-			{%endif%}
-		</td>
-	</tr>
 	<tr id="fila-loader">
 		<td colspan="3" style="height: 350px;width:563px;display: none" id="loader">
 			<p style="text-align: center;"><img src="{{asset('loader.gif')}}" ></p>
 		</td>
 	</tr>
+	{%if articles|length <1%}
+	<tr id="fila-sin resultados" class="borrar">
+		<td colspan="3" style="height: 350px;width:563px;" >
+			<p style="text-align: center;"><img src="{{asset('sin-resultados.png')}}" ></p>
+		</td>
+	</tr>
+	{%endif%}
 {%endif%}

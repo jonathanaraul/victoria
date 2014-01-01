@@ -1,7 +1,8 @@
+{%if object.spacer == 0%}
 <tr class="sf_admin_row_{%if loop.index %2 ==0%}0{%else%}1{%endif%}">
 	<td>{{object.id}}</td>
-	<td class="center">{{object.parentPage|title}}</td>
 	<td>{{object.name|title}}</td>
+	<td class="center">{{object.friendlyName|title}}</td>
 	<td class="" style="height: 90px;"><a alt="Telon" rel="lightbox" href="{{asset(''~ object.background ~'')}}" style="cursor: pointer"> <img src="{{ object.background | apply_filter('my_thumb') }}" /> </a></td>
 	
 	
@@ -17,9 +18,11 @@
 		<li class="editar" style="cursor: pointer" onclick="document.location.href='{{ path('proyecto_principal_page_edit', {'id': object.id}) }}';">
 			{% trans %}Editar{% endtrans %}</br></br>
 		</li>
+		{%if object.special == false%}
 		<li class="eliminar" style="cursor: pointer">
 			{% trans %}Eliminar{% endtrans %}</br></br>
 		</li>
-
+		{%endif%}
 	</ul></td>
 </tr>
+{%endif%}

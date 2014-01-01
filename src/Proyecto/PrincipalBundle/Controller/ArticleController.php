@@ -23,6 +23,7 @@ use Proyecto\PrincipalBundle\Entity\CmsBackground;
 use Proyecto\PrincipalBundle\Entity\CmsTheme;
 use Proyecto\PrincipalBundle\Entity\CmsMedia;
 use Proyecto\PrincipalBundle\Entity\CmsDate;
+use Proyecto\PrincipalBundle\Entity\CmsReservation;
 
 class ArticleController extends Controller {
 
@@ -58,7 +59,7 @@ class ArticleController extends Controller {
 				$dql = "SELECT n FROM ProyectoPrincipalBundle:CmsArticle n ";
 				$where = false;
 
-				if (!(trim($data -> getCategory()) == false)) {
+				if (is_numeric($data -> getCategory())) {
 
 					if ($where == false) {
 						$dql .= 'WHERE ';
@@ -79,7 +80,7 @@ class ArticleController extends Controller {
 					$dql .= " n.name like :name ";
 
 				}
-				if (!(trim($data -> getPublished()) == false)) {
+				if (is_numeric($data -> getPublished())) {
 
 					if ($where == false) {
 						$dql .= 'WHERE ';
@@ -109,13 +110,13 @@ class ArticleController extends Controller {
 
 				$query = $em -> createQuery($dql);
 
-				if (!(trim($data -> getCategory()) == false)) {
+				if (is_numeric($data -> getCategory())) {
 					$query -> setParameter('category', $data -> getCategory());
 				}
 				if (!(trim($data -> getName()) == false)) {
 					$query -> setParameter('name', '%' . $data -> getName() . '%');
 				}
-				if (!(trim($data -> getPublished()) == false)) {
+				if (is_numeric($data -> getPublished())) {
 					$query -> setParameter('published', $data -> getPublished());
 				}
 				$query -> setParameter('type', $config['idtype']);
@@ -168,17 +169,6 @@ class ArticleController extends Controller {
 		$secondArray['url'] = $this -> generateUrl('proyecto_principal_article_edit', array('type'=>$type,'id' => $id));
 		$secondArray['id'] = $id;
 		$secondArray['fechasprevias'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsDate') -> findByArticle($id);
-		
-		if($secondArray['fechasprevias']!= null){
-			$auxiliar = array();
-			for ($i=0; $i < count($secondArray['fechasprevias']); $i++) {
-
-				$auxiliar[$i] = date_format($secondArray['fechasprevias'][$i]->getDate(), 'd-m-Y H:i:s');
-				
-					}
-			$secondArray['fechasprevias'] = $auxiliar;
-
-		}
 
 		$array = array_merge($firstArray, $secondArray);
 		$array = array_merge($array, $config);
@@ -211,15 +201,32 @@ class ArticleController extends Controller {
 		$themes = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsTheme') -> findAll();
 		$category = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsCategory') -> findByType($array['idtype']);
 		$media = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> findByType(3);
-		$background = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> findByType(4);
 		
+		$em = $class -> getDoctrine() -> getEntityManager();	
+		
+		$dql = "SELECT n.id, n.name
+		        FROM ProyectoPrincipalBundle:CmsResource n 
+		        WHERE n.path not like :path and
+		              n.type = :type
+		        ORDER by n.name ASC ";
+	
+		$query = $em -> createQuery($dql);
+		$query -> setParameter('path', '%nodisponible.jpg%');
+		$query -> setParameter('type', 4);
 		
 		$filtros = array();
+		$filtros['background'] = $query -> getResult();
+		$helper = array();
+		for ($i=0; $i < count($filtros['background']) ; $i++) { 
+			$helper[$filtros['background'][$i]['id']] = $filtros['background'][$i]['name'];
+		}
+		$filtros['background'] = $helper;
+		
+		
 		$filtros['published'] = array(1 => 'Si', 0 => 'No');
 		$filtros['theme'] = UtilitiesAPI::getFilterData($themes, $class);
 		$filtros['parentPage'] = UtilitiesAPI::getFilterData($objects, $class);
 		$filtros['media'] = UtilitiesAPI::getFilterData($media, $class);
-		$filtros['background'] = UtilitiesAPI::getFilterData($background, $class);
 		$filtros['category'] = UtilitiesAPI::getFilterData($category, $class);
 		
 		$validaciones = array(true,true);
@@ -282,8 +289,8 @@ class ArticleController extends Controller {
 				
 				$fechasBorrar= $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsDate') -> findByArticle($data->getId());
 				for ($i=0; $i < count($fechasBorrar); $i++) {
-				$em -> remove($fechasBorrar[$i]);
-				$em -> flush();
+					$em -> remove($fechasBorrar[$i]);
+					$em -> flush();
 					}
 
 			foreach ($fechas as $key => $value) {
@@ -318,6 +325,19 @@ class ArticleController extends Controller {
 		$id = $post -> get("id");
 		$em = $this -> getDoctrine() -> getManager();
 		
+		$fechasBorrar= $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsDate') 
+		-> findByArticle($id);
+		for ($i=0; $i < count($fechasBorrar); $i++) {
+		$em -> remove($fechasBorrar[$i]);
+		$em -> flush();
+					}
+		
+		$reservacionesBorrar= $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsReservation') 
+		-> findByArticle($id);
+		for ($i=0; $i < count($reservacionesBorrar); $i++) {
+		$em -> remove($reservacionesBorrar[$i]);
+		$em -> flush();
+					}
 		//Remover original
 		$object = $em -> getRepository('ProyectoPrincipalBundle:CmsArticle') -> find($id);
 		$em -> remove($object);
@@ -349,6 +369,49 @@ class ArticleController extends Controller {
 		$respuesta = new response(json_encode(array('estado' => $estado)));
 		$respuesta -> headers -> set('content_type', 'aplication/json');
 		return $respuesta;
+	}
+	public static function insertaFechas($class)
+	{
+			echo "llego a la funcion";
+			$articles = array( 43 =>14, 44=>16 );//Id articulo => hora funcion
+			
+			$fecha = new \DateTime("now");
+			var_dump($fecha);
+			$em = $class -> getDoctrine() -> getEntityManager();	
+			
+			
+			for ($i=0; $i < 30 ; $i++) {
+				foreach ($articles as $key => $value) {
+					
+					$fecha->setTime ( $value, 0, 0 );
+					
+					$date = new CmsDate();
+					$date->setArticle($class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsArticle') -> find($key));
+					$date->setDate($fecha);
+					$em -> persist($date);
+					$em -> flush();
+
+					$fecha->add(new \DateInterval('PT3H'));
+
+					$date = new CmsDate();
+					$date->setArticle($class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsArticle') -> find($key));
+					$date->setDate($fecha);
+					$em -> persist($date);
+					$em -> flush();
+
+				}
+			$fecha->add(new \DateInterval('P1D'));
+			}
+			//echo'final de funcion';
+
+			foreach ($articles as $key => $value) {
+				$dates = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsDate') -> findByArticle($key);
+				echo "</br><hr>\n Para el articulo de Id ".$key.' las fechas son:</br>\n';
+				var_dump($dates);
+			}
+			
+			
+		exit;
 	}
 
 }

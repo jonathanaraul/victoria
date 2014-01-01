@@ -69,7 +69,7 @@ class ReservationController extends Controller {
 					$dql .= " n.name like :name ";
 
 				}
-				if (!(trim($data -> getChecked()) == false)) {
+				if (is_numeric($data -> getChecked())) {
 
 					if ($where == false) {
 						$dql .= 'WHERE ';
@@ -97,7 +97,7 @@ class ReservationController extends Controller {
 				if (!(trim($data -> getName()) == false)) {
 					$query -> setParameter('name', '%' . $data -> getName() . '%');
 				}
-				if (!(trim($data -> getChecked()) == false)) {
+				if (is_numeric($data -> getChecked())) {
 					$query -> setParameter('checked', intval($data -> getChecked()));
 				}
 				$query -> setParameter('lang', $locale);

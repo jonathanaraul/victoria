@@ -351,12 +351,12 @@
                 <target>Edit Setting</target>
             </trans-unit>
             <trans-unit id="88">
-                <source>Nombre amigable</source>
-                <target>Friendly name</target>
+                <source>Leer más...</source>
+                <target>Read more...</target>
             </trans-unit>
             <trans-unit id="89">
-                <source>Especial</source>
-                <target>Special</target>
+                <source>Reserva ahora</source>
+                <target>Reservation</target>
             </trans-unit>
             <trans-unit id="90">
                 <source></source>

@@ -18,6 +18,18 @@ proyecto_front_page_pagina_cartelera:
     requirements:
         _method: POST
         _locale:  es|en
+proyecto_front_page_pagina_talleres:
+    pattern:  /{_locale}/paginacionTalleres
+    defaults: { _controller: ProyectoFrontBundle:Listados:talleres }
+    requirements:
+        _method: POST
+        _locale:  es|en
+proyecto_front_page_pagina_calendario:
+    pattern:  /{_locale}/paginacionCalendario
+    defaults: { _controller: ProyectoFrontBundle:Listados:calendario }
+    requirements:
+        _method: POST
+        _locale:  es|en
 proyecto_front_reservation:
     pattern:  /{_locale}/reservation/{id}
     defaults: { _controller: ProyectoFrontBundle:Default:reservation }

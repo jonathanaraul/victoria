@@ -23,10 +23,10 @@ class UtilitiesAPI extends Controller {
 	const TALLERES_ES = 5;
 	const CALENDARIO_ES = 38;
 
-	const NOTICIAS_EN = 30;
-	const CARTELERA_EN = 30;
-	const TALLERES_EN = 30;
-	const CALENDARIO_EN = 30;
+	const NOTICIAS_EN = 39;
+	const CARTELERA_EN = 41;
+	const TALLERES_EN = 40;
+	const CALENDARIO_EN = 42;
 
 	const TIPO_NOTICIAS = 0;
 	const TIPO_CARTELERA = 1;

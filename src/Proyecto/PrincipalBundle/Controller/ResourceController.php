@@ -64,7 +64,7 @@ class ResourceController extends Controller {
 					$dql .= " n.name like :name ";
 
 				}
-				if (!(trim($data -> getPublished()) == false)) {
+				if (is_numeric($data -> getPublished())) {
 
 					if ($where == false) {
 						$dql .= 'WHERE ';
@@ -88,7 +88,7 @@ class ResourceController extends Controller {
 				if (!(trim($data -> getName()) == false)) {
 					$query -> setParameter('name', '%' . $data -> getName() . '%');
 				}
-				if (!(trim($data -> getPublished()) == false)) {
+				if (is_numeric($data -> getPublished())) {
 					$query -> setParameter('published', $data -> getPublished());
 				}
 				$query -> setParameter('type', $config['idtype']);

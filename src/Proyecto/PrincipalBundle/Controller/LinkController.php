@@ -58,7 +58,7 @@ class LinkController extends Controller {
 					$dql .= " n.name like :name ";
 
 				}
-				if (!(trim($data -> getPublished()) == false)) {
+				if (is_numeric($data -> getPublished())) {
 
 					if ($where == false) {
 						$dql .= 'WHERE ';
@@ -83,7 +83,7 @@ class LinkController extends Controller {
 				if (!(trim($data -> getName()) == false)) {
 					$query -> setParameter('name', '%' . $data -> getName() . '%');
 				}
-				if (!(trim($data -> getPublished()) == false)) {
+				if (is_numeric($data -> getPublished())) {
 					$query -> setParameter('published', $data -> getPublished());
 				}
 				

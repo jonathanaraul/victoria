@@ -17,35 +17,6 @@ use Proyecto\PrincipalBundle\Entity\CmsPage;
 class ListadosController extends Controller {
 
 	const tamanio = 3;
-	public function paginacionEspecialAction(){
-		
-		$fecha = UtilitiesAPI::fechaHoy($this);
-		$array = array();
-		$fecha = new \DateTime($fecha);
-		
-		
-		
-		$array['fechas'][0]['fecha']= $fecha->format('Y-m-d');
-		$array['fechas'][0]['dia']= $fecha->format('d').' '.UtilitiesAPI::letraDia($fecha->format('w'),$this);
-		$fecha->add(new \DateInterval('P1D'));
-		$array['fechas'][1]['fecha']= $fecha->format('Y-m-d');
-		$array['fechas'][1]['dia']= $fecha->format('d').' '.UtilitiesAPI::letraDia($fecha->format('w'),$this);
-		$fecha->add(new \DateInterval('P1D'));
-		$array['fechas'][2]['fecha']= $fecha->format('Y-m-d');
-		$array['fechas'][2]['dia']= $fecha->format('d').' '.UtilitiesAPI::letraDia($fecha->format('w'),$this);
-		$fecha->add(new \DateInterval('P1D'));
-		$array['fechas'][3]['fecha']= $fecha->format('Y-m-d');
-		$array['fechas'][3]['dia']= $fecha->format('d').' '.UtilitiesAPI::letraDia($fecha->format('w'),$this);
-		$fecha->add(new \DateInterval('P1D'));
-		$array['fechas'][4]['fecha']= $fecha->format('Y-m-d');
-		$array['fechas'][4]['dia']= $fecha->format('d').' '.UtilitiesAPI::letraDia($fecha->format('w'),$this);
-		$fecha->add(new \DateInterval('P1D'));
-		$array['fechas'][5]['fecha']= $fecha->format('Y-m-d');
-		$array['fechas'][5]['dia']= $fecha->format('d').' '.UtilitiesAPI::letraDia($fecha->format('w'),$this);
-		
-		return $this -> render('ProyectoFrontBundle:Default:paginacionespecial.html.twig', $array);
-	
-	}
 	public function noticiasAction() {
 			
 		$peticion = $this -> getRequest();
@@ -63,6 +34,130 @@ class ListadosController extends Controller {
 			$respuesta -> headers -> set('content_type', 'aplication/json');
 			return $respuesta;
 		}
+	}
+	public function carteleraAction() {
+					
+		$peticion = $this -> getRequest();
+		$doctrine = $this -> getDoctrine();
+		$post = $peticion -> request;
+		$fecha = $post -> get("valor");
+		$type = UtilitiesAPI::TIPO_CARTELERA;
+		
+		if(!isset($fecha)){
+			$fecha =  UtilitiesAPI::fechaInicioFin(UtilitiesAPI::fechaHoy($this),$this);
+			return $this -> render('ProyectoFrontBundle:Default:generico.html.twig',  ListadosController::contenidoGenerico($fecha,$type,$this));
+		}
+		else{
+			$fecha =  UtilitiesAPI::fechaInicioFin($fecha,$this);
+			$html = $this -> renderView('ProyectoFrontBundle:Default:generico.html.twig', ListadosController::contenidoGenerico($fecha,$type,$this));
+			$respuesta = new response(json_encode(array('variable'=>$html)));
+			$respuesta -> headers -> set('content_type', 'aplication/json');
+			return $respuesta;
+		}
+	}
+	public function talleresAction() {
+					
+		$peticion = $this -> getRequest();
+		$doctrine = $this -> getDoctrine();
+		$post = $peticion -> request;
+		$fecha = $post -> get("valor");
+		$type = UtilitiesAPI::TIPO_TALLERES;
+		
+		if(!isset($fecha)){
+			$fecha =  UtilitiesAPI::fechaInicioFin(UtilitiesAPI::fechaHoy($this),$this);
+			return $this -> render('ProyectoFrontBundle:Default:generico.html.twig',  ListadosController::contenidoGenerico($fecha,$type,$this));
+		}
+		else{
+			$fecha =  UtilitiesAPI::fechaInicioFin($fecha,$this);
+			$html = $this -> renderView('ProyectoFrontBundle:Default:generico.html.twig', ListadosController::contenidoGenerico($fecha,$type,$this));
+			$respuesta = new response(json_encode(array('variable'=>$html)));
+			$respuesta -> headers -> set('content_type', 'aplication/json');
+			return $respuesta;
+		}
+	}
+	public function calendarioAction() {
+			
+		$peticion = $this -> getRequest();
+		$doctrine = $this -> getDoctrine();
+		$post = $peticion -> request;
+		$fecha = $post -> get("valor");
+		$type = array(UtilitiesAPI::TIPO_CARTELERA,UtilitiesAPI::TIPO_TALLERES ) ;
+		
+		if(!isset($fecha)){
+			$fecha =  UtilitiesAPI::fechaInicioFin(UtilitiesAPI::fechaHoy($this),$this);
+			return $this -> render('ProyectoFrontBundle:Default:generico.html.twig',  ListadosController::contenidoCalendario($fecha,$type,$this));
+		}
+		else{
+			$fecha =  UtilitiesAPI::fechaInicioFin($fecha,$this);
+			$html = $this -> renderView('ProyectoFrontBundle:Default:generico.html.twig', ListadosController::contenidoCalendario($fecha,$type,$this));
+			$respuesta = new response(json_encode(array('variable'=>$html)));
+			$respuesta -> headers -> set('content_type', 'aplication/json');
+			return $respuesta;
+		}		
+
+	}
+	public function contenidoCalendario($fecha,$type,$class){	
+		$em = $class -> getDoctrine() -> getEntityManager();	
+		
+		$dql = "SELECT n
+		        FROM ProyectoPrincipalBundle:CmsDate n, 
+		             ProyectoPrincipalBundle:CmsArticle a
+		        WHERE n.date >= :fecha1 
+		          and n.date <= :fecha2 
+		          and n.article = a.id
+		          and a.published = :published
+		          and a.lang = :lang
+		          and (a.type = :type1 or a.type = :type2)
+		        ORDER by n.date ASC";
+		
+		$query = $em -> createQuery($dql);
+		
+		$query -> setParameter('fecha1', $fecha['inicio']);
+		$query -> setParameter('fecha2', $fecha['fin']);
+		$query -> setParameter('type1', $type[0]);
+		$query -> setParameter('type2', $type[1]);
+		$query -> setParameter('published', 1);
+		$query -> setParameter('lang', UtilitiesAPI::getLocale($this));
+		
+		$array['articles'] = $query -> getResult();
+
+		for($i=0;$i<count($array['articles']);$i++){
+				$array['images'][$i] = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($array['articles'][$i]->getArticle()->getMedia()); 
+				$array['articles'][$i]->getArticle()->setContent( substr ( $array['articles'][$i]->getArticle()->getContent() , 0, 300 ) .'...');
+         }
+
+		return $array;
+	}
+	public function contenidoGenerico($fecha,$type,$class){	
+		$em = $class -> getDoctrine() -> getEntityManager();	
+		
+		$dql = "SELECT n
+		        FROM ProyectoPrincipalBundle:CmsDate n, 
+		             ProyectoPrincipalBundle:CmsArticle a
+		        WHERE n.date >= :fecha1 
+		          and n.date <= :fecha2 
+		          and n.article = a.id
+		          and a.published = :published
+		          and a.lang = :lang
+		          and a.type = :type1
+		        ORDER by n.date ASC";
+		
+		$query = $em -> createQuery($dql);
+		
+		$query -> setParameter('fecha1', $fecha['inicio']);
+		$query -> setParameter('fecha2', $fecha['fin']);
+		$query -> setParameter('type1', $type);
+		$query -> setParameter('published', 1);
+		$query -> setParameter('lang', UtilitiesAPI::getLocale($this));
+		
+		$array['articles'] = $query -> getResult();
+
+		for($i=0;$i<count($array['articles']);$i++){
+				$array['images'][$i] = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($array['articles'][$i]->getArticle()->getMedia()); 
+				$array['articles'][$i]->getArticle()->setContent( substr ( $array['articles'][$i]->getArticle()->getContent() , 0, 300 ) .'...');
+         }
+
+		return $array;
 	}
 	public function contenidoNoticias($numeroPagina,$class){
 			
@@ -94,97 +189,30 @@ class ListadosController extends Controller {
 												   }
 		return $array;
 	}
-	public function carteleraAction() {
-					
-		$peticion = $this -> getRequest();
-		$doctrine = $this -> getDoctrine();
-		$post = $peticion -> request;
-		$fecha = $post -> get("valor");
-		$type = UtilitiesAPI::TIPO_CARTELERA;
+	public function paginacionEspecialAction($listado){
 		
-		if(!isset($fecha)){
-			$fecha =  UtilitiesAPI::fechaInicioFin(UtilitiesAPI::fechaHoy($this),$this);
-			return $this -> render('ProyectoFrontBundle:Default:cartelera.html.twig',  ListadosController::contenidoGenerico($fecha,$type,$this));
-		}
-		else{
-			$fecha =  UtilitiesAPI::fechaInicioFin($fecha,$this);
-			$html = $this -> renderView('ProyectoFrontBundle:Default:cartelera.html.twig', ListadosController::contenidoGenerico($fecha,$type,$this));
-			$respuesta = new response(json_encode(array('variable'=>$html)));
-			$respuesta -> headers -> set('content_type', 'aplication/json');
-			return $respuesta;
-		}
-
-	}
-	public function contenidoGenerico($fecha,$type,$class){	
-		$em = $class -> getDoctrine() -> getEntityManager();	
+		$fecha = UtilitiesAPI::fechaHoy($this);
+		$array = array('listado' => $listado);
+		$fecha = new \DateTime($fecha);
 		
-		$dql = "SELECT n
-		        FROM ProyectoPrincipalBundle:CmsDate n, 
-		             ProyectoPrincipalBundle:CmsArticle a
-		        WHERE n.date >= :fecha1 
-		          and n.date <= :fecha2 
-		          and n.article = a.id
-		          and a.published = :published
-		          and a.lang = :lang
-		          and a.type = :type1
-		        ORDER by n.date ASC";
+		$array['fechas'][0]['fecha']= $fecha->format('Y-m-d');
+		$array['fechas'][0]['dia']= $fecha->format('d').' '.UtilitiesAPI::letraDia($fecha->format('w'),$this);
+		$fecha->add(new \DateInterval('P1D'));
+		$array['fechas'][1]['fecha']= $fecha->format('Y-m-d');
+		$array['fechas'][1]['dia']= $fecha->format('d').' '.UtilitiesAPI::letraDia($fecha->format('w'),$this);
+		$fecha->add(new \DateInterval('P1D'));
+		$array['fechas'][2]['fecha']= $fecha->format('Y-m-d');
+		$array['fechas'][2]['dia']= $fecha->format('d').' '.UtilitiesAPI::letraDia($fecha->format('w'),$this);
+		$fecha->add(new \DateInterval('P1D'));
+		$array['fechas'][3]['fecha']= $fecha->format('Y-m-d');
+		$array['fechas'][3]['dia']= $fecha->format('d').' '.UtilitiesAPI::letraDia($fecha->format('w'),$this);
+		$fecha->add(new \DateInterval('P1D'));
+		$array['fechas'][4]['fecha']= $fecha->format('Y-m-d');
+		$array['fechas'][4]['dia']= $fecha->format('d').' '.UtilitiesAPI::letraDia($fecha->format('w'),$this);
+		$fecha->add(new \DateInterval('P1D'));
+		$array['fechas'][5]['fecha']= $fecha->format('Y-m-d');
+		$array['fechas'][5]['dia']= $fecha->format('d').' '.UtilitiesAPI::letraDia($fecha->format('w'),$this);
 		
-		$query = $em -> createQuery($dql);
-		
-		$query -> setParameter('fecha1', $fecha['inicio']);
-		$query -> setParameter('fecha2', $fecha['fin']);
-		
-		$query -> setParameter('type1', $type);
-		$query -> setParameter('published', 1);
-		$query -> setParameter('lang', UtilitiesAPI::getLocale($this));
-		
-		$array['articles'] = $query -> getResult();
-
-		for($i=0;$i<count($array['articles']);$i++){
-				$array['images'][$i] = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($array['articles'][$i]->getArticle()->getMedia()); 
-				$array['articles'][$i]->getArticle()->setContent( substr ( $array['articles'][$i]->getArticle()->getContent() , 0, 300 ) .'...');
-         }
-
-		return $array;
-	}
-	public function talleresAction($id) {
-			
-		$em = $this -> getDoctrine() -> getEntityManager();	
-		$type = UtilitiesAPI::TIPO_TALLERES;
-			
-		$dql = "SELECT n FROM ProyectoPrincipalBundle:CmsArticle n WHERE n.type = :type1 order by n.dateCreated DESC";
-			
-		$query = $em -> createQuery($dql);
-		$query -> setParameter('type1', $type);
-			
-		$array['articles'] = $query -> getResult();
-
-		for($i=0;$i<count($array['articles']);$i++){
-			$array['images'][$i] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($array['articles'][$i]->getMedia()); 
-			$array['articles'][$i]->setContent( substr ( $array['articles'][$i]->getContent() , 0, 300 ) .'...');
-												   }
-
-		return $this -> render('ProyectoFrontBundle:Default:generico.html.twig', $array);
-	}
-	public function calendarioAction($id) {
-			
-		$em = $this -> getDoctrine() -> getEntityManager();	
-		$type =  UtilitiesAPI::TIPO_CARTELERA;
-		$type2 = UtilitiesAPI::TIPO_TALLERES;
-			
-		$dql = "SELECT n FROM ProyectoPrincipalBundle:CmsArticle n WHERE n.type = :type1  or n.type = :type2 order by n.dateCreated DESC";
-			
-		$query = $em -> createQuery($dql);
-		$query -> setParameter('type1', $type);
-		$query -> setParameter('type2', $type2);
-			
-		$array['articles'] = $query -> getResult();
-
-		for($i=0;$i<count($array['articles']);$i++){
-			$array['images'][$i] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($array['articles'][$i]->getMedia()); 
-			$array['articles'][$i]->setContent( substr ( $array['articles'][$i]->getContent() , 0, 300 ) .'...');
-												   }
-
-		return $this -> render('ProyectoFrontBundle:Default:generico.html.twig', $array);
+		return $this -> render('ProyectoFrontBundle:Default:paginacionespecial.html.twig', $array);
 	}
 }

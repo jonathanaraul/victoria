@@ -105,8 +105,8 @@
 						{%if accion != 'nuevo'%}
 						{%for fecha in fechasprevias%}
 						<div class="nuevafecha" >
-							<input type="text" name="fechas[date_{{loop.index}}]" class="inputgrande fecha" id="f{{loop.index}}" onclick="javascript:NewCal('f1','ddmmyyyy','dropdown',true)" value="{{fecha}}">
-							<img id="agregarfecha" class="agregarfecha" style="cursor: pointer; vertical-align: middle" src="{{asset('sf/images/sf_admin/add.png')}}" alt="Date">
+							<input type="text" name="fechas[date_{{loop.index}}]" class="inputgrande fecha" id="f{{loop.index}}" onclick="javascript:NewCal('f1','ddmmyyyy','dropdown',true)" value="{{fecha.getDate|date("d-m-Y H:i:s")}}">
+							{%if loop.index0 == 0%}<img id="agregarfecha" class="agregarfecha" style="cursor: pointer; vertical-align: middle" src="{{asset('sf/images/sf_admin/add.png')}}" alt="Date">{%endif%}
 						</div>					
 						{%endfor%}
 

@@ -32,14 +32,14 @@ var images = ["{{ asset(''~ background.getWebPath ~'') }}"];
 						{%if listado == 'noticias'%}
 							{{ render(controller('ProyectoFrontBundle:Listados:noticias')) }}
 						{%elseif listado == 'cartelera'%}
-							{{ render(controller('ProyectoFrontBundle:Listados:paginacionEspecial')) }}
+							{{ render(controller('ProyectoFrontBundle:Listados:paginacionEspecial', { 'listado': listado })) }}
 							{{ render(controller('ProyectoFrontBundle:Listados:cartelera')) }}
 						{%elseif listado == 'talleres'%}
-						{{ render(controller('ProyectoFrontBundle:Listados:paginacionEspecial')) }}
+						{{ render(controller('ProyectoFrontBundle:Listados:paginacionEspecial', { 'listado': listado })) }}
 							{{ render(controller('ProyectoFrontBundle:Listados:talleres')) }}
 						{%elseif listado == 'calendario'%}
-							{{ render(controller('ProyectoFrontBundle:Listados:paginacionEspecial')) }}
-							{{ render(controller('ProyectoFrontBundle:Listados:calendario', { 'id': idpage })) }}
+							{{ render(controller('ProyectoFrontBundle:Listados:paginacionEspecial', { 'listado': listado })) }}
+							{{ render(controller('ProyectoFrontBundle:Listados:calendario')) }}
 						{%endif%}
 					{%endif%}
 				</table>
@@ -57,7 +57,7 @@ var images = ["{{ asset(''~ background.getWebPath ~'') }}"];
 {%endblock%}
 
 {%block celda%} <div class="cell-right-sub"></div>
-{%if page.name|title == 'Contacto'%}
+{%if page.id == 43 or page.id == 14%}
 <div class="map">
 	<iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.pl/maps?hl=pl&amp;ie=UTF8&amp;ll=40.409040,-3.701783&amp;spn=0.00638,0.016512&amp;t=m&amp;z=17&amp;output=embed"></iframe>
 </div>

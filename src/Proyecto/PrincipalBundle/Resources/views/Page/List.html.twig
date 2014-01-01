@@ -19,11 +19,12 @@ var cambiarStatusPagina = '{{path('proyecto_principal_page_status')}}';
 				<fieldset>
 					<h2>{% trans %}Filtros{% endtrans %}</h2>
 					<div class="form-row">
-						<label for="parent_page_id">{% trans %}Páginas relacionadas{% endtrans %}:</label>
+						<label for="name">{% trans %}Nombre{% endtrans %}:</label>
 						<div class="content">
-							{{ form_widget(form.parentPage, { 'attr': {'class': 'theme_toggle'} }) }}
+							{{ form_widget(form.name, { 'attr': {'size': '15'} }) }}
 						</div>
 					</div>
+
 					<div class="form-row">
 						<label for="theme_id">{% trans %}Tema{% endtrans %}:</label>
 						<div class="content">
@@ -31,9 +32,9 @@ var cambiarStatusPagina = '{{path('proyecto_principal_page_status')}}';
 						</div>
 					</div>
 					<div class="form-row">
-						<label for="name">{% trans %}Nombre{% endtrans %}:</label>
+						<label for="published">{% trans %}Especial{% endtrans %}:</label>
 						<div class="content">
-							{{ form_widget(form.name, { 'attr': {'size': '15'} }) }}
+							{{ form_widget(form.special, { 'attr': {'class': 'theme_toggle'} }) }}
 						</div>
 					</div>
 					<div class="form-row">
@@ -65,12 +66,12 @@ var cambiarStatusPagina = '{{path('proyecto_principal_page_status')}}';
 					<th id="sf_admin_list_th_page_id">
 						{{ knp_pagination_sortable(pagination, 'Id', 'n.id') }}
 						</th>
-					<th id="sf_admin_list_th_parent_page_id">
-						{{ knp_pagination_sortable(pagination, 'Páginas Relacionadas'|trans, 'n.parentPage') }}
-						</th>
 					<th id="sf_admin_list_th_name">
 						{{ knp_pagination_sortable(pagination, 'Nombre'|trans, 'n.name') }}
 					</th>
+					<th id="sf_admin_list_th_parent_page_id">
+						{{ knp_pagination_sortable(pagination, 'Nombre Amigable'|trans, 'n.friendlyName') }}
+						</th>
 					<th id="sf_admin_list_th_background_id">
 						{{ knp_pagination_sortable(pagination, 'Fondo'|trans, 'n.background') }}
 						</th>
