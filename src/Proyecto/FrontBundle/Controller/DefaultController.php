@@ -44,7 +44,7 @@ class DefaultController extends Controller {
 		$secondArray['images'] = array();
 		
 		$array = array_merge($firstArray, $secondArray);
-		return $this -> render('ProyectoFrontBundle:Default:page.html.twig', $array);
+		return $this -> render('ProyectoFrontBundle:Default:page2.html.twig', $array);
 	}
 	public function articleAction($id) {
 		$firstArray = UtilitiesAPI::getDefaultContent('noticias', $this);

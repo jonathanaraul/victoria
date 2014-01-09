@@ -6,7 +6,7 @@ var images = ["{{ asset(''~ background.getWebPath ~'') }}"];
 
 {%block contenido%}
 <div class="middle-right-sub">
-	{% include 'ProyectoFrontBundle:Default:titulo.html.twig' %}
+	{{ render(controller('ProyectoFrontBundle:Helpers:menuMobile')) }}
 
 	<div class="news-cont">
 		<p class="content-title">
@@ -24,9 +24,7 @@ var images = ["{{ asset(''~ background.getWebPath ~'') }}"];
 				<div><b>Fechas</b></div>
 				<ul>
 				{%for date in dates%}
-				
-					<li>{{date.date|date("m/d/Y")}}</li>
-				
+					<li>{{date.date|date("m/d/Y h:m:s")}}</li>
 				{%endfor%}
 				</ul>
 				{%if idpage == 37 or idpage==5%}<span style="text-align: left;"><b><a href="{{ path('proyecto_front_reservation', {'id': article.id}) }}" style="color: black;">Reserva Ahora</a></b></span>

@@ -1,30 +1,24 @@
 {% extends "ProyectoFrontBundle:Helpers:body.html.twig" %}
 
 {%block imagenes%}
-var images = ["{{ asset(''~ background.getWebPath ~'') }}"];
+var images = [{%if background is not null%}"{{ asset(''~ background.getWebPath ~'') }}"{%endif%}];
 {%endblock%}
 
 {%block contenido%}
 <div class="middle-right-sub">
-	<div class="top-main-text">
-		<div class="top-main-big">
-			LA VICTORIA
-		</div>
-		<div class="top-main-small">
-			ESPACIO CULTURAL
-		</div>
-	</div>
+
+	{{ render(controller('ProyectoFrontBundle:Helpers:menuMobile')) }}
 	<div class="upper-text" style="background-color: {{theme.color}} !important"></div>
+	
 	<div class="news-cont">
 		<hr>
 		<p class="content-title">
 			{{page.name|title}}
 		</p>
-		<div class="content-news scroll-10">
-			<div class="news-cell">
-				<table cellpadding="6" id="contenido-pagina">
-					<tr >
-						<td width="100%"  valign="top" colspan="3"> {{page.content|raw}}
+		<div class="news-cell">
+				<table cellpadding="6" id="contenido-pagina" style="width: 100%;">
+					<tr width="100%">
+						<td  width="100%" valign="top" colspan="3"> {{page.content|raw}}
 
 						</br></br></br> </td>
 					</tr>
@@ -43,7 +37,6 @@ var images = ["{{ asset(''~ background.getWebPath ~'') }}"];
 						{%endif%}
 					{%endif%}
 				</table>
-			</div>
 		</div>
 		<div class="lower-text"></div>
 		<div class="lower-box" style="#right: 200px;"></div>
@@ -52,6 +45,14 @@ var images = ["{{ asset(''~ background.getWebPath ~'') }}"];
 		<div class="theme-sel-{{theme.id}}">
 			{{page.name|title}}
 		</div>
+	</div>
+	<div class="capa-baja-logo">
+				<div>
+					<span class="copyrighted">Copyrights © La Victoria</span>
+				</div>
+				<div>
+					<p><img src="{{asset('design.png')}}"></p>
+				</div>
 	</div>
 </div>
 {%endblock%}

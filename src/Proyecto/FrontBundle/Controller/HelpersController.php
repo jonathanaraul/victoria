@@ -21,6 +21,24 @@ use Proyecto\PrincipalBundle\Entity\CmsPage;
 
 class HelpersController extends Controller
 {
+    public function menuMobileAction()
+    {
+    	$locale = UtilitiesAPI::getLocale($this);
+	
+		$em = $this->getDoctrine()->getManager();
+		
+		$query = $em -> createQuery('SELECT d
+    								 FROM ProyectoPrincipalBundle:CmsPage d
+   	 								 WHERE d.lang      = :locale and
+   	 								       d.published = :published
+    								 ORDER BY d.rank ASC') 
+    		   -> setParameter('locale', $locale)
+			   -> setParameter('published', 1);
+
+		$array['objects'] = $query -> getResult();
+	
+        return $this->render('ProyectoFrontBundle:Helpers:menu-mobile.html.twig', $array);
+    }
     public function menuAction($idpage,$theme)
     {
     	$locale = UtilitiesAPI::getLocale($this);

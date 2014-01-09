@@ -6,14 +6,7 @@ var images = ["{{ asset(''~ background ~'') }}"];
 
 {%block contenido%}
 <div class="middle-right-sub">
-	<div class="top-main-text">
-		<div class="top-main-big">
-			LA VICTORIA
-		</div>
-		<div class="top-main-small">
-			ESPACIO CULTURAL
-		</div>
-	</div>
+	{{ render(controller('ProyectoFrontBundle:Helpers:menuMobile')) }}
 	<div class="upper-text" style="background-color: {{theme.color}} !important"></div>
 	<div class="news-cont">
 		<hr>

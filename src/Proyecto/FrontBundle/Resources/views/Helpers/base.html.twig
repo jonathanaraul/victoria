@@ -1,10 +1,8 @@
 <!DOCTYPE html>
-<!-- saved from url=(0034)http://www.lavictoriacultural.com/ -->
-<html >
+<html lang="es">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="robots" content="INDEX, FOLLOW">
-	<meta name="language" content="es">
 	<title>La Victoria</title>
 	<!--<link rel="shortcut icon" href="http://www.lavictoriacultural.com/images/site/favicon/" type="image/x-icon">-->
 	<script type="text/javascript" src="{{ asset('js/jquery-1.7.2.min.js') }}"></script><style type="text/css"></style>
@@ -16,6 +14,8 @@
 	<script type="text/javascript" src="{{ asset('js/page_function.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('js/lightbox.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('js/generales.js') }}"></script>
+	<script src="{{ asset('SlickNav/jquery.slicknav.min.js') }}"></script>
+	
 	<script>
 	{%block imagenes%}
 	
@@ -26,9 +26,11 @@
 	var paginacionCalendario = '{{path('proyecto_front_page_pagina_calendario')}}';
 
 	</script>
+	<meta name="viewport" content="width=device-width" />
 	<link rel="stylesheet" type="text/css" media="screen" href="{{ asset('css/style.css') }}">
 	<link rel="stylesheet" type="text/css" media="screen" href="{{ asset('css/jquery.jscrollpane.css') }}">
 	<link rel="stylesheet" type="text/css" media="screen" href="{{ asset('css/lightbox.css') }}">
+	<link rel="stylesheet" href="{{ asset('SlickNav/slicknav.css') }}" />
 </head>
 
 	{%block body%}

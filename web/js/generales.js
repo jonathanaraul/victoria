@@ -2,6 +2,118 @@
  * @author Jonathan Araul
  *
  */
+$(function(){
+		$('#menu').slicknav({
+		prependTo:'#menuobligado'
+});
+
+	});
+$( document ).ready(function() {
+  // Handler for .ready() called.
+  if ($('#paginacion-especial').length>0){
+  	paginadorEspecial();
+  }
+});
+
+function paginadorEspecial(){
+	console.log('Se ejecuto paginador especial');
+	//$('.paginacion-especial:not(.celdanovisible)').first().removeClass('celdanovisible');
+	var dimension = $( window ).width();
+	if(dimension > 271){
+		if($('.paginacion-especial:not(.celdanovisible)').length==1){
+			$('.paginacion-especial:not(.celdanovisible)').last().next().removeClass('celdanovisible');
+		}
+	}
+	if(dimension > 311){
+		if($('.paginacion-especial:not(.celdanovisible)').length==2){
+			$('.paginacion-especial:not(.celdanovisible)').last().next().removeClass('celdanovisible');
+		}
+	}
+	if(dimension > 361){
+		if($('.paginacion-especial:not(.celdanovisible)').length==3){
+			$('.paginacion-especial:not(.celdanovisible)').last().next().removeClass('celdanovisible');
+		}
+	}
+
+	if(dimension > 406){
+		if($('.paginacion-especial:not(.celdanovisible)').length==4){
+			$('.paginacion-especial:not(.celdanovisible)').last().next().removeClass('celdanovisible');
+		}
+	}
+	if(dimension > 453){
+		if($('.paginacion-especial:not(.celdanovisible)').length==5){
+			$('.paginacion-especial:not(.celdanovisible)').last().next().removeClass('celdanovisible');
+		}
+	}
+	return false;
+}
+$( window ).resize(function() {
+//453 borra uno
+// 406 borra dos
+// 361 borra tres
+// 311 borra cuatro
+// 261 borra cinco
+// 271 borra seis
+	var dimension = $( window ).width();
+	if(dimension <= 453){
+		if($('.paginacion-especial:not(.celdanovisible)').length==6){
+			$('.paginacion-especial:not(.celdanovisible)').last().addClass('celdanovisible');
+		}
+		
+	}
+	else{
+		if($('.paginacion-especial:not(.celdanovisible)').length==5){
+			$('.paginacion-especial:not(.celdanovisible)').last().next().removeClass('celdanovisible');
+		}
+	}
+	
+	if(dimension <= 406){
+		if($('.paginacion-especial:not(.celdanovisible)').length==5){
+			$('.paginacion-especial:not(.celdanovisible)').last().addClass('celdanovisible');
+		}
+		
+	}
+	else{
+		if($('.paginacion-especial:not(.celdanovisible)').length==4){
+			$('.paginacion-especial:not(.celdanovisible)').last().next().removeClass('celdanovisible');
+		}
+	}
+	if(dimension <= 361){
+		if($('.paginacion-especial:not(.celdanovisible)').length==4){
+			$('.paginacion-especial:not(.celdanovisible)').last().addClass('celdanovisible');
+		}
+		
+	}
+	else{
+		if($('.paginacion-especial:not(.celdanovisible)').length==3){
+			$('.paginacion-especial:not(.celdanovisible)').last().next().removeClass('celdanovisible');
+		}
+	}
+	if(dimension <= 311){
+		if($('.paginacion-especial:not(.celdanovisible)').length==3){
+			$('.paginacion-especial:not(.celdanovisible)').last().addClass('celdanovisible');
+		}
+		
+	}
+	else{
+		if($('.paginacion-especial:not(.celdanovisible)').length==2){
+			$('.paginacion-especial:not(.celdanovisible)').last().next().removeClass('celdanovisible');
+		}
+	}
+	if(dimension <= 271){
+		if($('.paginacion-especial:not(.celdanovisible)').length==2){
+			$('.paginacion-especial:not(.celdanovisible)').last().addClass('celdanovisible');
+		}
+		
+	}
+	else{
+		if($('.paginacion-especial:not(.celdanovisible)').length==1){
+			$('.paginacion-especial:not(.celdanovisible)').last().next().removeClass('celdanovisible');
+		}
+	}
+	
+  console.log('Se redimensiono a '+$( window ).width());
+});
 $('.pagina-noticias').live("click", function() {
 	var valor = $(this).attr('valor');
 	var data = 'valor='+valor;

@@ -6,6 +6,7 @@
 <script type="text/javascript" src="{{ asset('sf/calendar/calendar-setup.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/datetimepicker.js') }}"></script>
 
+
 <link rel="stylesheet" type="text/css" media="screen" href="{{ asset('sf/sf_admin/css/main.css') }}">
 <link rel="stylesheet" type="text/css" media="screen" href="{{ asset('sf/calendar/skins/aqua/theme.css') }}">
 
@@ -106,7 +107,11 @@
 						{%for fecha in fechasprevias%}
 						<div class="nuevafecha" >
 							<input type="text" name="fechas[date_{{loop.index}}]" class="inputgrande fecha" id="f{{loop.index}}" onclick="javascript:NewCal('f1','ddmmyyyy','dropdown',true)" value="{{fecha.getDate|date("d-m-Y H:i:s")}}">
-							{%if loop.index0 == 0%}<img id="agregarfecha" class="agregarfecha" style="cursor: pointer; vertical-align: middle" src="{{asset('sf/images/sf_admin/add.png')}}" alt="Date">{%endif%}
+							{%if loop.index0 == 0%}<img id="agregarfecha" class="agregarfecha" style="cursor: pointer; vertical-align: middle" src="{{asset('sf/images/sf_admin/add.png')}}" alt="Date">
+							{%else%}
+							<img class="eliminarfecha" style="cursor: pointer; vertical-align: middle" src="{{asset('sf/images/sf_admin/delete.png')}}" alt="Borrar">
+							{%endif%}
+							
 						</div>					
 						{%endfor%}
 
@@ -165,6 +170,10 @@ jQuery('.trigger_program_date').click(function() {
 
     return false;
   });
-  
+jQuery('.eliminarfecha').click(function() { 
+	var actual = jQuery(this);
+	actual.parent().remove();
+	console.log('deberia haber eliminado');
+});
  </script>
 {%endblock%}
