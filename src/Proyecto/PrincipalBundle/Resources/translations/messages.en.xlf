@@ -359,8 +359,8 @@
                 <target>Special</target>
             </trans-unit>
             <trans-unit id="90">
-                <source></source>
-                <target></target>
+                <source>Reserva Ahora</source>
+                <target>Book Now</target>
             </trans-unit>
             <trans-unit id="91">
                 <source></source>

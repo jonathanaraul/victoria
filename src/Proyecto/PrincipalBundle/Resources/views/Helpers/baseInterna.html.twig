@@ -3,8 +3,13 @@
 <table cellspacing="0" cellpadding="0" align="right">
 	<tbody>
 		<tr>
+			{%if app.request.locale == 'es'%}
 			<td class="lang"><a href="{{path('proyecto_principal_homepage', {'_locale': 'en'})}}">EN</a></td>
-			<td class="lang"><a href="{{path('proyecto_principal_homepage', {'_locale': 'es'})}}"><b>ES</b></a></td>
+			<td class="lang"><b>ES</b></td>
+			{%else%}
+			<td class="lang"><b>EN</b></td>
+			<td class="lang"><a href="{{path('proyecto_principal_homepage', {'_locale': 'es'})}}">ES</a></td>
+			{%endif%}
 			<td class="small_dots"><img src="{{asset('images/cms_yeslogo_small_dots.jpg')}}" alt="Cms_yeslogo_small_dots"></td>
 			<td id="small_letter"><img id="small_font" src="{{asset('images/cms_yeslogo_small_letter.jpg')}}" alt="Cms_yeslogo_small_letter"></td>
 			<td id="big_letter"><img id="big_font" src="{{asset('images/cms_yeslogo_big_letter.jpg')}}" alt="Cms_yeslogo_big_letter"></td>

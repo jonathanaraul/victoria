@@ -1090,6 +1090,10 @@ display: none;
 	vertical-align: middle;
 	display: none;
 }
+.mes-paginacion-especial{
+    text-align: center;
+    font-size: 1.5em;
+}
 @media screen and (max-width:970px){
 /*	.main-tab .main-row .cell-middle {
 		width: 96%;
@@ -1127,6 +1131,7 @@ display: none;
 }
 .menu-hidden{
 	display: table-cell;
+    width: 10%;
 }
 /*
 #backstretch{
@@ -1196,10 +1201,14 @@ p{
 		height: 100px;
 	}
 
+
 }
 @media screen and (max-width:452px){
 
 	.capa-baja-logo{
 	display: block;
 }
+    .imagen-articulo{
+        width: 150px;
+    }
 }

@@ -4,13 +4,13 @@
 			<td width="20%" valign="top" class="imagen-ocultar">
 				<img alt="" src="{%if  images[loop.index0] is not null%}{{ images[loop.index0].getWebPath | apply_filter('my_thumb') }}{%endif%}">
 			</td>
-			<td width="20%" valign="top" class="noticias-ocultar"><b>{{element.getDate.format('h:i A')}}</b></td>
+			<td width="20%" valign="top" class="noticias-ocultar" style="text-align: center;"><b>{{element.getDate.format('H:i')}}</b></td>
 			<td width="60%"  valign="top" class="noticias-columna">
 					<div>
 							<b>{{element.article.name}}</b>
 					</div>
 					<div class="noticias-mostrar">
-						<b>{{element.getDate.format('h:i A')}}</b>
+						<b>{{element.getDate.format('H:i')}}</b>
 					</div>
 					<div>
 						<img class="imagen-mostrar" alt="" src="{%if  images[loop.index0] is not null%}{{ images[loop.index0].getWebPath | apply_filter('my_thumb') }}{%endif%}" align="left" style="padding-right: 8px;">

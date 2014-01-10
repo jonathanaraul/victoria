@@ -212,6 +212,17 @@ class ListadosController extends Controller {
 		$fecha->add(new \DateInterval('P1D'));
 		$array['fechas'][5]['fecha']= $fecha->format('Y-m-d');
 		$array['fechas'][5]['dia']= $fecha->format('d').' '.UtilitiesAPI::letraDia($fecha->format('w'),$this);
+
+
+		$hoy = getdate();
+	 	$meses = array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
+	 	$month = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "Novemeber", "December");
+
+	 	$mes = intval($hoy['mon']) - 1;
+
+	 	if(UtilitiesAPI::getLocale($this)==0)$array['mes'] = $meses[$mes];
+	 	else $array['mes'] = $month[$mes];
+	 	
 		
 		return $this -> render('ProyectoFrontBundle:Default:paginacionespecial.html.twig', $array);
 	}

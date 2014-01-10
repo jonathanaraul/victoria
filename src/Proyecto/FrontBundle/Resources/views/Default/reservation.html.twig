@@ -13,17 +13,16 @@ var images = ["{{ asset(''~ background ~'') }}"];
 		<p class="content-title">
 			Reservaciones
 		</p>
-		<div class="content-news scroll-10">
-			<div class="news-cell">
+		<div class="news-cell">
 				{%if message == ''%}
 				<form action="{{ url }}" method="post" {{ form_enctype(form) }}>
-					<table>
+					<table style ="width: 100%;">
 						<tr>
 							<td>
 								Nombre Completo:
 							</td>
 							<td>
-								{{ form_widget(form.name, { 'attr': {'size': '40'} }) }}
+								{{ form_widget(form.name, { 'attr': {'style': 'width: 100%;'} }) }}
 							</td>
 						</tr>
 						<tr>
@@ -31,7 +30,7 @@ var images = ["{{ asset(''~ background ~'') }}"];
 								Email:
 							</td>
 							<td>
-								{{ form_widget(form.email, { 'attr': {'size': '40'} }) }}
+								{{ form_widget(form.email, { 'attr': {'style': 'width: 100%;'} }) }}
 							</td>
 						</tr>
 						<tr>
@@ -39,7 +38,7 @@ var images = ["{{ asset(''~ background ~'') }}"];
 								Telefono:
 							</td>
 							<td>
-								{{ form_widget(form.phone, { 'attr': {'size': '40'} }) }}
+								{{ form_widget(form.phone, { 'attr': {'style': 'width: 100%;'} }) }}
 							</td>
 						</tr>
 						<tr>
@@ -52,14 +51,14 @@ var images = ["{{ asset(''~ background ~'') }}"];
 				{%else%}
 				<p>{{message}}</p>
 				{%endif%}
-			</div>
 		</div>
+		
 		<div class="lower-text"></div>
 		<div class="lower-box" style=""></div>
 	</div>
 	<div class="main-big-title news-big-title" style="">
 		<div class="theme-sel-2">
-			Reservacion
+			Reservaci&oacute;n
 		</div>
 	</div>
 </div>

@@ -33,7 +33,13 @@ class UtilitiesAPI extends Controller {
 	const TIPO_TALLERES = 2;
 
 	public static function letraDia($cadena,$class){
+		$array = array();
+
+		if(UtilitiesAPI::getLocale($class)==0)
 		$array = array('D','L','M','M','J','V','S' );
+		else{
+		$array = array('S','M','T','W','T','F','S' );
+		}
 		
 		return $array[$cadena];
 	}
@@ -302,10 +308,7 @@ class UtilitiesAPI extends Controller {
 	 	return $array;
 	 }
 	 public static function obtenerFechaSistema($class) {
-	 	$hoy = getdate();
-	 	$meses = array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
-	 	$anio = $hoy['year'];
-	 	$mes = intval($hoy['mon']) - 1;
+
 	 	$dia = $hoy['mday'];
 	 	$hora = $hoy['hours'];
 	 	$minuto = $hoy['minutes'];

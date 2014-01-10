@@ -1,40 +1,57 @@
 {% extends "ProyectoFrontBundle:Helpers:body.html.twig" %}
 
 {%block imagenes%}
-var images = ["{{ asset(''~ background.getWebPath ~'') }}"];
+var images = [{%if background is not null%}"{{ asset(''~ background.getWebPath ~'') }}"{%endif%}];
 {%endblock%}
 
 {%block contenido%}
 <div class="middle-right-sub">
+
 	{{ render(controller('ProyectoFrontBundle:Helpers:menuMobile')) }}
 
+
 	<div class="news-cont">
+		<hr>
 		<p class="content-title">
 			{{article.name}}
 		</p>
-		<div class="content-news scroll-10">
-			<div class="news-cell">
-			{{article.content|raw}}
+		
+		<div class="news-cell">
 
-			<p><img alt="" src="{%if  media is not null%}{{ media.getWebPath | apply_filter('my_thumb2') }}{%endif%}"></p>
-			
-			
-			{%if idpage == 37 or idpage==5%}
-				<div><b>{{article.gender}}</b></div>
-				<div><b>Fechas</b></div>
-				<ul>
-				{%for date in dates%}
-					<li>{{date.date|date("m/d/Y h:m:s")}}</li>
-				{%endfor%}
-				</ul>
-				{%if idpage == 37 or idpage==5%}<span style="text-align: left;"><b><a href="{{ path('proyecto_front_reservation', {'id': article.id}) }}" style="color: black;">Reserva Ahora</a></b></span>
-									{%endif%}
-			{%endif%}
-			</div>
+			<table cellpadding="6" id="contenido-pagina" style="width: 100%;">
+					<tr width="100%">
+						<td  width="100%" valign="top" colspan="3"> {{article.content|raw}} </td>
+					</tr>
+					<tr>
+						<td><p><img alt="" class="imagen-articulo" src="{%if  media is not null%}{{ media.getWebPath | apply_filter('my_thumb2') }}{%endif%}"></p></td>
+
+					</tr>
+				{%if idpage == 37 or idpage==5  or idpage==38 or idpage==40  or idpage==41  or idpage==42 %}
+					<tr>
+						<td><b>{{article.gender}}</b></td>
+					</tr>
+					<tr>
+						<td>
+							<b>{% trans %}Fechas{% endtrans %}</b>
+							<ul>
+							{%for date in dates%}
+								<li>{{date.date|date("m/d/Y H:i")}}</li>
+							{%endfor%}
+							</ul>
+							<span style="text-align: left;">
+								<b>
+									<a href="{{ path('proyecto_front_reservation', {'id': article.id}) }}" style="color: black;">{% trans %}Reserva Ahora{% endtrans %}</a>
+								</b>
+							</span>
+						</td>
+					</tr>
+				{%endif%}
+			</table>
 		</div>
+		
 		<div class="lower-text"></div>
 		<div class="lower-box"></div>
-		<div class="biography-logo"></div>
+		<!--<div class="biography-logo"></div>-->
 	</div>
 </div>
 

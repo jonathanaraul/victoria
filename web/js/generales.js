@@ -164,45 +164,96 @@ $('.celdanoseleccionada').live("click", function() {
 });
 
 $('#pagina-especial-izquierda').live("click", function() {
-	$('.paginacion-especial:not(.celdanovisible)').first().next().next().next().next().next().addClass('celdanovisible');
+	
+	var dimension = $( window ).width();
+	var esconder = $('.paginacion-especial:not(.celdanovisible)').first();
+	var anterior = null;
+
+	if(dimension > 271){
+		esconder = $('.paginacion-especial:not(.celdanovisible)').first().next();
+	}
+	if(dimension > 311){
+		esconder = $('.paginacion-especial:not(.celdanovisible)').first().next().next();;
+	}
+	if(dimension > 361){
+		esconder = $('.paginacion-especial:not(.celdanovisible)').first().next().next().next();
+	}
+	if(dimension > 406){
+		esconder = $('.paginacion-especial:not(.celdanovisible)').first().next().next().next().next();
+	}
+	if(dimension > 453){
+		esconder = $('.paginacion-especial:not(.celdanovisible)').first().next().next().next().next().next();
+	}
+		
 	
 	if($(".paginacion-especial:not(.celdanovisible)").prev().first().hasClass('celdanovisible')){
 		$(".paginacion-especial:not(.celdanovisible)").prev().first().removeClass('celdanovisible');
+		esconder.addClass('celdanovisible');
 	}
 	else{
 		$('.paginacion-especial:not(.celdanovisible)').first().clone().insertAfter("#celda-paginador-izquierda");
+		esconder.addClass('celdanovisible');
 		$('.paginacion-especial:not(.celdanovisible)').first().removeClass('celdaseleccionada');
 		$('.paginacion-especial:not(.celdanovisible)').first().addClass('celdanoseleccionada');
 		$('.paginacion-especial:not(.celdanovisible)').first().html('07 X');	
-		var fecha = $('.paginacion-especial:not(.celdanovisible)').first().next().attr('valor');
+		var fecha = $('.paginacion-especial:not(.celdanovisible)').first().attr('valor');
 		fecha = fecha.split("-");
 		var myDate=new Date();
 		myDate.setFullYear(fecha[0],parseInt(fecha[1])-1,fecha[2]);
-		console.log('La fecha original a usar es '+myDate);
 		myDate.setDate(myDate.getDate()-1);
 		
 		var m = myDate.getMonth() + 1;
 		var d = myDate.getDate();
 		var nDay = myDate.getDay();
-		var dias =new Array('D','L','M','M','J','V','S');
+		var dias = new Array('S','M','T','W','T','F','S');
+		if($('#lang-es-selector').hasClass('lang-sel')){
+			dias =new Array('D','L','M','M','J','V','S');
+		}
+		
 		m = m > 9 ? m : "0"+m;
 		d = d > 9 ? d : "0"+d;
 		var prettyDate =(myDate.getUTCFullYear() +'-'+ m) +'-'+ d;	
 	
 		$('.paginacion-especial:not(.celdanovisible)').first().attr('valor',prettyDate);
-		$('.paginacion-especial:not(.celdanovisible)').first().html(d+' '+dias[nDay]);	
-			
+		$('.paginacion-especial:not(.celdanovisible)').first().html(d+' '+dias[nDay]);		
 	}
+	cambiaDeMes();
 });
 $('#pagina-especial-derecha').live("click", function() {
+	var dimension = $( window ).width();
+	var esconder = $('.paginacion-especial:not(.celdanovisible)').last();
+	var siguiente = null;
+
+	if(dimension > 271){
+		esconder = $('.paginacion-especial:not(.celdanovisible)').last().prev();
+	}
+	if(dimension > 311){
+		esconder = $('.paginacion-especial:not(.celdanovisible)').last().prev().prev();;
+	}
+	if(dimension > 361){
+		esconder = $('.paginacion-especial:not(.celdanovisible)').last().prev().prev().prev();
+	}
+	if(dimension > 406){
+		esconder = $('.paginacion-especial:not(.celdanovisible)').last().prev().prev().prev().prev();
+	}
+	if(dimension > 453){
+		esconder = $('.paginacion-especial:not(.celdanovisible)').last().prev().prev().prev().prev().prev();
+	}
+	siguiente = esconder.next();
 	
-	$('.paginacion-especial:not(.celdanovisible)').last().prev().prev().prev().prev().prev().addClass('celdanovisible');
 	
-	if($(".paginacion-especial:not(.celdanovisible)").next().last().hasClass('celdanovisible')){
-		$(".paginacion-especial:not(.celdanovisible)").next().last().removeClass('celdanovisible');
+	if($(".paginacion-especial:not(.celdanovisible)").next().last().hasClass('celdanovisible') || siguiente.hasClass('celdanovisible')){
+		if($(".paginacion-especial:not(.celdanovisible)").next().last().hasClass('celdanovisible')){
+			$(".paginacion-especial:not(.celdanovisible)").next().last().removeClass('celdanovisible');			
+		}
+		else{
+			 siguiente.removeClass('celdanovisible');
+		}
+		esconder.addClass('celdanovisible');
 	}
 	else{
-		$('.paginacion-especial:not(.celdanovisible)').first().clone().insertBefore( "#celda-paginador-derecha" );
+		$('.paginacion-especial:not(.celdanovisible)').last().clone().insertBefore( "#celda-paginador-derecha" );
+		esconder.addClass('celdanovisible')
 		$('.paginacion-especial:not(.celdanovisible)').last().removeClass('celdaseleccionada');
 		$('.paginacion-especial:not(.celdanovisible)').last().addClass('celdanoseleccionada');
 		$('.paginacion-especial:not(.celdanovisible)').last().removeClass('celdanovisible');
@@ -212,7 +263,7 @@ $('#pagina-especial-derecha').live("click", function() {
 		fecha = fecha.split("-");
 		var myDate=new Date();
 		myDate.setFullYear(fecha[0], parseInt(fecha[1])-1,fecha[2]);
-		myDate.setDate(myDate.getDate()+5);
+		myDate.setDate(myDate.getDate()+1);
 		
 		var m = myDate.getMonth() + 1;
 		var d = myDate.getDate();
@@ -220,11 +271,28 @@ $('#pagina-especial-derecha').live("click", function() {
 		d = d > 9 ? d : "0"+d;
 		var prettyDate =(myDate.getUTCFullYear() +'-'+ m) +'-'+ d;
 		var nDay = myDate.getDay();
-		var dias =new Array('D','L','M','M','J','V','S');
+		var dias = new Array('S','M','T','W','T','F','S');
+		if($('#lang-es-selector').hasClass('lang-sel')){
+			dias =new Array('D','L','M','M','J','V','S');
+		}
 		
 		$('.paginacion-especial:not(.celdanovisible)').last().html(d+' '+dias[nDay]);	
-		
 		$('.paginacion-especial:not(.celdanovisible)').last().attr('valor',prettyDate);
-
 	}
+	cambiaDeMes();
 });
+function cambiaDeMes(){
+
+	var fecha = $('.paginacion-especial:not(.celdanovisible)').first().attr('valor');
+	fecha = fecha.split("-");
+	var mes = parseInt(fecha[1]) - 1;
+	var meses = new Array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
+	
+	if($('#lang-es-selector').hasClass('lang-sel')==false){
+			meses =new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "Novemeber", "December");
+		}
+	if($('.mes-paginacion-especial').html()!= meses[mes]){
+		$('.mes-paginacion-especial').html(meses[mes]);
+	}
+	return false;
+}
