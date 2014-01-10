@@ -105,7 +105,15 @@ class DefaultController extends Controller {
 		$secondArray['form'] = $form -> createView();
 		$secondArray['url'] =  $this -> generateUrl('proyecto_front_reservation', array('id' => $id));
 		$secondArray['theme'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsTheme') -> find(6);
-		$secondArray['background'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find(50)->getWebPath();
+		
+		$secondArray['background'] = '-';
+
+			
+		$helper = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find(56);
+		if($helper!= NULL){
+					$secondArray['background'] = $helper  -> getWebPath();
+				}
+			
 		$secondArray['idpage'] = null;
 
 		$array = array_merge($firstArray, $secondArray);
