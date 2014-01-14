@@ -154,7 +154,7 @@ class ListadosController extends Controller {
 
 		for($i=0;$i<count($array['articles']);$i++){
 				$array['images'][$i] = $class -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($array['articles'][$i]->getArticle()->getMedia()); 
-				$array['articles'][$i]->getArticle()->setContent( substr ( $array['articles'][$i]->getArticle()->getContent() , 0, 300 ) .'...');
+				$array['articles'][$i]->getArticle()->setContent( substr ( $array['articles'][$i]->getArticle()->getContent() , 0, 450 ) .'...');
          }
 
 		return $array;

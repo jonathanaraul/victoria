@@ -37,12 +37,12 @@ var images = [{%if background is not null%}"{{ asset(''~ background.getWebPath ~
 							{%for date in dates%}
 								<li>{{date.date|date("m/d/Y H:i")}}</li>
 							{%endfor%}
-							</ul>
-							<span style="text-align: left;">
-								<b>
-									<a href="{{ path('proyecto_front_reservation', {'id': article.id}) }}" style="color: black;">{% trans %}Reserva Ahora{% endtrans %}</a>
-								</b>
-							</span>
+							</ul>							
+							<div>
+								<div class="boton-listado" style="width: 100px;margin-top: 20px;">
+									<a href="{{ path('proyecto_front_reservation', {'id': article.id}) }}">{% trans %}Reserva Ahora{% endtrans %}</a>
+								</div>
+							</div>
 						</td>
 					</tr>
 				{%endif%}

@@ -11,16 +11,16 @@ var images = [{%if background is not null%}"{{ asset(''~ background.getWebPath ~
 	<div class="upper-text" style="background-color: {{theme.color}} !important"></div>
 	
 	<div class="news-cont">
-		<hr>
+		<hr class="barra-inferior">
 		<p class="content-title">
 			{{page.name|title}}
 		</p>
 		<div class="news-cell">
-				<table cellpadding="6" id="contenido-pagina" style="width: 100%;">
+				<table cellpadding="12" id="contenido-pagina" style="width: 100%;">
 					<tr width="100%">
 						<td  width="100%" valign="top" colspan="3"> {{page.content|raw}}
 
-						</br></br></br> </td>
+						</br> </td>
 					</tr>
 					{%if listado is not null%}
 						{%if listado == 'noticias'%}
@@ -51,7 +51,11 @@ var images = [{%if background is not null%}"{{ asset(''~ background.getWebPath ~
 					<span class="copyrighted">Copyrights © La Victoria</span>
 				</div>
 				<div>
-					<p><img src="{{asset('design.png')}}"></p>
+					<p>
+						<a href="http://realego.es/" target="_blank">
+						<img src="{{asset('design.png')}}">
+						</a>
+					</p>
 				</div>
 	</div>
 </div>

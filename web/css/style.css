@@ -35,7 +35,7 @@
     font-style: normal;
 }
 .calibri {
-    font-family: 'Calibri';
+    font-family: 'Tahoma';
 }
 .futura {
     font-family: 'FuturaBkAt';
@@ -66,7 +66,7 @@ body {
 }
 
 body, img, p{
-	font-family: "Calibri";
+	font-family: "Tahoma";
     margin: 0px;
     padding: 0px;
     border: 0px;
@@ -251,7 +251,7 @@ a, a:link, a:hover, a:active, a:visited{
 }
 
 .menu a{
-    font-family: FuturiCondensed;
+    font-family: "Tahoma";
     font-size: 16px;
 }
 
@@ -623,7 +623,8 @@ display: none;
 }
 
 .news-cont .content-title, .content-news{
-   margin-left: 8px;
+   margin-left: 12%;
+   #margin-left: 8px;
 }
 
 .content-title{
@@ -1079,6 +1080,7 @@ display: none;
 }
 .noticias-mostrar{
 		display:none;
+        padding-bottom: 8px;
 	}
 .imagen-mostrar{
 		display:none;
@@ -1094,25 +1096,37 @@ display: none;
     text-align: center;
     font-size: 1.5em;
 }
+.barra-inferior{
+    margin-left: 12%;
+}
+.titulo-listado{
+    font-size: 1.2em;
+    padding-bottom: 8px;
+}
+.contenido-listado{
+  padding-bottom: 14px;
+    }
+.atributos-listado{
+    padding-bottom: 14px;
+}
+.boton-listado{
+    background-color: #1a1a1c;
+padding: 5px 6px 8px 5px;
+text-align: center;
+}
+.boton-reservaciones{
+    width: 95px;
+    float: right;
+    margin-right: 16px;
+}
+
 @media screen and (max-width:970px){
-/*	.main-tab .main-row .cell-middle {
-		width: 96%;
-	}
-	.news-cont {
-		width: 100%;
-		#margin: 50px 0 0 35px;
-	}
-	.cell-middle .middle-left
-	{
-		width: 30%;
-	}
-	.cell-middle .middle-right, .cell-middle .middle-right-sub{
-		width: 69%;
-	}
-	.main-tab .main-row .cell-left, .main-tab .main-row .cell-right, .main-tab .main-row .cell-right-sub{
-		width: 30%;
-	}
-	*/
+.content-title{
+   margin-left: 4%;
+}
+.barra-inferior{
+    margin-left: 0;
+}
 .main-tab .main-row .cell-left, .cell-middle .middle-left{
 	display: none;
 }

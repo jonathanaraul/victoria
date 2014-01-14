@@ -2,24 +2,28 @@
 	{%for element in articles %}
 		<tr class="articulos borrar">
 			<td width="20%" valign="top" class="imagen-ocultar">
-				<img alt="" src="{%if  images[loop.index0] is not null%}{{ images[loop.index0].getWebPath | apply_filter('my_thumb') }}{%endif%}">
+				<a href="{{ path('proyecto_front_article', {'id': element.id}) }}">
+					<img alt="" src="{%if  images[loop.index0] is not null%}{{ images[loop.index0].getWebPath | apply_filter('my_thumb') }}{%endif%}">
+				</a>
 			</td>
 			<td width="20%" valign="top" class="noticias-ocultar"><b>{{element.getDateCreated.format('Y-m-d')}}</b></td>
 			<td width="60%"  valign="top" class="noticias-columna">
-					<div>
+					<div class="titulo-listado">
 							<b>{{element.name}}</b> 
 					</div>
 					<div class="noticias-mostrar">
 						<b>{{element.getDateCreated.format('Y-m-d')}}</b>
 					</div>
-					<div>
-						<img class="imagen-mostrar" alt="" src="{%if  images[loop.index0] is not null%}{{ images[loop.index0].getWebPath | apply_filter('my_thumb') }}{%endif%}" align="left" style="padding-right: 8px;">
+					<div class="contenido-listado">
+						<a href="{{ path('proyecto_front_article', {'id': element.id}) }}">
+							<img class="imagen-mostrar" alt="" src="{%if  images[loop.index0] is not null%}{{ images[loop.index0].getWebPath | apply_filter('my_thumb') }}{%endif%}" align="left" style="padding-right: 8px;">
+						</a>
 							{{element.content|raw}}
 					</div> 	
-					<div style="">
-						<span style="text-align: right;">
-							<b><a href="{{ path('proyecto_front_article', {'id': element.id}) }}" style="color: black;">{% trans %}Leer más...{% endtrans %}</a></b>
-						</span>´
+					<div>
+						<div class="boton-listado" style="width: 70px;">
+								<a href="{{ path('proyecto_front_article', {'id': element.id}) }}">{% trans %}Leer más{% endtrans %}</a>
+						</div>
 					</div>
 			</td>
 		</tr>
