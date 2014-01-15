@@ -63,7 +63,32 @@ class DefaultController extends Controller {
 			if($secondArray['article']->getType()==1)$secondArray['idpage'] = 37;
 			else $secondArray['idpage'] = 5;
 			
-			$secondArray['dates'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsDate') -> findByArticle($secondArray['article']->getId());
+			//$secondArray['dates'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsDate') -> findByArticle();
+			
+			$em = $this -> getDoctrine() -> getEntityManager();	
+		
+			$dql = "SELECT n.date
+		        FROM ProyectoPrincipalBundle:CmsDate n
+		        WHERE n.article = :article
+		        ORDER by n.date ASC";
+		
+			$query = $em -> createQuery($dql);
+			$query -> setParameter('article', $secondArray['article']->getId());
+		
+			$secondArray['dates'] = $query -> getResult();
+
+			//var_dump($secondArray['dates']);
+			//exit;
+
+
+			if(count($secondArray['dates'])>0){
+				$helper = array( );
+
+				for ($i=0; $i < count($secondArray['dates']); $i++) { 
+					$helper[$i] = UtilitiesAPI::fechaPresentacion($secondArray['dates'][$i]['date'],$this);
+				}
+			 $secondArray['dates'] = $helper;
+			}
 
 		}
 

@@ -320,6 +320,15 @@ class UtilitiesAPI extends Controller {
 	 //.' - '.$hora.':'.$minuto;
 	 	return $fecha;
 	 }
+	 public static function fechaPresentacion($fechaOriginal, $class) {
+
+	 	$mes = intval(date_format($fechaOriginal, 'm')) -1;
+	 	$meses = array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
+	 	$fecha = 'Día '.date_format($fechaOriginal, 'd').' de '.$meses[$mes].' de '.date_format($fechaOriginal, 'Y').', '.date_format($fechaOriginal, 'H:i').' horas';
+	 	
+	 	return $fecha;
+	 }
+
 	/*
 
 	 public static function obtenerFechaSistema($class) {

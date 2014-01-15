@@ -8,17 +8,17 @@ var images = [{%if background is not null%}"{{ asset(''~ background.getWebPath ~
 <div class="middle-right-sub">
 
 	{{ render(controller('ProyectoFrontBundle:Helpers:menuMobile')) }}
-
+	<div class="upper-text" style="background-color: {{theme.color}} !important"></div>
 
 	<div class="news-cont">
-		<hr>
+		<hr class="barra-inferior">
 		<p class="content-title">
 			{{article.name}}
 		</p>
 		
 		<div class="news-cell">
 
-			<table cellpadding="6" id="contenido-pagina" style="width: 100%;">
+			<table cellpadding="12" id="contenido-pagina" style="width: 100%;">
 					<tr width="100%">
 						<td  width="100%" valign="top" colspan="3"> {{article.content|raw}} </td>
 					</tr>
@@ -33,11 +33,16 @@ var images = [{%if background is not null%}"{{ asset(''~ background.getWebPath ~
 					<tr>
 						<td>
 							<b>{% trans %}Fechas{% endtrans %}</b>
-							<ul>
-							{%for date in dates%}
-								<li>{{date.date|date("m/d/Y H:i")}}</li>
-							{%endfor%}
-							</ul>							
+
+							<div class="fechas-articulo">
+								{%for date in dates%}
+									<div class="contenedor{%if loop.index0 %2 == 0%}1{%else%}2{%endif%}-fechas">
+										{{date}}
+									</div>
+								{%endfor%}
+
+							</div>
+
 							<div>
 								<div class="boton-listado" style="width: 100px;margin-top: 20px;">
 									<a href="{{ path('proyecto_front_reservation', {'id': article.id}) }}">{% trans %}Reserva Ahora{% endtrans %}</a>
@@ -50,13 +55,27 @@ var images = [{%if background is not null%}"{{ asset(''~ background.getWebPath ~
 		</div>
 		
 		<div class="lower-text"></div>
-		<div class="lower-box"></div>
+		<div class="lower-box" style="#right: 200px;"></div>
 		<!--<div class="biography-logo"></div>-->
 	</div>
+	<div class="main-big-title news-big-title" style="">
+		<div class="theme-sel-{{theme.id}}">
+			{{article.name|title}}
+		</div>
+	</div>
+	<div class="capa-baja-logo">
+		<div>
+			<span class="copyrighted">Copyrights © La Victoria</span>
+		</div>
+		<div>
+			<p>
+				<a href="http://realego.es/" target="_blank">
+					<img src="{{asset('design.png')}}">
+				</a>
+			</p>
+		</div>
+	</div>
 </div>
-
-
-
 
 {%endblock%}
 
