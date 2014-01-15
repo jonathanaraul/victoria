@@ -37,7 +37,7 @@ $Config['UserFilesPath'] = '/uploads/' ;
 // user files directory. Useful if you are using a virtual directory, symbolic
 // link or alias. Examples: 'C:\\MySite\\userfiles\\' or '/root/mysite/userfiles/'.
 // Attention: The above 'UserFilesPath' must point to the same directory.
-$Config['UserFilesAbsolutePath'] = '/home/web/la_victoria/web/uploads/' ;
+$Config['UserFilesAbsolutePath'] = '/homepages/45/d482500541/htdocs/lavictoriacultural/web/uploads/';//'/home/web/lavictoriacultural/web/uploads/' ;
 
 // Due to security issues with Apache modules, it is recommended to leave the
 // following setting enabled.
