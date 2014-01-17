@@ -11,7 +11,7 @@ var images = ["{{ asset(''~ background ~'') }}"];
 	<div class="news-cont">
 		<hr>
 		<p class="content-title">
-			Reservaciones
+			{% trans %}Reservas{% endtrans %}
 		</p>
 		<div class="news-cell">
 				{%if message == ''%}
@@ -19,31 +19,39 @@ var images = ["{{ asset(''~ background ~'') }}"];
 					<table style ="width: 100%;">
 						<tr>
 							<td>
-								Nombre Completo:
+								{% trans %}Nombre Completo{% endtrans %}:
 							</td>
 							<td>
-								{{ form_widget(form.name, { 'attr': {'style': 'width: 100%;'} }) }}
-							</td>
-						</tr>
-						<tr>
-							<td>
-								Email:
-							</td>
-							<td>
-								{{ form_widget(form.email, { 'attr': {'style': 'width: 100%;'} }) }}
+								{{ form_widget(form.name, { 'attr': {'style': 'width: 100%;border: none;'} }) }}
 							</td>
 						</tr>
 						<tr>
 							<td>
-								Telefono:
+								{% trans %}Correo Electrónico{% endtrans %}:
 							</td>
 							<td>
-								{{ form_widget(form.phone, { 'attr': {'style': 'width: 100%;'} }) }}
+								{{ form_widget(form.email, { 'attr': {'style': 'width: 100%;border: none;'} }) }}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								{% trans %}Teléfono{% endtrans %}:
+							</td>
+							<td>
+								{{ form_widget(form.phone, { 'attr': {'style': 'width: 100%;border: none;'} }) }}
+							</td>
+						</tr>
+						<tr>
+							<td>
+								{% trans %}Fecha de Interés{% endtrans %}:
+							</td>
+							<td>
+								{{ form_widget(form.rdate, { 'attr': {'style': 'width: 100%;border: none;'} }) }}
 							</td>
 						</tr>
 						<tr>
 							<td colspan="2">
-								<input type="submit" name="save" value="Guardar">
+								<input type="submit" name="save" value="{% trans %}Guardar{% endtrans %}">
 							</td>
 						</tr>
 					</table>
@@ -58,7 +66,7 @@ var images = ["{{ asset(''~ background ~'') }}"];
 	</div>
 	<div class="main-big-title news-big-title" style="">
 		<div class="theme-sel-2">
-			Reservaci&oacute;n
+			{% trans %}Reservas{% endtrans %}
 		</div>
 	</div>
 </div>

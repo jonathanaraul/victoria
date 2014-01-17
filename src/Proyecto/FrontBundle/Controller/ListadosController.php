@@ -223,6 +223,7 @@ class ListadosController extends Controller {
 	 	if(UtilitiesAPI::getLocale($this)==0)$array['mes'] = $meses[$mes];
 	 	else $array['mes'] = $month[$mes];
 	 	
+	 	$array['anio'] = intval($hoy['year']);
 		
 		return $this -> render('ProyectoFrontBundle:Default:paginacionespecial.html.twig', $array);
 	}

@@ -112,7 +112,6 @@ $( window ).resize(function() {
 		}
 	}
 	
-  console.log('Se redimensiono a '+$( window ).width());
 });
 $('.pagina-noticias').live("click", function() {
 	var valor = $(this).attr('valor');
@@ -295,4 +294,228 @@ function cambiaDeMes(){
 		$('.mes-paginacion-especial').html(meses[mes]);
 	}
 	return false;
+}
+function detectaMes(){
+
+	var mesActual = $('.mes-paginacion-especial').html();
+	var meses = new Array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
+	
+	if($('#lang-es-selector').hasClass('lang-sel')==false){
+			meses =new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "Novemeber", "December");
+		}
+
+	var posicionMesActual = 0;
+	for(var i=0; i<meses.length;i++){
+		if(meses[i].toLowerCase() ==mesActual.toLowerCase()){
+			posicionMesActual = i;
+			break;
+		}
+	}
+	return posicionMesActual;
+}
+$('#mes-especial-izquierda').live("click", function() {
+
+	var meses = new Array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
+	var anio = $('.mes-paginacion-especial').attr('anio');
+	var posicionMesActual = detectaMes();
+	var posicionMesNuevo = posicionMesActual - 1;
+
+	if(posicionMesNuevo<0){
+		posicionMesNuevo = 11;
+		anio--;
+	} 
+	var objetivo=new Date();
+	objetivo.setFullYear(anio, posicionMesNuevo, 01);
+	var fechaObjetivoCadena = fechaBonita(objetivo);
+
+
+	var fechaPuntero = $('.paginacion-especial').first().attr('valor');
+	fechaPuntero = fechaPuntero.split("-");
+	anioPuntero = fechaPuntero[0];
+	posicionMesPuntero = parseInt(fechaPuntero[1]) -1;
+	diaPuntero = parseInt(fechaPuntero[2]);
+	
+	var myDate=new Date();
+	myDate.setFullYear(fechaPuntero[0], parseInt(fechaPuntero[1])-1,fechaPuntero[2]);
+
+	if(posicionMesNuevo < posicionMesPuntero || anio < anioPuntero || diaPuntero > 1) {
+
+		for (var i = 0; i >= 0; i++) {
+
+			myDate.setDate(myDate.getDate()-1);
+
+			if(objetivo > myDate){
+				console.log('La fecha llego al objetivo');
+				break;
+			}
+			else{
+				console.log('Iteracion '+i)
+			}
+
+			$('.paginacion-especial').first().clone().insertAfter("#celda-paginador-izquierda");
+			$('.paginacion-especial').first().removeClass('celdaseleccionada');
+			$('.paginacion-especial').first().addClass('celdanoseleccionada');
+			$('.paginacion-especial').first().addClass('celdanovisible');
+			$('.paginacion-especial').first().html('07 X');	
+			
+			var d = myDate.getDate();
+			d = d > 9 ? d : "0"+d;
+			var prettyDate = fechaBonita(myDate);
+			var nDay = myDate.getDay();
+
+			var dias = new Array('S','M','T','W','T','F','S');
+			if($('#lang-es-selector').hasClass('lang-sel')){
+				dias =new Array('D','L','M','M','J','V','S');
+			}
+
+			$('.paginacion-especial').first().attr('valor',prettyDate);
+			$('.paginacion-especial').first().html(d+' '+dias[nDay]);
+
+		};
+				
+	}
+
+	var cantidadPublicados = $('.paginacion-especial:not(.celdanovisible)').length;
+	var publicados = $('.paginacion-especial:not(.celdanovisible)').first();
+
+	for (var i = 0; i < cantidadPublicados; i++) {
+		publicados.addClass('celdanovisible');
+		publicados = publicados.next();
+	};
+
+	var noPublicados = $('.paginacion-especial');
+	var punteroNoPublicados = noPublicados.first();
+	var fechaAuxiliar = null;
+	var activacion = false;
+	var contadorPublicado = 0;
+	for (var i = 0; i < noPublicados.length; i++) {
+		fechaAuxiliar = punteroNoPublicados.attr('valor');
+		if(fechaObjetivoCadena == fechaAuxiliar || activacion == true){
+			punteroNoPublicados.removeClass('celdanovisible');
+			contadorPublicado++;
+			activacion = true;
+			if(contadorPublicado>=cantidadPublicados){
+				break;
+			}
+		}
+		punteroNoPublicados = punteroNoPublicados.next();
+	};
+
+	 $('.mes-paginacion-especial').html(meses[posicionMesNuevo]);
+	 $('.mes-paginacion-especial').attr('anio',anio);
+
+
+
+	console.log('El mes actual es el '+posicionMesActual+' el nuevo mes '+meses[posicionMesNuevo]+' el anio es'+anio);
+	return false;
+
+});
+$('#mes-especial-derecha').live("click", function() {
+
+	var meses = new Array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
+	var anio=  $('.mes-paginacion-especial').attr('anio');
+	var posicionMesActual = detectaMes();
+	var posicionMesNuevo = posicionMesActual + 1;
+
+	if(posicionMesNuevo > 11){
+		posicionMesNuevo = 0;
+		anio++;
+	} 
+	var cantidadPublicados = $('.paginacion-especial:not(.celdanovisible)').length;
+	var objetivo=new Date();
+	objetivo.setFullYear(anio, posicionMesNuevo, (cantidadPublicados));
+	var fechaObjetivoCadena = fechaBonita(objetivo);
+
+
+	var fechaPuntero = $('.paginacion-especial').last().attr('valor');
+	fechaPuntero = fechaPuntero.split("-");
+	anioPuntero = fechaPuntero[0];
+	posicionMesPuntero = parseInt(fechaPuntero[1]) -1;
+
+
+	var myDate=new Date();
+	myDate.setFullYear(fechaPuntero[0], parseInt(fechaPuntero[1])-1,fechaPuntero[2]);
+
+	if(posicionMesNuevo > posicionMesPuntero || (anio>anioPuntero)){
+
+		for (var i = 0; i >= 0; i++) {
+
+			myDate.setDate(myDate.getDate()+1);
+
+			$('.paginacion-especial').last().clone().insertBefore( "#celda-paginador-derecha" );
+			$('.paginacion-especial').last().removeClass('celdaseleccionada');
+			$('.paginacion-especial').last().addClass('celdanoseleccionada');
+			$('.paginacion-especial').last().addClass('celdanovisible');
+			$('.paginacion-especial').last().html('07 X');	
+			
+			var d = myDate.getDate();
+			d = d > 9 ? d : "0"+d;
+
+			var prettyDate = fechaBonita(myDate);
+			var nDay = myDate.getDay();
+
+			var dias = new Array('S','M','T','W','T','F','S');
+			if($('#lang-es-selector').hasClass('lang-sel')){
+				dias =new Array('D','L','M','M','J','V','S');
+			}
+
+			$('.paginacion-especial').last().attr('valor',prettyDate);
+			$('.paginacion-especial').last().html(d+' '+dias[nDay]);
+
+			if(objetivo < myDate){
+				console.log('La fecha llego al objetivo');
+				break;
+			}
+			else{
+				console.log('Iteracion '+i)
+			}
+
+
+		};
+				
+	}
+
+	var publicados = $('.paginacion-especial:not(.celdanovisible)').first();
+
+	for (var i = 0; i < cantidadPublicados; i++) {
+		publicados.addClass('celdanovisible');
+		publicados = publicados.next();
+	};
+
+	var noPublicados = $('.paginacion-especial');
+	var punteroNoPublicados = noPublicados.last();
+	var fechaAuxiliar = null;
+	var activacion = false;
+	var contadorPublicado = 0;
+
+	for (var i = (noPublicados.length-1); i >=0 ; i--) {
+		fechaAuxiliar = punteroNoPublicados.attr('valor');
+		if(fechaObjetivoCadena == fechaAuxiliar || activacion == true){
+			punteroNoPublicados.removeClass('celdanovisible');
+			contadorPublicado++;
+			activacion = true;
+			if(contadorPublicado>=cantidadPublicados){
+				break;
+			}
+		}
+		punteroNoPublicados = punteroNoPublicados.prev();
+	};
+
+	 $('.mes-paginacion-especial').html(meses[posicionMesNuevo]);
+	 $('.mes-paginacion-especial').attr('anio',anio);
+
+
+	console.log('El mes actual es el '+posicionMesActual+' el nuevo mes '+meses[posicionMesNuevo]+' el anio es'+anio);
+	return false;
+});
+function fechaBonita( myDate){
+	
+	var y = myDate.getFullYear();
+	var m = myDate.getMonth() + 1;
+	var d = myDate.getDate();
+	m = m > 9 ? m : "0"+m;
+	d = d > 9 ? d : "0"+d;
+	var prettyDate =(myDate.getUTCFullYear() +'-'+ m) +'-'+ d;
+
+	return prettyDate;
 }

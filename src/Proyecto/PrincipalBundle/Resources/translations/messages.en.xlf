@@ -363,8 +363,8 @@
                 <target>Book Now</target>
             </trans-unit>
             <trans-unit id="91">
-                <source></source>
-                <target></target>
+                <source>Fecha de interés</source>
+                <target>Interest Date</target>
             </trans-unit>
             <trans-unit id="92">
                 <source></source>

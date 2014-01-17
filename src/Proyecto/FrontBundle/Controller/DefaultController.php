@@ -108,6 +108,7 @@ class DefaultController extends Controller {
 		-> add('name', 'text', array('required' => false))
 		-> add('phone', 'text', array('required' => false)) 
 		-> add('email', 'text', array('required' => false)) 
+		-> add('rdate', 'text', array('required' => false)) 
 		-> getForm();
 
 		$em = $this -> getDoctrine() -> getEntityManager();
@@ -123,7 +124,10 @@ class DefaultController extends Controller {
 			$em -> persist($data);
 			$em -> flush();
 
-			$secondArray['message'] = 'Estimado(a) '.ucwords($data -> getName()).' su reservación ha sido guardada exitosamente...';
+			$secondArray['message'] = 'Estimado(a) '.ucwords($data -> getName()).' su reserva ha sido guardada exitosamente...';
+			if($locale==1){
+				$secondArray['message'] = 'Dear '.ucwords($data -> getName()).' your booking has been saved successfully...';
+			}
 			
 														}
 		

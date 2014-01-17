@@ -359,16 +359,16 @@
                 <target>Reservation</target>
             </trans-unit>
             <trans-unit id="90">
-                <source></source>
-                <target></target>
+                <source>Nombre Completo</source>
+                <target>Full Name</target>
             </trans-unit>
             <trans-unit id="91">
-                <source></source>
-                <target></target>
+                <source>Fecha de Interés</source>
+                <target>Interest Date</target>
             </trans-unit>
             <trans-unit id="92">
-                <source></source>
-                <target></target>
+                <source>Reservas</source>
+                <target>Reservation</target>
             </trans-unit>
             <trans-unit id="93">
                 <source></source>

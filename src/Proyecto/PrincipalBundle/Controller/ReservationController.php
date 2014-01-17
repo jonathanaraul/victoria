@@ -126,6 +126,7 @@ class ReservationController extends Controller {
 			$auxiliar[$i]['name'] =  $objects[$i] -> getName();
 			$auxiliar[$i]['phone'] = $objects[$i] -> getPhone();
 			$auxiliar[$i]['email'] = $objects[$i] -> getEmail();
+			$auxiliar[$i]['rdate'] = $objects[$i] -> getRDate();
 			$auxiliar[$i]['date'] = $objects[$i] -> getDate()->format('d/m/Y H:m');
 			$auxiliar[$i]['checked'] = $objects[$i] -> getChecked();
 		}

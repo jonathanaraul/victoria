@@ -65,6 +65,9 @@ var cambiarStatus = '{{path('proyecto_principal_link_checked')}}';
 					<th id="sf_admin_list_th_media_id">
 						{{ knp_pagination_sortable(pagination, 'Fecha'|trans, 'n.date') }}
 						</th>
+					<th id="sf_admin_list_th_media_id">
+						{{ knp_pagination_sortable(pagination, 'Fecha de interés'|trans, 'n.rdate') }}
+						</th>
 					<th id="sf_admin_list_th_sf_actions">{% trans %}Verificado{% endtrans %}</th>
 				</tr>
 				{%endif%}

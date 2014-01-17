@@ -51,7 +51,12 @@ class CmsReservation
      * @ORM\Column(name="email", type="string", length=255, nullable=false)
      */
     private $email;
-	
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="rdate", type="string", length=255, nullable=false)
+     */
+    private $rdate;
     /**
      * @var \DateTime
      *
@@ -150,6 +155,28 @@ class CmsReservation
     public function getEmail()
     {
         return $this->email;
+    }
+    /**
+     * Set rdate
+     *
+     * @param string $rdate
+     * @return Reservation
+     */
+    public function setRdate($rdate)
+    {
+        $this->rdate = $rdate;
+    
+        return $this;
+    }
+
+    /**
+     * Get rdate
+     *
+     * @return string 
+     */
+    public function getRdate()
+    {
+        return $this->rdate;
     }
     /**
      * Set date
