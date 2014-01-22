@@ -38,6 +38,17 @@ class DefaultController extends Controller {
 		$secondArray['background'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($secondArray['page']->getBackground());
 		$secondArray['media'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($secondArray['page']->getMedia());
 		$secondArray['theme'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsTheme') -> find($secondArray['page']->getTheme());
+		$secondArray['path'] = $secondArray['page']->getPath();
+
+		if($secondArray['path']!=null){
+			if (file_exists($secondArray['page']->getWebPath())) {
+   				$secondArray['path'] = $secondArray['page']->getWebPath();
+			}
+			else{
+				$secondArray['path'] = null;
+			}
+		}
+
 		$secondArray['idpage'] = $secondArray['page']->getId();
 		$secondArray['articles'] = null;
 		$secondArray['listado'] = UtilitiesAPI::esListado($secondArray['idpage'],$this);
@@ -55,6 +66,19 @@ class DefaultController extends Controller {
 		$secondArray['media'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsResource') -> find($secondArray['article']->getMedia());
 		$secondArray['theme'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsTheme') -> find($secondArray['article']->getTheme());
 		$secondArray['idpage'] = null;
+
+		$secondArray['path'] = $secondArray['article']->getPdf();
+
+		if($secondArray['path']!=null){
+			if (file_exists($secondArray['article']->getWebPath())) {
+   				$secondArray['path'] = $secondArray['article']->getWebPath();
+			}
+			else{
+				$secondArray['path'] = null;
+			}
+		}
+
+
 		if($secondArray['article']->getType()==0){
 			$secondArray['idpage'] = 1;
 		}

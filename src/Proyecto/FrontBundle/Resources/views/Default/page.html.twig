@@ -20,7 +20,14 @@ var images = [{%if background is not null%}"{{ asset(''~ background.getWebPath ~
 					<tr width="100%">
 						<td  width="100%" valign="top" colspan="3"> {{page.content|raw}}
 
-						</br> </td>
+						</br>
+						{%if path is not null%}
+								<div class="boton-listado boton-reservaciones" style="margin-top: 14px;margin-right: 0px;" >
+									<a href="{{ asset(''~ path ~'') }}" target="_blank">{% trans %}Ver Adjunto{% endtrans %}</a>
+								</div>
+						{%endif%}
+						</br>
+						 </td>
 					</tr>
 					{%if listado is not null%}
 						{%if listado == 'noticias'%}

@@ -9,20 +9,20 @@ var images = ["{{ asset(''~ background ~'') }}"];
 	{{ render(controller('ProyectoFrontBundle:Helpers:menuMobile')) }}
 	<div class="upper-text" style="background-color: {{theme.color}} !important"></div>
 	<div class="news-cont">
-		<hr>
+		<hr class="barra-inferior">
 		<p class="content-title">
 			{% trans %}Reservas{% endtrans %}
 		</p>
 		<div class="news-cell">
 				{%if message == ''%}
-				<form action="{{ url }}" method="post" {{ form_enctype(form) }}>
+				<form action="{{ url }}" method="post" {{ form_enctype(form) }} id="form-reservaciones">
 					<table style ="width: 100%;">
 						<tr>
 							<td>
 								{% trans %}Nombre Completo{% endtrans %}:
 							</td>
 							<td>
-								{{ form_widget(form.name, { 'attr': {'style': 'width: 100%;border: none;'} }) }}
+								{{ form_widget(form.name, { 'attr': {'style': 'width: 100%;border: none;','class':'form-reservacion'} }) }}
 							</td>
 						</tr>
 						<tr>
@@ -30,7 +30,7 @@ var images = ["{{ asset(''~ background ~'') }}"];
 								{% trans %}Correo Electrónico{% endtrans %}:
 							</td>
 							<td>
-								{{ form_widget(form.email, { 'attr': {'style': 'width: 100%;border: none;'} }) }}
+								{{ form_widget(form.email, { 'attr': {'style': 'width: 100%;border: none;','class':'form-reservacion'} }) }}
 							</td>
 						</tr>
 						<tr>
@@ -38,7 +38,7 @@ var images = ["{{ asset(''~ background ~'') }}"];
 								{% trans %}Teléfono{% endtrans %}:
 							</td>
 							<td>
-								{{ form_widget(form.phone, { 'attr': {'style': 'width: 100%;border: none;'} }) }}
+								{{ form_widget(form.phone, { 'attr': {'style': 'width: 100%;border: none;','class':'form-reservacion'} }) }}
 							</td>
 						</tr>
 						<tr>
@@ -46,12 +46,14 @@ var images = ["{{ asset(''~ background ~'') }}"];
 								{% trans %}Fecha de Interés{% endtrans %}:
 							</td>
 							<td>
-								{{ form_widget(form.rdate, { 'attr': {'style': 'width: 100%;border: none;'} }) }}
+								{{ form_widget(form.rdate, { 'attr': {'style': 'width: 100%;border: none;','class':'form-reservacion'} }) }}
 							</td>
 						</tr>
 						<tr>
 							<td colspan="2">
-								<input type="submit" name="save" value="{% trans %}Guardar{% endtrans %}">
+								<div class="boton-listado boton-reservaciones" style="margin-top: 14px;margin-right: 0px;" >
+									<a href="javascript:void(0);" id="botonReservaciones">{% trans %}Reservar{% endtrans %}</a>
+								</div>
 							</td>
 						</tr>
 					</table>

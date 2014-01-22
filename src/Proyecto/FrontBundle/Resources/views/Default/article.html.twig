@@ -20,10 +20,21 @@ var images = [{%if background is not null%}"{{ asset(''~ background.getWebPath ~
 
 			<table cellpadding="12" id="contenido-pagina" style="width: 100%;">
 					<tr width="100%">
-						<td  width="100%" valign="top" colspan="3"> {{article.content|raw}} </td>
+						<td  width="100%" valign="top" colspan="3"> {{article.content|raw}}
+
+						 </td>
 					</tr>
 					<tr>
-						<td><p><img alt="" class="imagen-articulo" src="{%if  media is not null%}{{ media.getWebPath | apply_filter('my_thumb2') }}{%endif%}"></p></td>
+						<td><p><img alt="" class="imagen-articulo" src="{%if  media is not null%}{{ media.getWebPath | apply_filter('my_thumb2') }}{%endif%}"></p>
+
+						</br>
+						{%if path is not null%}
+								<div class="boton-listado boton-reservaciones" style="margin-top: 14px;margin-right: 0px;" >
+									<a href="{{ asset(''~ path ~'') }}" target="_blank">{% trans %}Ver Adjunto{% endtrans %}</a>
+								</div>
+						{%endif%}
+						</br>
+						</td>
 
 					</tr>
 				{%if idpage == 37 or idpage==5  or idpage==38 or idpage==40  or idpage==41  or idpage==42 %}

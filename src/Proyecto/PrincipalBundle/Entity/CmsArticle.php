@@ -499,6 +499,29 @@ class CmsArticle
     }
 
     /**
+     * Set pdf
+     *
+     * @param string $pdf
+     * @return CmsArticle
+     */
+    public function setPdf($pdf)
+    {
+        $this->pdf = $pdf;
+    
+        return $this;
+    }
+
+    /**
+     * Get pdf
+     *
+     * @return string 
+     */
+    public function getPdf()
+    {
+        return $this->pdf;
+    }
+
+    /**
      * Set dateCreated
      *
      * @param \DateTime $dateCreated

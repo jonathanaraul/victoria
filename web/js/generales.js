@@ -3,9 +3,9 @@
  *
  */
 $(function(){
-		$('#menu').slicknav({
+	$('#menu').slicknav({
 		prependTo:'#menuobligado'
-});
+						});
 
 	});
 $( document ).ready(function() {
@@ -15,8 +15,23 @@ $( document ).ready(function() {
   }
 });
 
+$('#botonReservaciones').live("click", function() {
+	var prueba = true;
+	$.each($(".form-reservacion"), function(indice, valor) {
+		var auxiliar = $(valor).val();
+		if($.trim(auxiliar)==''){
+			$(valor).focus();
+			prueba = false;
+			return false;
+		}
+	});
+	if(prueba)$( "#form-reservaciones" ).submit();
+
+	return false;
+});
+
 function paginadorEspecial(){
-	console.log('Se ejecuto paginador especial');
+
 	//$('.paginacion-especial:not(.celdanovisible)').first().removeClass('celdanovisible');
 	var dimension = $( window ).width();
 	if(dimension > 271){
@@ -313,8 +328,11 @@ function detectaMes(){
 	}
 	return posicionMesActual;
 }
+
+
 $('#mes-especial-izquierda').live("click", function() {
 
+	$(this).attr('id','mes-especial-izquierda-nofunciona');
 	var meses = new Array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
 	var anio = $('.mes-paginacion-especial').attr('anio');
 	var posicionMesActual = detectaMes();
@@ -345,12 +363,9 @@ $('#mes-especial-izquierda').live("click", function() {
 			myDate.setDate(myDate.getDate()-1);
 
 			if(objetivo > myDate){
-				console.log('La fecha llego al objetivo');
 				break;
 			}
-			else{
-				console.log('Iteracion '+i)
-			}
+
 
 			$('.paginacion-especial').first().clone().insertAfter("#celda-paginador-izquierda");
 			$('.paginacion-especial').first().removeClass('celdaseleccionada');
@@ -404,14 +419,12 @@ $('#mes-especial-izquierda').live("click", function() {
 	 $('.mes-paginacion-especial').html(meses[posicionMesNuevo]);
 	 $('.mes-paginacion-especial').attr('anio',anio);
 
-
-
-	console.log('El mes actual es el '+posicionMesActual+' el nuevo mes '+meses[posicionMesNuevo]+' el anio es'+anio);
+	$(this).attr('id','mes-especial-izquierda');
 	return false;
 
 });
 $('#mes-especial-derecha').live("click", function() {
-
+	$(this).attr('id','mes-especial-derecha-nofunciona');
 	var meses = new Array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
 	var anio=  $('.mes-paginacion-especial').attr('anio');
 	var posicionMesActual = detectaMes();
@@ -463,13 +476,9 @@ $('#mes-especial-derecha').live("click", function() {
 			$('.paginacion-especial').last().html(d+' '+dias[nDay]);
 
 			if(objetivo < myDate){
-				console.log('La fecha llego al objetivo');
+				
 				break;
 			}
-			else{
-				console.log('Iteracion '+i)
-			}
-
 
 		};
 				
@@ -503,9 +512,8 @@ $('#mes-especial-derecha').live("click", function() {
 
 	 $('.mes-paginacion-especial').html(meses[posicionMesNuevo]);
 	 $('.mes-paginacion-especial').attr('anio',anio);
+	 $(this).attr('id','mes-especial-derecha');
 
-
-	console.log('El mes actual es el '+posicionMesActual+' el nuevo mes '+meses[posicionMesNuevo]+' el anio es'+anio);
 	return false;
 });
 function fechaBonita( myDate){
