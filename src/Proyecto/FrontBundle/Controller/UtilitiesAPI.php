@@ -124,8 +124,11 @@ class UtilitiesAPI extends Controller {
 		
 		return $friendlyName;
 	}
-	public static function sendMail($nombreEvento,$datosUsuario,$class)
+	public static function sendMail($destinatario,$sujeto, $mensaje, $encabezado,$class)
 	{
+	
+	mail ($destinatario, $sujeto, $mensaje, $encabezado); 
+	/*
     $message = \Swift_Message::newInstance()
         ->setSubject('Nueva Reservación')
         ->setFrom('hjimenez45@gmail.com')
@@ -138,7 +141,7 @@ class UtilitiesAPI extends Controller {
         )
     ;
     $class->get('mailer')->send($message);
-
+*/
     return true;
 	}
 	public static function removeData($id,$class){

@@ -25,11 +25,19 @@ $('#botonReservaciones').live("click", function() {
 			return false;
 		}
 	});
+	if(prueba){
+		prueba=  isInt($('#form_tickets').val());
+		if(prueba==false)$('#form_tickets').focus();
+	}
+
 	if(prueba)$( "#form-reservaciones" ).submit();
 
 	return false;
 });
 
+function isInt(n) {
+   return n % 1 === 0;
+}
 function paginadorEspecial(){
 
 	//$('.paginacion-especial:not(.celdanovisible)').first().removeClass('celdanovisible');

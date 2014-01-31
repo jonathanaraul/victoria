@@ -77,6 +77,13 @@ class CmsReservation
      * @ORM\Column(name="lang", type="integer", nullable=false)
      */
     private $lang;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="tickets", type="integer", nullable=false)
+     */
+    private $tickets;
 	
     /**
      * Get id
@@ -271,4 +278,30 @@ class CmsReservation
     {
         return $this->lang;
     }
+
+    /**
+     * Set tickets
+     *
+     * @param integer $tickets
+     * @return CmsReservation
+     */
+    public function setTickets($tickets)
+    {
+        $this->tickets = $tickets;
+    
+        return $this;
+    }
+
+    /**
+     * Get tickets
+     *
+     * @return integer 
+     */
+    public function getTickets()
+    {
+        return $this->tickets;
+    }
+
+
+    
 }

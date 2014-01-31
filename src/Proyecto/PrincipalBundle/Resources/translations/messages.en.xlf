@@ -365,19 +365,18 @@
             <trans-unit id="91">
                 <source>Fecha de interés</source>
                 <target>Interest Date</target>
-            </trans-unit>
-            <trans-unit id="92">
-                <source></source>
-                <target></target>
+            </trans-unit>           
+             <trans-unit id="92">
+                <source>Entradas</source>
+                <target>Tickets</target>
             </trans-unit>
             <trans-unit id="93">
-                <source></source>
-                <target></target>
+                <source>Número de Entradas</source>
+                <target># Tickets</target>
             </trans-unit>
             <trans-unit id="94">
-                <source></source>
-                <target></target>
-            </trans-unit>
+                <source>Email</source>
+                <target>Email</target>
             <trans-unit id="95">
                 <source></source>
                 <target></target>

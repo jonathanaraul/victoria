@@ -375,16 +375,16 @@
                 <target>Attached</target>
             </trans-unit>
             <trans-unit id="94">
-                <source></source>
-                <target></target>
+                <source>Entradas</source>
+                <target>Tickets</target>
             </trans-unit>
             <trans-unit id="95">
-                <source></source>
-                <target></target>
+                <source>Número de Entradas</source>
+                <target># Tickets</target>
             </trans-unit>
             <trans-unit id="96">
-                <source></source>
-                <target></target>
+                <source>Email</source>
+                <target>Email</target>
             </trans-unit>
             <trans-unit id="97">
                 <source></source>

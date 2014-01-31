@@ -50,6 +50,14 @@ var images = ["{{ asset(''~ background ~'') }}"];
 							</td>
 						</tr>
 						<tr>
+							<td>
+								{% trans %}Número de Entradas{% endtrans %}:
+							</td>
+							<td>
+								{{ form_widget(form.tickets, { 'attr': {'style': 'width: 100%;border: none;','class':'form-reservacion'} }) }}
+							</td>
+						</tr>
+						<tr>
 							<td colspan="2">
 								<div class="boton-listado boton-reservaciones" style="margin-top: 14px;margin-right: 0px;" >
 									<a href="javascript:void(0);" id="botonReservaciones">{% trans %}Reservar{% endtrans %}</a>
@@ -60,6 +68,7 @@ var images = ["{{ asset(''~ background ~'') }}"];
 				</form>
 				{%else%}
 				<p>{{message}}</p>
+
 				{%endif%}
 		</div>
 		

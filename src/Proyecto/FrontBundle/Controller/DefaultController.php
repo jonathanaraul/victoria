@@ -40,7 +40,7 @@ class DefaultController extends Controller {
 		$secondArray['theme'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsTheme') -> find($secondArray['page']->getTheme());
 		$secondArray['path'] = $secondArray['page']->getPath();
 
-		if($secondArray['path']!=null){
+		if($secondArray['path']!=null && trim($secondArray['path'])!=""){
 			if (file_exists($secondArray['page']->getWebPath())) {
    				$secondArray['path'] = $secondArray['page']->getWebPath();
 			}
@@ -48,6 +48,10 @@ class DefaultController extends Controller {
 				$secondArray['path'] = null;
 			}
 		}
+		else{
+			$secondArray['path'] = null;
+		}
+
 
 		$secondArray['idpage'] = $secondArray['page']->getId();
 		$secondArray['articles'] = null;
@@ -69,7 +73,8 @@ class DefaultController extends Controller {
 
 		$secondArray['path'] = $secondArray['article']->getPdf();
 
-		if($secondArray['path']!=null){
+
+		if($secondArray['path']!=null && trim($secondArray['path'])!=""){
 			if (file_exists($secondArray['article']->getWebPath())) {
    				$secondArray['path'] = $secondArray['article']->getWebPath();
 			}
@@ -77,6 +82,10 @@ class DefaultController extends Controller {
 				$secondArray['path'] = null;
 			}
 		}
+		else{
+			$secondArray['path'] = null;
+		}
+
 
 
 		if($secondArray['article']->getType()==0){
@@ -120,8 +129,8 @@ class DefaultController extends Controller {
 		return $this -> render('ProyectoFrontBundle:Default:article.html.twig', $array);
 	}
 	
-	public function reservationAction($id, Request $request) {
-		//$prueba = UtilitiesAPI::sendMail('Elecciones', array('name' => 'Juan','phone' =>'04249271991', 'email'=>'jonathan.araul@gmail.com' ),$this);
+public function reservationAction($id, Request $request) {
+
 		$firstArray = UtilitiesAPI::getDefaultContent('reservation', $this);
 		$secondArray = array();
 		$secondArray['article'] = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsArticle') -> find($id);
@@ -133,12 +142,14 @@ class DefaultController extends Controller {
 		-> add('phone', 'text', array('required' => false)) 
 		-> add('email', 'text', array('required' => false)) 
 		-> add('rdate', 'text', array('required' => false)) 
+		-> add('tickets', 'number', array('required' => false)) 
 		-> getForm();
 
 		$em = $this -> getDoctrine() -> getEntityManager();
 		$secondArray['message'] = '';
 
 		if ($this -> getRequest() -> isMethod('POST')) {
+
 			$form -> bind($this -> getRequest());
 			$data -> setLang($locale);
 			$data -> setDate(new \DateTime());
@@ -147,7 +158,27 @@ class DefaultController extends Controller {
 			
 			$em -> persist($data);
 			$em -> flush();
+			//echo'llego al post2';exit;
 
+			$secondArray['aux'] = array('name'=>$data -> getName(),'phone'=>$data -> getPhone(),'email'=>$data -> getEmail(),'rdate'=>$data -> getRdate(),'tickets'=>$data -> getTickets());
+			//ENVIAR CORREO ELECTRONICO
+			$destinatario = $this -> getDoctrine() -> getRepository('ProyectoPrincipalBundle:CmsSetting') -> find(15);
+
+			$destinatario = $destinatario->getValue();
+			$sujeto = "NUEVA RESERVA";
+			$mensaje = 'Saludos Administrador(a), se ha realizado una nueva RESERVA : '."\n\n".
+					   'Usuario : ' . $data -> getName() . "\n".
+					   'Telefono: ' . $data -> getPhone(). "\n". 
+					   'Email: ' . $data -> getEmail(). "\n". 
+					   'Evento/Taller: ' . $secondArray['article']->getName(). "\n". 
+					   'Fecha: ' .$data -> getRdate(). "\n". 
+					   '#Tickets: ' .$data -> getTickets(). "\n\n".
+					   'Informacion generada por www.lavictoriacultural.org/www.lavictoriacultural.es'. "\n".
+					   'REALEGO.ES';
+			$headers = "De: ". $data -> getEmail() . "\n";
+			mail ($destinatario, $sujeto, $mensaje, $encabezado);
+		
+			///////////////////////////
 			$secondArray['message'] = 'Estimado(a) '.ucwords($data -> getName()).' su reserva ha sido guardada exitosamente...';
 			if($locale==1){
 				$secondArray['message'] = 'Dear '.ucwords($data -> getName()).' your booking has been saved successfully...';
@@ -172,6 +203,5 @@ class DefaultController extends Controller {
 		$array = array_merge($firstArray, $secondArray);
 		return $this -> render('ProyectoFrontBundle:Default:reservation.html.twig', $array);
 	}
-
 
 }

@@ -15,8 +15,8 @@ $loader->register(true);
 
 require_once __DIR__.'/../app/AppKernel.php';
 //require_once __DIR__.'/../app/AppCache.php';
-
-$kernel = new AppKernel('prod', FALSE);
+date_default_timezone_set('Europe/Madrid');
+$kernel = new AppKernel('prod', false);
 $kernel->loadClassCache();
 //$kernel = new AppCache($kernel);
 Request::enableHttpMethodParameterOverride();
